@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Global Nuclear Weapons Map — every warhead, every site, 1945–2026</title>
+<meta name="description" content="An interactive globe of every nuclear weapon on Earth: who has them, how many, where they are stored, what they could do — and how the arsenals rose and fell from 1945 to 2026.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Global Nuclear Weapons Map">
+<meta property="og:description" content="Every nuclear weapon on Earth: who has them, how many, where they are kept, and what they would do — from 1938 to 2026.">
+<meta property="og:url" content="https://42-apps.github.io/nuclear-map/">
+<meta property="og:image" content="https://42-apps.github.io/nuclear-map/icons/social.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Global Nuclear Weapons Map">
+<meta name="twitter:description" content="Every warhead, every site, 1945–2026 — plus a detonation simulator built on the published Glasstone & Dolan scaling equations.">
+<meta name="twitter:image" content="https://42-apps.github.io/nuclear-map/icons/social.png">
+<meta name="theme-color" content="#080b0f">
+<link rel="icon" type="image/svg+xml" href="icons/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon32.png">
+<link rel="apple-touch-icon" href="icons/icon180.png">
+<link rel="stylesheet" href="nuclear.css?v=015">
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header id="topbar">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="15.5" fill="#0b0d10"/>
+        <g fill="#ffd23f">
+          <path d="M9,3.876 A14,14 0 0,1 23,3.876 L19.65,9.68 A7.3,7.3 0 0,0 12.35,9.68 Z"/>
+          <g transform="rotate(120 16 16)"><path d="M9,3.876 A14,14 0 0,1 23,3.876 L19.65,9.68 A7.3,7.3 0 0,0 12.35,9.68 Z"/></g>
+          <g transform="rotate(240 16 16)"><path d="M9,3.876 A14,14 0 0,1 23,3.876 L19.65,9.68 A7.3,7.3 0 0,0 12.35,9.68 Z"/></g>
+        </g>
+        <circle cx="16" cy="16" r="3.4" fill="#ffd23f"/>
+      </svg>
+      <div class="brand-txt">
+        <span class="brand-name">Global Nuclear Weapons Map</span>
+        <span class="brand-sub">Every warhead, every site — who has them, where they are, and what they would do</span>
+      </div>
+    </div>
+    <div class="tools">
+      <div id="searchWrap">
+        <input id="search" type="text" placeholder="Search a country, site or city…" autocomplete="off" spellcheck="false" aria-label="Search">
+        <div id="searchResults" class="hidden"></div>
+      </div>
+      <button id="simBtn" class="cta" title="Open the detonation simulator">💥 Simulate</button>
+      <button id="menuBtn" title="Menu" aria-label="Menu">☰</button>
+      <div id="menu" class="hidden">
+        <button class="mi" id="miView"><span class="mi-ic">🗺</span><span class="mi-tx">Flat map</span></button>
+        <button class="mi" id="miShare"><span class="mi-ic">🔗</span><span class="mi-tx">Share this view</span></button>
+        <div class="mi-sep"></div>
+        <button class="mi mi-globe" id="miSpin"><span class="mi-ic">⟳</span><span class="mi-tx">Auto-rotate</span><span class="mi-state">On</span></button>
+        <button class="mi" id="miReset"><span class="mi-ic">⤢</span><span class="mi-tx">Reset view</span></button>
+        <button class="mi" id="miFull"><span class="mi-ic">⛶</span><span class="mi-tx">Fullscreen</span></button>
+        <div class="mi-sep"></div>
+        <button class="mi" id="miArsenal"><span class="mi-ic">📊</span><span class="mi-tx">Arsenals over time</span></button>
+        <button class="mi" id="miTests"><span class="mi-ic">☢</span><span class="mi-tx">Every nuclear test</span></button>
+        <button class="mi" id="miClock"><span class="mi-ic">🕛</span><span class="mi-tx">The Doomsday Clock</span></button>
+        <button class="mi" id="miTreaty"><span class="mi-ic">📜</span><span class="mi-tx">Treaties &amp; agreements</span></button>
+        <button class="mi" id="miNotes"><span class="mi-ic">🔍</span><span class="mi-tx">What we're least sure about</span></button>
+        <div class="mi-sep"></div>
+        <button class="mi" id="miHelp"><span class="mi-ic">?</span><span class="mi-tx">How to use</span></button>
+        <button class="mi" id="miAbout"><span class="mi-ic">ℹ</span><span class="mi-tx">About &amp; sources</span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Map ===== -->
+  <div id="globeViz"></div>
+  <svg id="flatViz" class="hidden" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"></svg>
+  <div id="tooltip" class="hidden"></div>
+  <div id="reachKey" class="hidden"></div>
+  <div id="toast" class="hidden"></div>
+
+  <!-- ===== Left: layer + legend + ranking ===== -->
+  <div id="legendBox">
+    <button id="legendToggle" aria-label="Show or hide the map key">Key <span class="lt-ar">▾</span></button>
+    <div class="gb-cap">Colour the world by</div>
+    <select id="layerSel" aria-label="Choose a map layer"></select>
+    <div class="persp-desc" id="layerDesc">—</div>
+
+    <div class="gb-stat"><span id="gbStat">—</span> <small id="gbStatLabel">world total</small></div>
+    <div class="legend" id="legend"></div>
+
+    <div class="lyr-cap">Show on the map</div>
+    <div class="site-toggles" id="siteToggles"></div>
+
+    <div class="gb-rows" id="gbRows"></div>
+    <div class="gb-note" id="gbNote">Click a country for its full nuclear profile · click a marker for the site</div>
+  </div>
+
+  <!-- ===== Right: country detail ===== -->
+  <div id="detailCard" class="hidden">
+    <button class="card-close" id="detailClose" title="Close">×</button>
+    <div class="detail-head">
+      <span id="detailFlag" class="detail-flag">🏳️</span>
+      <div>
+        <div id="detailName" class="detail-name">—</div>
+        <div id="detailSub" class="detail-sub"></div>
+      </div>
+    </div>
+    <div id="detailStatus" class="detail-status"></div>
+    <div id="detailHero" class="detail-hero"></div>
+    <div id="detailMetrics"></div>
+    <div id="detailSites" class="detail-sites"></div>
+    <div id="detailNarrative" class="detail-narr"></div>
+    <div id="detailNotes" class="detail-notes"></div>
+    <div id="detailDates" class="detail-dates"></div>
+    <div class="detail-actions">
+      <button id="detailSim" class="det-btn" title="See what this country's whole arsenal would do">💥 Its arsenal</button>
+      <button id="detailChart" class="det-btn ghost" title="Warhead inventory over time">📈 Over time</button>
+      <button id="detailReach" class="det-btn ghost" title="How far its missiles reach">🎯 Reach</button>
+    </div>
+    <div id="detailSrc" class="detail-src"></div>
+  </div>
+
+  <!-- ===== Right: site detail ===== -->
+  <div id="siteCard" class="hidden">
+    <button class="card-close" id="siteClose" title="Close">×</button>
+    <div class="site-head">
+      <span id="siteGlyph" class="site-glyph">◉</span>
+      <div>
+        <div id="siteName" class="detail-name">—</div>
+        <div id="siteSub" class="detail-sub"></div>
+      </div>
+    </div>
+    <div id="siteOwner" class="site-owner"></div>
+    <div id="siteFacts" class="site-facts"></div>
+    <p id="siteDesc" class="site-desc"></p>
+    <div class="detail-actions">
+      <button id="siteSim" class="det-btn">💥 Detonate here</button>
+      <button id="siteZoom" class="det-btn ghost">🔍 Zoom to site</button>
+    </div>
+    <div id="siteSrc" class="detail-src"></div>
+  </div>
+
+  <!-- ===== Right: history event ===== -->
+  <div id="eventCard" class="hidden">
+    <button class="card-close" id="eventClose" title="Close">×</button>
+    <div class="ev-top">
+      <div class="ev-cat"><span class="ev-cat-dot" id="evCatDot"></span><span id="evCat">—</span></div>
+      <div class="ev-title" id="evTitle">—</div>
+      <div class="ev-meta" id="evMeta">—</div>
+      <p class="ev-blurb" id="evBlurb">—</p>
+    </div>
+    <div class="ev-src" id="evSrcWrap">
+      <div class="ev-src-cap">Sources</div>
+      <div id="evSrc"></div>
+    </div>
+  </div>
+
+  <!-- ===== Bottom: timeline ===== -->
+  <div id="timebar">
+    <div class="tl-readhead">
+      <span class="tl-title">The nuclear age</span>
+      <span id="yearLabel" class="era-label">2026</span>
+      <span id="yearBadge" class="era-badge">—</span>
+      <span id="yearStat" class="tt-sub"></span>
+    </div>
+    <svg id="tlChart" viewBox="0 0 1000 92" preserveAspectRatio="none"></svg>
+    <div class="slider-row">
+      <button id="prevEra" class="step" title="Back one year (←)">‹</button>
+      <button id="nextEra" class="step" title="Forward one year (→)">›</button>
+      <input id="timeSlider" type="range" min="1938" max="2026" value="2026" step="1" aria-label="Year">
+      <button id="playRevBtn" class="play" title="Play backward">◀</button>
+      <button id="playBtn" class="play" title="Play the nuclear age">▶</button>
+      <button id="nowBtn" class="nowbtn" title="Jump to today">2026</button>
+    </div>
+    <div class="time-ends"><span>1938</span><span id="tlKey" class="tl-trackkey"></span><span>2026</span></div>
+  </div>
+
+  <!-- ===== Detonation simulator ===== -->
+  <div id="simOverlay" class="hidden">
+    <div class="sim-wrap">
+      <button id="simClose" class="about-close" title="Close">×</button>
+
+      <div class="sim-side">
+        <h2 class="sim-h">💥 Detonation simulator</h2>
+        <p class="sim-lead" id="simLead">Choose a weapon and a target to see the scale of the effects, using the standard published blast-scaling equations.</p>
+
+        <div class="sim-group">
+          <label class="sim-lab">Mode</label>
+          <div class="seg" id="simMode">
+            <button class="seg-b on" data-mode="single">Single weapon</button>
+            <button class="seg-b" data-mode="arsenal">Whole arsenal</button>
+          </div>
+        </div>
+
+        <div class="sim-group" id="simWeaponGroup">
+          <label class="sim-lab" for="simWeapon">Weapon</label>
+          <select id="simWeapon"></select>
+          <div class="sim-yield-row">
+            <input id="simYield" type="range" min="0" max="1000" value="500" step="1" aria-label="Yield">
+            <span id="simYieldVal" class="sim-yv">—</span>
+          </div>
+          <div class="sim-note" id="simWeaponNote"></div>
+        </div>
+
+        <div class="sim-group" id="simArsenalGroup" style="display:none">
+          <label class="sim-lab" for="simArsenal">Whose arsenal</label>
+          <select id="simArsenal"></select>
+          <div class="sim-note" id="simArsenalNote"></div>
+        </div>
+
+        <div class="sim-group">
+          <label class="sim-lab" for="simTarget">Target</label>
+          <select id="simTarget"></select>
+          <div class="sim-note">Or click anywhere on the map.</div>
+        </div>
+
+        <div class="sim-group">
+          <label class="sim-lab">Burst</label>
+          <div class="seg" id="simBurst">
+            <button class="seg-b on" data-burst="air">Airburst</button>
+            <button class="seg-b" data-burst="surface">Surface</button>
+          </div>
+          <div class="sim-note" id="simBurstNote">An airburst maximises blast damage over a wide area. A surface burst digs a crater and creates far more fallout.</div>
+        <div class="sim-wind-row" id="simHobRow">
+          <label class="sim-lab sm" for="simHob">Height</label>
+          <input id="simHob" type="range" min="0" max="100" value="45" step="1" aria-label="Burst height">
+          <span id="simHobVal" class="sim-yv sm">—</span>
+        </div>
+        <div class="sim-note" id="simHobNote"></div>
+        </div>
+
+        <div class="sim-group">
+          <label class="sim-check"><input type="checkbox" id="simFallout"> <span>Show fallout plume</span></label>
+          <div class="sim-wind-row" id="simWindRow">
+            <label class="sim-lab sm" for="simWind">Wind</label>
+            <input id="simWind" type="range" min="0" max="359" value="90" step="5">
+            <span id="simWindVal" class="sim-yv sm">→ E</span>
+          </div>
+          <div class="sim-wind-row" id="simWindSpeedRow">
+            <label class="sim-lab sm" for="simWindSpeed">Speed</label>
+            <input id="simWindSpeed" type="range" min="8" max="45" value="15" step="1">
+            <span id="simWindSpeedVal" class="sim-yv sm">15 mph</span>
+          </div>
+          <label class="sim-check"><input type="checkbox" id="simAdvanced"> <span>Advanced rings</span></label>
+          <label class="sim-check"><input type="checkbox" id="simCompare"> <span>Compare with Hiroshima</span></label>
+        </div>
+
+        <div class="sim-results" id="simResults"></div>
+        <div class="sim-cav" id="simCaveat"></div>
+      </div>
+
+      <div class="sim-mapwrap">
+        <svg id="simMap" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="sim-mapbar">
+          <span id="simScaleLabel" class="sim-scale">—</span>
+          <span class="sim-mapzoom">
+            <button id="simZoomOut" title="Zoom out">−</button>
+            <button id="simZoomIn" title="Zoom in">+</button>
+            <button id="simFit" title="Fit to the effects">⤢</button>
+          </span>
+        </div>
+        <div id="simLegend" class="sim-legend"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Chart overlay (arsenals / tests / clock / treaties) ===== -->
+  <div id="chartOverlay" class="hidden">
+    <div class="trend-box">
+      <button id="chartClose" class="about-close" title="Close">×</button>
+      <h2 id="chartTitle">—</h2>
+      <p class="trend-sub" id="chartSub">—</p>
+      <div id="chartBody"></div>
+      <div id="chartLegend" class="wt-legend"></div>
+      <p class="wt-cav" id="chartCav"></p>
+    </div>
+  </div>
+
+  <!-- ===== About ===== -->
+  <div id="aboutOverlay" class="hidden">
+    <div class="about-box">
+      <button id="aboutClose" class="about-close" title="Close">×</button>
+      <h2>Global Nuclear Weapons Map</h2>
+      <p><b>Two numbers, and the difference matters.</b> The <b>military stockpile</b> is the warheads actually
+      assigned to the armed forces. The <b>total inventory</b> adds those retired but still intact and queued
+      for dismantling — real weapons in real bunkers, which is why the widely quoted world figure is the larger
+      one. The timeline plots stockpiles, because that is the measure published for every year back to 1945;
+      country cards show both.</p>
+      <p>Every nuclear weapon on Earth, mapped. Nine states hold the world's arsenals; a tenth built the bomb
+      and then gave it up; several more tried and stopped. This map shows <b>who has them</b>, <b>how many</b>,
+      <b>where they are physically kept</b>, and <b>what they would do</b> — and lets you scrub the whole
+      nuclear age from 1938 to 2026.</p>
+      <p><b>Reading the colours.</b> Country markers are coloured by how certain the world is:
+      <span class="ink ink-declared">green</span> for states that openly declare their arsenals,
+      <span class="ink ink-undeclared">amber</span> for an arsenal that is universally assessed but never
+      confirmed by its owner (Israel), and <span class="ink ink-pursuing">red</span> for a state widely judged
+      to be pursuing or capable of pursuing a weapon (Iran). Sites holding <b>another country's</b> weapons —
+      US bombs in Belgium, Germany, Italy, the Netherlands and Türkiye; Russian weapons in Belarus — carry the
+      <b>owner's flag</b>, because those warheads are not the host country's.</p>
+      <p class="about-cav"><b>Please read this.</b> Nothing here is secret. Every location, number and figure is
+      drawn from published, open sources — the Federation of American Scientists, the Bulletin of the Atomic
+      Scientists' Nuclear Notebook, SIPRI, the IAEA, the Arms Control Association, the Nuclear Threat Initiative
+      and commercial satellite imagery. Warhead counts are <b>independent analysts' estimates</b>, not official
+      declarations: most nuclear states publish little or nothing. Where sources disagree, the map says so.
+      Site coordinates identify publicly documented facilities, many of them decades old and photographed from
+      orbit every day.</p>
+      <p class="about-cav">The effects simulator uses the standard unclassified scaling equations from
+      <i>The Effects of Nuclear Weapons</i> (Glasstone &amp; Dolan, US Government, public domain) — the same
+      civil-defence maths behind Alex Wellerstein's NUKEMAP. It is a teaching tool, not a targeting tool: real
+      outcomes depend on terrain, weather, building stock and time of day, and casualty figures are rough
+      order-of-magnitude estimates only.</p>
+      <p class="about-src" id="aboutSources">Sources: FAS Nuclear Notebook · Bulletin of the Atomic Scientists ·
+      SIPRI Yearbook · Arms Control Association · Nuclear Threat Initiative · IAEA · International Panel on
+      Fissile Materials · CSIS Beyond Parallel · Glasstone &amp; Dolan. Borders: Natural Earth. Globe: globe.gl.</p>
+      <p class="about-cav"><b>Your privacy.</b> This page runs entirely in your browser. There is no analytics,
+      no tracking and no server: nothing you click, search for or choose to detonate leaves your machine.
+      People type their own address into tools like this — yours goes nowhere.</p>
+
+      <h3 class="about-h3">If you want to go further</h3>
+      <p>This map deliberately carries no political message; the physics is the same whatever you conclude from
+      it. But it would be strange to open this subject and then just close the tab, so: the
+      <a href="https://thebulletin.org/" target="_blank" rel="noopener">Bulletin of the Atomic Scientists</a>,
+      the <a href="https://fas.org/initiative/nuclear-information-project/" target="_blank" rel="noopener">FAS
+      Nuclear Information Project</a>, the <a href="https://www.armscontrol.org/" target="_blank" rel="noopener">Arms
+      Control Association</a>, <a href="https://www.nti.org/" target="_blank" rel="noopener">NTI</a> and
+      <a href="https://www.icanw.org/" target="_blank" rel="noopener">ICAN</a> all publish continuously, disagree
+      with each other productively, and are where nearly everything on this map came from.</p>
+      <p class="about-cav">A note on the numbers, in the words of the people who make them: FAS states plainly
+      that “the exact number of nuclear weapons in each country's possession is a closely held national secret,
+      so the estimates presented here come with significant uncertainty.” That uncertainty is carried through
+      this whole map. See <b>☰ → What we're least sure about</b> for the specific soft spots, in the researchers'
+      own words.</p>
+
+      <p class="about-src">Made for <a href="https://42-apps.github.io/" target="_blank" rel="noopener">42-apps</a>.
+      Data errors and corrections are welcome — every figure here is checkable against a published source, and if
+      one of them is wrong it should be fixed.</p>
+    </div>
+  </div>
+
+  <!-- ===== First-run tutorial ===== -->
+  <div id="tutorial" class="hidden">
+    <div class="tut-box">
+      <svg class="tut-logo" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="15.5" fill="#0b0d10"/>
+        <g fill="#ffd23f">
+          <path d="M9,3.876 A14,14 0 0,1 23,3.876 L19.65,9.68 A7.3,7.3 0 0,0 12.35,9.68 Z"/>
+          <g transform="rotate(120 16 16)"><path d="M9,3.876 A14,14 0 0,1 23,3.876 L19.65,9.68 A7.3,7.3 0 0,0 12.35,9.68 Z"/></g>
+          <g transform="rotate(240 16 16)"><path d="M9,3.876 A14,14 0 0,1 23,3.876 L19.65,9.68 A7.3,7.3 0 0,0 12.35,9.68 Z"/></g>
+        </g>
+        <circle cx="16" cy="16" r="3.4" fill="#ffd23f"/>
+      </svg>
+      <h2>Every nuclear weapon on Earth</h2>
+      <p class="tut-lead">Nine countries. Around twelve thousand warheads. Here is where they are.</p>
+      <p class="tut-cav" style="margin:-10px 0 16px">Two numbers get quoted: the <b>military stockpile</b> (weapons assigned to the armed forces) and the <b>total inventory</b>, which also counts warheads retired but not yet taken apart. This map shows both, and always says which is which.</p>
+      <div class="tut-steps">
+        <div class="tut-step"><span class="tut-ic">🟢</span><div><b>Green, amber, red.</b> Green = a declared arsenal. Amber = an arsenal everyone assesses but nobody confirms. Red = a state pursuing one. Purple = built the bomb and gave it up.</div></div>
+        <div class="tut-step"><span class="tut-ic">📍</span><div><b>Click any marker</b> for the actual site — Minot's silo field, Dimona, Yongbyon, Fordow — with what is there and how sure we are.</div></div>
+        <div class="tut-step"><span class="tut-ic">🏳️</span><div><b>Watch the flags.</b> Where one country's bombs sit in another's territory, the marker flies the <i>owner's</i> flag.</div></div>
+        <div class="tut-step"><span class="tut-ic">💥</span><div><b>Simulate.</b> See the real scale of a single warhead — or of an entire arsenal — anywhere on Earth.</div></div>
+        <div class="tut-step"><span class="tut-ic">🕓</span><div><b>Play the timeline</b> to watch the stockpiles climb past 60,000 warheads in the mid-1980s and fall again — and see South Africa's six bombs appear and vanish.</div></div>
+      </div>
+      <p class="tut-cav">All figures are published open-source estimates. See <b>About</b> for sources and caveats.</p>
+      <button id="tutStart" class="tut-btn">Start exploring →</button>
+    </div>
+  </div>
+
+  <!-- ===== Flat-map tip ===== -->
+  <div id="flatTip" class="hidden">
+    <div class="tut-box">
+      <h2>🗺️ The flat map</h2>
+      <p class="tut-lead">The same data as the globe, on a flat world map — easier for comparing hemispheres and for zooming into a silo field.</p>
+      <div class="tut-steps">
+        <div class="tut-step"><span class="tut-ic">🔍</span><div><b>Zoom &amp; pan.</b> Scroll to zoom, drag to move; recentre via ☰ → <b>Reset view</b>.</div></div>
+        <div class="tut-step"><span class="tut-ic">👆</span><div><b>Hover</b> for a quick read; <b>click</b> a country or a site marker for the full card.</div></div>
+      </div>
+      <button id="ftStart" class="tut-btn">Got it</button>
+    </div>
+  </div>
+
+  <script src="lib/globe.gl.min.js"></script>
+  <script src="data/nuclear-data.js?v=015"></script>
+  <script src="data/sites.js?v=015"></script>
+  <script src="data/history.js?v=015"></script>
+  <script src="data/cities.js?v=015"></script>
+  <script src="physics.js?v=015"></script>
+  <script src="nuclear.js?v=015"></script>
+  <script src="blast.js?v=015"></script>
+</body>
+</html>
