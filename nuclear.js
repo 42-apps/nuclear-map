@@ -873,6 +873,16 @@ function showDetail(iso, feat) {
     : '';
 
   document.getElementById('detailNarrative').textContent = c.narrative || '';
+  /* For states that do not have weapons, the interesting question is how close
+     they are — so say so, in the researchers' words. */
+  const ab = document.getElementById('detailAssess');
+  const showAssess = !n && (c.assessment || c.breakout);
+  ab.innerHTML = showAssess
+    ? '<div class="sec-cap">How close are they?</div>' +
+      (c.breakout ? `<div class="assess-lead">${esc(c.breakout)}</div>` : '') +
+      (c.assessment ? `<div class="assess-body">${esc(c.assessment)}</div>` : '')
+    : '';
+
   const nb = document.getElementById('detailNotes');
   nb.innerHTML = (c.notes && c.notes.length && y === Y1)
     ? '<div class="sec-cap">Worth knowing</div>' + c.notes.map(x => `<div class="dn-row">${esc(x)}</div>`).join('')
