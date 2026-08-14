@@ -1638,8 +1638,14 @@ document.getElementById('miNotes').addEventListener('click', () => {
     yields: 'Yields & megatonnage', physics: 'Weapon effects', democracy: 'Governance data',
     delivery: 'Delivery systems', 'fuel-cycle': 'Fissile material', humancost: 'The human record',
     cities: 'City populations', iso: 'Country codes', design: 'Design research', gapfill: 'Gap-filling pass',
+    coordinates: 'Re-checking every coordinate', numbers: 'Re-checking every number',
   };
-  const order = Object.keys(byTopic).sort((a, b) => (TOPIC_NAME[a] || a).localeCompare(TOPIC_NAME[b] || b));
+  const FIRST = ['numbers', 'coordinates'];
+  const order = Object.keys(byTopic).sort((a, b) => {
+    const fa = FIRST.indexOf(a), fb = FIRST.indexOf(b);
+    if (fa >= 0 || fb >= 0) return (fa < 0 ? 99 : fa) - (fb < 0 ? 99 : fb);
+    return (TOPIC_NAME[a] || a).localeCompare(TOPIC_NAME[b] || b);
+  });
   const body = order.length
     ? order.map(k => `<div class="sec-cap" style="border-top:1px solid var(--line)">${esc(TOPIC_NAME[k] || k)}</div>` +
         byTopic[k].map(x => `<div class="unc-row">${esc(x)}</div>`).join('')).join('')

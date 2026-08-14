@@ -1606,6 +1606,18 @@ window.NUKE_COUNTRIES = {
   "gov": "Islamic republic - a theocratic-republican hybrid with an unelected Supreme Leader above…",
   "launchAuth": "None - Iran is not assessed to possess a weapon. Any decision would rest with the Supreme Leader (Ali Khamenei) as constitutional commander-in-chief, working through the Supreme National Security Council; the elected…",
   "tpnw": "not signed",
+  "notes": [
+   "A second US-Israeli war ran 28 Feb - 7/8 Apr 2026 (US 'Operation Epic Fury' / Israeli 'Lion's Roar'); Ali Khamenei was killed on day one and Mojtaba Khamenei became Supreme Leader on 8 March 2026.",
+   "Iran's last IAEA-verified 60% HEU figure is 440.9 kg (uranium mass) on 12 June 2025 — nominally material for 7-10+ weapons if enriched on. The Agency has had no idea where it is since.",
+   "Roughly 220-287 kg of that 60% stock is believed inside the Esfahan tunnel complex; 18 blue HEU transport casks were imaged going in on 9 June 2025, four days before the war.",
+   "All three Esfahan tunnel entrances were fully buried by February 2026, and Iran added 'cruise-missile chicane barriers' and roadblocks by April 2026. The uranium is probably intact but not reachable.",
+   "Pickaxe Mountain (Kuh-e Kolang Gaz La, 33.705N 51.710E) is the one major site never struck: >100 m under granite, four tunnel entrances, never inspected, still not operational. Trump threatened to bomb it on 22-24 July 2026.",
+   "ISIS judged in June 2026 that ~22,000 installed centrifuges were destroyed and Iran has 'no identifiable route' to weapon-grade uranium — a much harsher assessment than the low-end 'weeks' estimates.",
+   "The honest analyst spread on a weapon in 2026 runs from 'a few weeks' to 90% (Grossi, if a few hundred IR-6s could be run) through 9-12 months (US IC reporting) to 'at least two and a half years' (FDD, accounting for facility and scientist losses).",
+   "UN snapback happened: E3 triggered it 28 August 2025; the full pre-2015 UN sanctions regime returned on 27 September 2025, with EU/UK measures on 29 September.",
+   "The IAEA stopped all verification activity in Iran on 28 February 2026. Bushehr is the sole exception — Russia insisted, and inspectors did a DIV there on 1-3 June 2026.",
+   "An NPT withdrawal bill (sponsor Malek Shariati) was submitted to the Majlis on 28 March 2026 and is still unpassed as of August 2026."
+  ],
   "a2": "IR",
   "gotYear": null,
   "nptCat": "nnws"

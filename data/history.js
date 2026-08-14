@@ -436,6 +436,622 @@ window.NUKE_RESEARCH = {
    "x": "Israel's exact CTBT/NPT posture is solid (non-party to NPT; CTBT signed 25 Sep 1996, Annex 2, unratified — confirmed via CTBTO), but there is no declared doctrine, no published C2 arrangement and no no-first-use statement, so the doctrine field is reconstructed from analyst consensus rather than any Israeli document."
   },
   {
+   "t": "timeseries",
+   "x": "DEFINITIONAL, and the biggest caveat: no per-country year-by-year TOTAL INVENTORY series exists in open sources. FAS publishes retired-warhead counts only as a global residual, and per country only for the current and previous year. So points[].n is the military stockpile (the line that yields the 31,255 / 40,159 anchors the task asked for), points[].inv carries true total inventory for 2025-2026 only, and globalTotals[].n is the full world inventory. I…"
+  },
+  {
+   "t": "timeseries",
+   "x": "UK peak: the task expected ~520 in 1981, but the current FAS/OWID series caps the UK at 500 for 1973-1981 (peak year 1973). The ~520 figure comes from Norris & Kristensen's 2013 'The British nuclear stockpile, 1953-2013'; I could only reach the abstract (Taylor & Francis returned HTTP 403 on the full text) and FAS has not propagated 520 into its own dataset, so I kept 500 and flagged the disagreement in the file."
+  },
+  {
+   "t": "timeseries",
+   "x": "South Africa: the task expected a 1979-1991 ramp of 0,1,2...6. FAS's published series instead runs 1982-1989 at 3,3,3,3,3,4,5,6 and drops to zero in 1990. The physical history is wider than FAS's line - first complete device Nov 1979, dismantlement began July 1990 and finished in 1991, IAEA verified six complete plus one partial device in Aug 1994 - so FAS's 1990 zero is arguably a year or two early. I used FAS and documented both."
+  },
+  {
+   "t": "timeseries",
+   "x": "North Korea 2006-2014 is INTERPOLATED by me and is the weakest data in the file. FAS's own series carries zero until 2015 despite the Oct 2006 test. I ramped 1,2,2,3,3,4,4,5,5 to meet FAS's 2015 value of 5, guided by SIPRI Yearbooks (which listed DPRK at '<10' then '6-8' in 2011-2015) and ISIS plutonium-inventory work. Every one of these nine years is marked interpolated:true."
+  },
+  {
+   "t": "timeseries",
+   "x": "India and Pakistan pre-1998: FAS carries zero before the May 1998 tests, so the series start in 1998. Their 'pre-1998 assessed devices' are real as a capability claim - India's 1974 PNE, Pakistan's assessed device capability from the late 1980s - but no published year-by-year stockpile numbers exist for those years, so I did not invent any."
+  },
+  {
+   "t": "timeseries",
+   "x": "Ukraine/Kazakhstan/Belarus 1994 and 1995 values are interpolated between documented endpoints. Only the 1991 inherited totals and the removal-completion dates (Kazakhstan 24 Apr 1995, Ukraine 1 Jun 1996, Belarus 27 Nov 1996) are firmly sourced; nobody publishes an annual remaining-warhead count. Kazakhstan's tactical warheads are excluded because the number is not reliably documented, so its 1991 figure of 1,410 is strategic-only and is an undercount of…"
+  },
+  {
+   "t": "timeseries",
+   "x": "In seven Cold War years (1967, 1968, 1969, 1976, 1977, 1978, 1980) FAS's world line sits 83 to 1,295 warheads BELOW the sum of its own country lines - a vintage mismatch between separately revised series. globalTotals[].retired is clamped to zero in those years. Consumers must not assume globalTotals.n equals the sum of the series for the 1960s-1980s."
+  },
+  {
+   "t": "timeseries",
+   "x": "Year convention is not uniform. FAS/SIPRI use 1 January snapshots; the official US declassified numbers are end-of-fiscal-year (30 September); and I defined the Ukraine/Kazakhstan/Belarus points as end-of-year. Differences of a few months at the edges of the transfer period are unavoidable."
+  },
+  {
+   "t": "timeseries",
+   "x": "Soviet/Russian numbers 1949-2026 are analyst estimates throughout - Russia has never declassified a stockpile history the way the US did in 2010/2021 - and the expiry of New START in February 2026 without replacement removed the last treaty-based declaration stream, so post-2026 figures will be less well grounded than anything before them."
+  },
+  {
+   "t": "timeseries",
+   "x": "The WebSearch budget for this session ran out after the early queries, so later verification was done via direct WebFetch/curl of known authoritative URLs rather than open search. I was unable to retrieve SIPRI's per-country table 8A.1 (only the chapter narrative) or the full text of the British stockpile paper."
+  },
+  {
+   "t": "timeseries",
+   "x": "Israel's entire series is an external assessment; Israel has never confirmed or denied, and the smooth ~2-per-year climb from 1967 in the FAS series is a modelled trajectory rather than observed counts."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "Sources disagree materially on the European total. FAS's status page hedges '100-120 B61 bombs at six-seven bases in five-six countries'; the Bulletin's December 2025 European survey uses per-base ranges summing nearer 120; its March 2026 US Notebook and the ACA say ~100. I used the ~100 figure with FAS's per-base breakdown and flagged the divergence in a dedicated note."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "Per-base numbers are analyst estimates, not counts — no government publishes them. Treat each single figure as a midpoint of roughly ±5-10 weapons. Widely circulated older figures (Volkel 22, Ghedi 'more than 40', Incirlik 50, Europe-wide 150) reflect Cold War or pre-2010 loadings and are not current; Wikipedia in particular still carries several of these."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "Whether B61-12s are physically at RAF Lakenheath in August 2026 is genuinely unresolved in open sources. I found no FAS or Bulletin publication later than October 2025 addressing it, so the record is marked 'suspected' with warheads: 20 as a conditional estimate."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "Exact WS3 vault counts are solid for Incirlik (25), Aviano (18), Kleine Brogel / Buchel / Ghedi / Volkel (11 each), Marham (24) and Bruggen (10), but the totals do not reconcile cleanly with the documented 215 USAFE vaults across 13 sites, and I could not verify counts for Ramstein (55 is widely cited but I could not confirm it against a primary source), Norvenich, Memmingen, Rimini or Balikesir."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "Nörvenich's withdrawal date is uncertain — open sources place it anywhere from the mid-1990s to ~2007. I used 2007 with confidence 'medium' and said so in the record."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "Soesterberg's nuclear storage role is poorly documented; it is commonly listed among former sites but I found no evidence of WS3 vaults or a weapon count, so its warhead figure is 0 with confidence 'medium'."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "The 'since' years in hostCountries are approximate first-deployment years for US weapons in that country, not the start of the current B61 arrangement; precise dates vary between sources."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "I could not access NTI country profiles (403 Forbidden on both Belarus and Turkey), the SIPRI Yearbook 2026 nuclear-forces chapter (paywalled/wrong chapter served), or the RFE/RL Oreshnik article directly (403) — the RFE/RL details came via a search-result summary rather than the source article."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "No information found on a Steadfast Noon 2026 exercise; the most recent confirmed edition is 13-24 October 2025 (Volkel, with Kleine Brogel and RAF Lakenheath), which is consistent with the exercise normally running in October, i.e. after this dataset's compile date."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "The session's WebSearch budget was fully consumed (200/200) before my first call, so I could not run keyword searches. All research was done via ~50 direct WebFetch calls to known authoritative URLs plus DuckDuckGo/Bing HTML endpoints, two of which returned CAPTCHA pages. A re-run with search available would likely close several of the coordinate gaps above."
+  },
+  {
+   "t": "democracy",
+   "x": "The EIU 2025 country scores are the weakest-sourced numbers in the file. EIU gates the full 167-country table behind a registration wall, and Our World in Data's EIU mirror still ends at 2024, so I could not verify them against a second numeric source. They come from Wikipedia's transcription (parsed from raw wikitext via the MediaWiki API), corroborated only qualitatively by EIU's own campaign page and by an independently written 'recent changes'…"
+  },
+  {
+   "t": "democracy",
+   "x": "Several sources I would normally cross-check were unreachable: NTI country profiles and congress.gov CRS products are behind Cloudflare challenges, and the Bulletin of the Atomic Scientists Nuclear Notebook and ACA's Iran fact sheet are paywalled."
+  },
+  {
+   "t": "democracy",
+   "x": "No EIU or V-Dem coverage exists for Marshall Islands, Kiribati or French Polynesia (both exclude microstates and territories); Freedom House does not cover French Polynesia. Those fields are null, not zero — the map layer must not render them as 0."
+  },
+  {
+   "t": "democracy",
+   "x": "Israel's launch authority is genuinely unknown. Under the policy of amimut Israel has never confirmed possession or published doctrine, so the PM-plus-Security-Cabinet description is an open-source assessment, explicitly flagged as unverified in the record."
+  },
+  {
+   "t": "democracy",
+   "x": "Whether Russian warheads are physically present in Belarus is not established in open sources — the infrastructure, Iskander launchers and exercises are documented, but as of 2025 there was no conclusive evidence of warheads on Belarusian soil. Marked SUSPECTED."
+  },
+  {
+   "t": "democracy",
+   "x": "The UK's status as a host of US B61s at RAF Lakenheath is FAS's 'possibly', not a confirmed deployment; I recorded it as suspected/high-confidence rather than confirmed."
+  },
+  {
+   "t": "democracy",
+   "x": "Some treaty-adjacent detail was written from background knowledge and not re-verified this session: Japan declining TPNW observer status, Germany's and the Netherlands' observer attendance, Sweden's 2019 government inquiry recommending against accession, and Australian Labor's platform position. The core npt/tpnw/ctbt fields themselves are all from primary depositary records."
+  },
+  {
+   "t": "democracy",
+   "x": "Population is the UN WPP 2024-revision 2026 medium-variant projection, not a 2026 census; the UN has not yet issued a 2026-revision file. Taiwan's figure comes from the same series for consistency."
+  },
+  {
+   "t": "democracy",
+   "x": "sitesWithCoords is 0 by design — this topic is the country-fill governance layer and contains no site records, so no lat/lon fields exist to populate. No coordinate was invented anywhere in this file."
+  },
+  {
+   "t": "democracy",
+   "x": "Government-type phrasings are one-line characterisations synthesised from the indices and country context rather than lifted verbatim from a single reference such as the CIA World Factbook, which I could not fetch."
+  },
+  {
+   "t": "iran",
+   "x": "No published decimal coordinates found for the Ardakan Yellowcake Production Plant (Shahid Rezayinejad). Sources only say '35 km north of Ardakan city, Yazd province'. lat/lon left null rather than derived."
+  },
+  {
+   "t": "iran",
+   "x": "No published coordinates found for the Lavisan-2 / Mojdeh SPND headquarters campus (described only as 'east Tehran, adjoining Malek Ashtar University'). lat/lon null."
+  },
+  {
+   "t": "iran",
+   "x": "No published coordinates found for the Shorabad/Kahrizak nuclear archive warehouse (described only as ~23 km from central Tehran in the Shorabad industrial district). lat/lon null."
+  },
+  {
+   "t": "iran",
+   "x": "TESA/TABA Karaj: the exact centrifuge-workshop coordinate could not be verified. I used Johnston's Archive's Karaj nuclear campus point (35.8167, 51.0000), accurate only to roughly +/-3 km, and flagged this in the record. Confidence set to medium."
+  },
+  {
+   "t": "iran",
+   "x": "Kalaye Electric's coordinate (35.7333, 51.5667) is from Iran Watch at one-arcminute precision (~+/-1 km) only. Confidence medium."
+  },
+  {
+   "t": "iran",
+   "x": "Khojir is a sprawling complex; two credible sources give materially different points (35.6937/51.6112 vs 35.6644/51.7292). I used the former as a representative point."
+  },
+  {
+   "t": "iran",
+   "x": "Sources disagree on the exact March 2026 Natanz strike dates: ISIS's June 2026 IAEA analysis says 3, 12 and 21 March; ISIS's phase-2 report says 1 and 27 March; Critical Threats says 2 March. I list the union and describe it as repeated strikes through March."
+  },
+  {
+   "t": "iran",
+   "x": "Ceasefire date is given as 7 April 2026 by CFR and 8 April by other outlets; I recorded 7-8 April."
+  },
+  {
+   "t": "iran",
+   "x": "Gchine uranium mine (Bandar Abbas) was omitted entirely — no verifiable coordinate was obtainable (globalsecurity.org returned 403)."
+  },
+  {
+   "t": "iran",
+   "x": "The very latest state (late July and August 2026) is thin: I could not find reporting from the week of 12 August 2026 confirming whether the Islamabad MOU's 60-day window produced anything, whether the Pickaxe Mountain threat was acted on, or whether IAEA inspections actually resumed. The file's 'today' entry reflects the most recent confirmed reporting, not certainty."
+  },
+  {
+   "t": "iran",
+   "x": "Some search results surfaced low-quality aggregator sites (iranwarroom.com, missilestrikes.com, theboard.world, factually.co, grokipedia). None were used as sources; all numbers rest on ISIS, IAEA, ACA, CRS, Bulletin, NTI, Iran Watch, Alma or Johnston's Archive."
+  },
+  {
+   "t": "iran",
+   "x": "Iran's own declared 'Esfahan Fuel Enrichment Plant' (notified to the IAEA in June 2025) has no confirmed location. It is suspected to be inside the Esfahan tunnel complex and is folded into that record."
+  },
+  {
+   "t": "tests",
+   "x": "No verified public decimal coordinate found for the U1a/PULSE shaft collar at NNSS Area 1 - lat/lon set to null despite the facility's 2026 importance"
+  },
+  {
+   "t": "tests",
+   "x": "No verified coordinate found for Project Faultless (Central Nevada Test Area) or the Urta-Bulak PNE site in Uzbekistan - both set to null"
+  },
+  {
+   "t": "tests",
+   "x": "The Soviet PNE programme's ~80 dispersed sites (Kraton-3, Globus-1, Lira, etc.) have only partially published coordinates; recorded as a single programme-level entry with null coordinates rather than fabricating points"
+  },
+  {
+   "t": "tests",
+   "x": "Sources disagree on the Semipalatinsk centroid: 50.12N/78.72E, 50.38N/77.78E and 49.97N/78.09E are all published; the site is an 18,000 km2 area, and this is flagged in the record"
+  },
+  {
+   "t": "tests",
+   "x": "Azgir (Kazakhstan) is anchored to the adjacent village of Azghyr (47.837N, 47.912E), so accurate to a few kilometres only; Kharan/Chagai-II coordinates differ between sources by up to ~10 km (28.36-28.43N)"
+  },
+  {
+   "t": "tests",
+   "x": "Tsar Bomba's yield is 50 Mt in most sources but 57-58 Mt in Johnston's Archive and some Russian accounts; both are noted"
+  },
+  {
+   "t": "tests",
+   "x": "Test counts differ irreconcilably by convention: ACA 2,056 vs device-convention 2,121; UK 45 (incl. 24 at NTS) vs Wikipedia's 88; India 3 events vs 6 devices. Both are recorded rather than one being chosen"
+  },
+  {
+   "t": "tests",
+   "x": "Per-site total yields are unavailable in the open literature for several sites (Degelen, Balapan, In Ekker, Moruroa/Fangataufa individually, Rainier Mesa, Yucca Flat); those fields are null rather than estimated"
+  },
+  {
+   "t": "tests",
+   "x": "The 2026 current-events thread rests on secondary reporting - tandfonline (Bulletin/Nonproliferation Review), congress.gov CRS, japantimes, hongkongfp, cscr.pk and rosen.senate.gov all returned HTTP 403/429 to direct fetches, so some 2026 details come from search summaries and the Arms Control Today March 2026 piece rather than primary text"
+  },
+  {
+   "t": "tests",
+   "x": "Whether any classified US decision on test readiness was taken between May and August 2026 could not be established; no reporting of a scheduled or conducted US test was found"
+  },
+  {
+   "t": "tests",
+   "x": "Yield estimates for Indian, Pakistani and North Korean tests remain contested between official claims and seismic analysis, sometimes by a factor of 3-4; official and independent figures are both given in the descriptions"
+  },
+  {
+   "t": "tests",
+   "x": "The Vela Incident remains formally unattributed; the ownerIso3 is set to ISR to reflect the prevailing analytic assessment, not a confirmed fact, and confidence is marked 'suspected'"
+  },
+  {
+   "t": "former",
+   "x": "Kentron Circle's own building coordinate is not published in any source I could reach (globalsecurity.org returned 403, and the ISIS chapter's Google Earth figure carries no coordinate). I merged Circle and Advena into one site entry using Wikipedia's published Advena coordinate (-25.7508, 28.0289); ISIS states Circle is 15 km east of Pelindaba and about five minutes' drive from Advena, both inside the Gerotek estate."
+  },
+  {
+   "t": "former",
+   "x": "Syria's 'Site 99' has no public location. lat/lon are null. Reporting (Axios, FDD, JPost, Ynet) describes it only as a clandestine facility holding Al Kibar-linked yellowcake."
+  },
+  {
+   "t": "former",
+   "x": "Three coordinates are town- or city-level rather than building-level and are flagged as such in the site desc: Ulba Metallurgical Plant (Oskemen city point), Asipovichy 1405th base (town point; depot is a few km out), Libya's Sabha yellowcake store, Itaguai shipyard, and Lychen-2/Himmelpfort (village point)."
+  },
+  {
+   "t": "former",
+   "x": "Khmelnytskyi is given as the 19th Missile Division headquarters coordinate; the SS-19 silos themselves were dispersed over tens of kilometres and I did not find a published per-silo list I could verify."
+  },
+  {
+   "t": "former",
+   "x": "Al Jesira (Mosul) is in the FAS Iraq facility list but with degrees only and no minutes ('36°??N 43°??E'), so I omitted it rather than invent a position. Iraq's Al Hadre and Al Rabbiyah sites are similarly unlocated here."
+  },
+  {
+   "t": "former",
+   "x": "Sources disagree on Belarus's inherited strategic warhead count: FAS/NTI give 81 (one per SS-25), the Arms Control Association gives ~100. I used 100 for peakWarheads and explain the 81 SS-25 figure in the narrative."
+  },
+  {
+   "t": "former",
+   "x": "Ukraine's tactical warhead count ranges from ~2,275 (ACA) to 2,600-4,200 across sources; I cite the ACA figure and note the spread."
+  },
+  {
+   "t": "former",
+   "x": "The 1979 Vela incident remains genuinely unresolved. I record the CIA's contemporaneous '90 percent plus' assessment, the Ruina Panel's contrary 'zoo event' finding, and the later scholarly view (Avner Cohen and others) that it was an Israeli test — without asserting a verdict."
+  },
+  {
+   "t": "former",
+   "x": "Total Soviet warhead numbers in East Germany were never declared; my peakWarheads of 4,000 for the GDR is an order-of-magnitude placeholder for the low thousands usually cited for GSFG, and per-depot figures are unknown."
+  },
+  {
+   "t": "former",
+   "x": "Estimates for Poland's Wisla sites vary widely (100-300 warheads per site vs ~178 total nationally); I used ~60 per site as a conservative split and state the range in warheadsNote."
+  },
+  {
+   "t": "former",
+   "x": "Iran is not covered in this file. A sibling topic-iran.json already exists in the same output directory, and Iran's programme is contested/current rather than renounced."
+  },
+  {
+   "t": "former",
+   "x": "Somchem's coordinate is the coastal high-explosive test area that IAEA inspectors examined, not the main factory complex a few km inland."
+  },
+  {
+   "t": "physics",
+   "x": "The two standard fallout models diverge by up to 3.5× in downwind extent (G&D Table 9.93 vs Miller SFSS at 1 Mt / 1 rad/hr). Neither is 'right' — both are idealised single-wind-vector models with no shear beyond 15°, no terrain, no rainout and no hot spots. I supplied Table 9.93 as the implementable model and SFSS as a cross-check, and flagged the divergence in the file. The user must pick one and label it."
+  },
+  {
+   "t": "physics",
+   "x": "Fireball surface-burst constant is unresolved between sources: G&D §2.127 eq. 2.127.2 read literally gives 290·W^0.4 ft (0.08839 km) but NUKEMAP uses 260·W^0.4 ft (0.07925 km), ~10% smaller. I used NUKEMAP's for consistency with the rest of the check values and documented the alternative."
+  },
+  {
+   "t": "physics",
+   "x": "Crater scaling exponent conflicts: CEX-62.2/NUKEMAP uses Y^(1/3) while G&D §6.09 explicitly uses W^0.3. They agree at low yield but diverge 33% at 1 Mt (193 m vs 145 m apparent radius). W^0.3 is better physically justified at high yield; both are in the file."
+  },
+  {
+   "t": "physics",
+   "x": "Thermal exponent conflicts between authorities: the Nuclear Weapon Archive FAQ gives 0.67·Y^0.41 for 3rd-degree burns while the NUKEMAP/G&D curves give ~0.61·Y^0.438. They agree closely at 15–20 kt but diverge ~10% by 1 Mt."
+  },
+  {
+   "t": "physics",
+   "x": "I could not extract the original CEX-62.2 curve-fit equations directly — both the OSTI and DTIC copies are scanned-image PDFs with no text layer. I relied on NUKEMAP's implementation of them, which is a faithful secondary source but not the primary document."
+  },
+  {
+   "t": "physics",
+   "x": "G&D Table 12.65 gives burn PROBABILITY curves, not fixed thresholds, and §12.64 notes the required radiant exposure varies significantly with skin pigmentation. The single cal/cm² numbers in this file are 50%/100%-probability points, not hard cutoffs."
+  },
+  {
+   "t": "physics",
+   "x": "NUKEMAP's casualty calculation runs server-side in PHP (casualties.php) and is not recoverable, so I reconstructed it from the DCPA 1973 figure that the FAQ cites as its source rather than from the actual code."
+  },
+  {
+   "t": "physics",
+   "x": "Coupe et al. 2019's exact global-mean temperature drop could not be verified — the full text is paywalled (HTTP 402) and the abstract gives only qualitative 'below freezing over much of the Northern Hemisphere'. I used Robock et al. 2007b's directly-verified 7–8 °C for the 150 Tg case instead and cited Coupe alongside."
+  },
+  {
+   "t": "physics",
+   "x": "Nuclear-winter soot yields are genuinely contested: Reisner et al. (2018, 2019, LANL) argue for far less soot lofting than Robock/Toon. I flagged this as an active minority dissent in the file rather than presenting the figures as settled."
+  },
+  {
+   "t": "events",
+   "x": "The 2025-2026 events rest on a thinner evidentiary base than the historical record - I hit the session's 200-call WebSearch limit after 14 searches and had to finish verification with WebFetch. The 2026 Iran war in particular is fast-moving and my picture of it (ceasefire 8 April, MOU 18-19 June, strains resuming July-August) is assembled from CFR's conflict tracker, CNN, Britannica-adjacent Wikipedia and the UK Commons Library abstract; the Britannica…"
+  },
+  {
+   "t": "events",
+   "x": "Vasili Arkhipov / B-59 (27 Oct 1962): the coordinate 23.0N 70.0W is APPROXIMATE. Sources place the encounter in the Sargasso Sea north-east of Cuba near the quarantine line but do not publish a fix. Flagged in the blurb."
+  },
+  {
+   "t": "events",
+   "x": "Serpukhov-15 / Petrov (26 Sep 1983): 55.15N 36.60E is approximate for the Kurilovo command bunker; I could not verify it to 0.01 deg before the search budget ran out. Flagged in the blurb."
+  },
+  {
+   "t": "events",
+   "x": "K-19 (4 Jul 1961): sources say only 'North Atlantic near Jan Mayen Island'. I used Jan Mayen's own coordinates and said so explicitly in the blurb rather than invent a position at sea."
+  },
+  {
+   "t": "events",
+   "x": "Poseidon test (28 Oct 2025): lat/lon set to null - Russia disclosed no location. This is the only record without coordinates."
+  },
+  {
+   "t": "events",
+   "x": "Belarus tactical-weapon storage (Asipovichy, 53.30N 28.64E) and the Oreshnik base are HIGH-CONFIDENCE analyst identifications from satellite imagery, not declared sites; coordinates approximate and flagged."
+  },
+  {
+   "t": "events",
+   "x": "Vastrap / Kalahari test site (-27.50, 21.60) and the Burevestnik launch area on Novaya Zemlya (74.30, 54.50) are approximate to roughly the correct range/facility rather than 0.01 deg."
+  },
+  {
+   "t": "events",
+   "x": "Nagasaki hypocentre: sources disagree by ~400 m. RERF-lineage estimates give 32.7702N 129.8657E; I used the official Hypocenter Park monument at 32.7735N 129.8636E. Hiroshima's is firm (34.39459N, 132.45480E, Hiroshima University confirmation)."
+  },
+  {
+   "t": "events",
+   "x": "Hiroshima/Nagasaki casualty totals are irreducibly uncertain: Hiroshima ~70,000-80,000 immediate and ~140,000 by end-1945 (City of Hiroshima); Nagasaki ~39,000-40,000 immediate and ~70,000 by end-1945. The combined end-1945 range across sources is 150,000-246,000."
+  },
+  {
+   "t": "events",
+   "x": "NPT RevCon 2026 opening date: UNODA/UN press give 27 April, the Arms Control Association gives 29 April. I anchored the event on the 22 May conclusion, which all sources agree on."
+  },
+  {
+   "t": "events",
+   "x": "North Korea's seventh test: as of August 2026 Punggye-ri Tunnel No. 3 is assessed by both US DIA and South Korean DIA as ready on short notice, but no test has occurred. Not included as an event."
+  },
+  {
+   "t": "events",
+   "x": "Yields for Pokhran-II and Chagai-I are disputed - the declared figures (58 kt and 40-45 kt) are well above independent seismic estimates. Both figures are given in the blurbs rather than one being asserted."
+  },
+  {
+   "t": "events",
+   "x": "Ras Koh Hills (28.7758, 64.8981) is the commonly published tunnel-portal coordinate; Wikipedia's summary table gives a coarser 28.8N 65.3E for the district. I kept the finer value. The same Wikipedia table returned an obviously wrong Monte Bello position, so I did not rely on it for any coordinate."
+  },
+  {
+   "t": "delivery",
+   "x": "Pakistan's 2025 Notebook text was accessible but its Table 1 PDF was not, so launcher counts (Ghaznavi 16, Shaheen-I 16, Shaheen-II 24, Ghauri 24, Nasr 24, Babur 12, Mirage 36) come from the 2023 table while ranges and status come from the 2025 text. Those counts are two years old and Pakistan publishes nothing."
+  },
+  {
+   "t": "delivery",
+   "x": "There is no 2025 or 2026 Nuclear Notebook for India, North Korea, Israel or the UK. India rests on the 2024 table (updated with the Aug 2025 Agni-V launch and the Sept 2025 rail-based Agni-P test), North Korea on the 2024 table plus Hwasong-19/-20 reporting, Israel on the 2021 edition. North Korean launcher counts and warhead-to-system assignment are essentially unknown."
+  },
+  {
+   "t": "delivery",
+   "x": "Sarmat's warhead loading is ambiguous in the source: the FAS 2026 table appears to read '10 x 100? (MIRV)' while the 2025 edition and most secondary reporting say 10 x 500 kt. I recorded the discrepancy rather than picking one."
+  },
+  {
+   "t": "delivery",
+   "x": "The FAS 2026 SS-18 row is internally inconsistent — 40 launchers x 10 warheads = 400 total, but footnote c says the missiles are estimated to carry only five warheads each. I used the table's 400 and flagged the note."
+  },
+  {
+   "t": "delivery",
+   "x": "Many CEP figures are simply not published. I entered values only for Minuteman III (~120 m), Trident II D5 (~90 m), Iskander-M (~30 m), B61-12 (~30 m), Agni-P (10 m, a DRDO claim) and Hwasong-20 (3-5 km), all labelled as open-source estimates in the note field; everything else is null rather than invented."
+  },
+  {
+   "t": "delivery",
+   "x": "Ranges for several systems are not officially published and I entered analyst estimates flagged in the notes: Sentinel (assumed comparable to Minuteman III at 13,000 km), AGM-181 LRSO, Kh-102, Oreshnik (estimates span 3,000-5,500 km), SLCM-N, and the Chinese JL-1 ALBM (left null)."
+  },
+  {
+   "t": "delivery",
+   "x": "This topic is delivery systems, so coordinates were not part of the requested schema. I added a supplementary basingSites array of 50 well-documented, commercially imaged facilities with real lat/lon at roughly 0.01-degree accuracy. I deliberately omitted sites I could not place confidently (Neixiang and Lu'an H-6N bases, Chifeng DF-61 brigade, Vologda-20 Burevestnik pads, the exact Asipovichy depot as opposed to the town, individual Russian mobile-ICBM…"
+  },
+  {
+   "t": "delivery",
+   "x": "Warhead yields for France, the UK, Israel, India, Pakistan and North Korea are analyst estimates, never declarations. France publishes only 'medium energy' for the TNA; the ~100 kt TNO and ~300 kt TNA figures in this file are inferred."
+  },
+  {
+   "t": "delivery",
+   "x": "Whether the ~34 Chinese warheads FAS now counts as deployed are genuinely mated to launchers is uncertain even to FAS, which calls the assessment one made 'with considerable uncertainty'."
+  },
+  {
+   "t": "delivery",
+   "x": "Israel's entire entry set is inferential — no Israeli system is confirmed, including whether the Popeye Turbo SLCM exists in nuclear form or whether the F-35I has any nuclear role."
+  },
+  {
+   "t": "delivery",
+   "x": "DF-27 deployment status and variants remain unclear; it is not separately listed in the FAS 2026 table and I marked it SUSPECTED with a 5,000-8,000 km band."
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "Hanford PUREX (202-A) and T Plant (221-T): I could not find published building-level coordinates, so I used the OpenStreetMap-published centroids of the 200 East and 200 West Areas respectively. Accurate to roughly 1-2 km, not 0.01 deg. Flagged in each site's desc."
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "Idaho INTEC (former Idaho Chemical Processing Plant) uses the published Idaho National Laboratory site coordinate, not the INTEC facility itself."
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "China's Hanzhong Plant 405 enrichment plant: only the city coordinate (33.0664, 107.0232) is published; marked confidence 'medium' and flagged in the desc."
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "India's Challakere SMEF uses the town of Challakere; the BARC land parcels (Ullarthi Kaval / Khudapura) are several km away. Argentina's Pilcaniyeu uses the settlement, not the plant. Kalpakkam KARP uses the IGCAR coordinate."
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "SOURCES DISAGREE - France's military HEU: the standard IPFM/SIPRI figure is 25 +/- 6 t, but Philippe & Glaser's 2014 nuclear-archaeology study of Pierrelatte argues for 6 +/- 2 to 10 +/- 2 t. A factor-of-three disagreement that nobody has resolved. Both stated in the record."
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "SOURCES DISAGREE - China's Guangyuan Plant 821: IPFM and SIPRI treat plutonium production as ended ~1989-91, but ISIS reports thermal imagery with 'multiple indications that the reactor may have operated over the last decade, or may have been prepared for upcoming reactor operation'. Marked confidence 'medium'."
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "SOURCES DISAGREE - Kangson: identified as North Korea's covert enrichment plant by ISIS (2018) and CNS, but 38 North published a 2020 analysis arguing the evidence does NOT support it being an enrichment plant, and experts split again over whether Kim's September 2024 centrifuge photos were taken at Kangson, Yongbyon or a third site. Marked status 'suspected', confidence 'high'."
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "North Korea's HEU stock is a range, not a number: 330-1,860 kg (IPFM 2025) or 300-1,700 kg (SIPRI 2024). No consensus estimate exists. Its plutonium (~40 kg) is better constrained."
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "Israel's ~300 kg of HEU is an inference from the NUMEC/Apollo material-unaccounted-for affair, not a confirmed transfer. Israel makes no declarations. I also found no published coordinate for the Machon 2 building specifically, so the Dimona site coordinate is used."
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "Declaration data is stale in places: China stopped filing INFCIRC/549 in 2016 (its last civil Pu figure is 41 kg for end-2016); the UK and US had not filed 2023 declarations as of March 2025; the US figures are for end-2022."
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "Iran's stockpile is genuinely unverifiable: the IAEA withdrew inspectors in June 2025 and stopped all verification activities after 28 February 2026, so the 440.9 kg of 60% HEU is a last-known figure from 13 June 2025, not a current one."
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "I used the IPFM 2025 update (June 2026) plus the full SIPRI Yearbook 2025 Appendix 8A tables. SIPRI Yearbook 2026 appears to have folded fissile materials into chapter 6 rather than publishing a separate appendix, so facility-level capacity tables (SWU/yr, tHM/yr) are 2024-vintage."
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "Not covered for lack of space or sources: Kazakhstan's BN-350 Aktau legacy HEU/Pu, Libya's dismantled centrifuge programme, Taiwan's and South Korea's abandoned reprocessing efforts, Argentina's Ezeiza, and the tritium sources of China and North Korea (not publicly established)."
+  },
+  {
+   "t": "latent",
+   "x": "Al Ula suspected yellowcake facility (Saudi Arabia): no verified coordinate exists in any open source I could find. The WSJ 2020 reporting says only 'remote desert near Al Ula, midway between Medina and Tabuk.' GlobalSecurity has a page for it but blocks automated fetching. Set to lat/lon null rather than guess."
+  },
+  {
+   "t": "latent",
+   "x": "Asipovichy depot (Belarus, suspected Russian warhead storage): FAS describes it only as 'east of the town of Ashipovichy' and explicitly declines to positively identify it as a nuclear storage site. No published facility coordinate. Set to null."
+  },
+  {
+   "t": "latent",
+   "x": "Marj as-Sultan (Syria): I gave an approximate locality fix (33.51, 36.47) with roughly 2 km uncertainty and flagged this in the site description and confidence field ('low'). This is NOT a verified facility position and should be treated as indicative only."
+  },
+  {
+   "t": "latent",
+   "x": "Myanmar's Naung Laing / Thabeikkyin suspected sites and the proposed Rosatom SMR location are not pinned in open sources - the SMR site has not been officially announced (reported candidates: Thabeikkyin or Meiktila, Mandalay region). Both set to null."
+  },
+  {
+   "t": "latent",
+   "x": "Syria's 'Site 99' storage facility location has not been published. Set to null."
+  },
+  {
+   "t": "latent",
+   "x": "TPNW ratification count: the NPT Briefing Book 2026 and the ACA fact sheet (updated Sept/Oct 2025) both give 95 signatories / 74 ratifications, but ICAN's live tracker failed to render for me, so I could not confirm whether any ratifications landed in the first half of 2026. I used 74."
+  },
+  {
+   "t": "latent",
+   "x": "CTBT ratification count: ACA's fact sheet dates to July 2024 and gives 187 signatories / 178 ratifications; that figure predates or does not net out Russia's November 2023 de-ratification, so the true current ratifier count is likely 177. I recorded 178 with the discrepancy noted in the treaty blurb."
+  },
+  {
+   "t": "latent",
+   "x": "B61 warhead counts per European base (Incirlik 20, Buchel 15, Kleine Brogel 15, Volkel 15, Aviano 20, Ghedi 15) are FAS analyst estimates within a stated 100-120 Europe-wide total; no government confirms any of them. The Turkish figure in particular is disputed - Asia Times cites 20-50 for Incirlik. RAF Lakenheath has no credible published number, so warheads is null there."
+  },
+  {
+   "t": "latent",
+   "x": "Sources disagree sharply on whether the Saudi-Pakistan pact covers nuclear weapons: Pakistan's defence minister said capabilities 'will be made available' and then denied that scope; ICAN and ACA treat it as a nuclear-shadowed commitment, while Belfer, MEI and APLN treat it as substantially symbolic. I have presented both sides rather than resolving it."
+  },
+  {
+   "t": "latent",
+   "x": "Taiwan's status field is a poor fit for the schema's latent|hedging|debating options - I used 'latent' to capture industrial capacity, but Taiwan has zero fuel-cycle latency and essentially no live policy debate, which the assessment text explains."
+  },
+  {
+   "t": "latent",
+   "x": "Several campus-level coordinates (KACST Riyadh, CNAEM Istanbul, Resende, Itaguai, Ezeiza, Draria) are site centroids rather than building-precise fixes; each is tagged confidence 'medium' and says so in the description."
+  },
+  {
+   "t": "latent",
+   "x": "2026 Asan poll: the April 2026 edition exists but I could not extract the current nuclear-armament support percentage (the Asan site returned 403), so the file cites the 2025 figure of 76.2% and dates it explicitly."
+  },
+  {
+   "t": "latent",
+   "x": "Some search results surfaced Russian state-aligned outlets (news-pravda domains) on Ukraine's nuclear debate; I excluded these as sources and relied on Reuters-via-Yahoo, Just Security and UN coverage instead. As a result the Ukraine entry is thinner on direct 2026 Zelensky quotes than I would like."
+  },
+  {
+   "t": "humancost",
+   "x": "No site has null coordinates - all 44 have real decimal lat/lon - but precision varies. Test sites spanning tens or hundreds of km (Semipalatinsk 18,500 km2, Nevada, Lop Nur, Maralinga) are represented by a single representative point (a named ground zero or the base), not a centroid of the affected area. Lop Nur is placed at the Malan test base (41.5448, 88.712), not at any individual shot point."
+  },
+  {
+   "t": "humancost",
+   "x": "Hiroshima burst height is contested in the sources: 580 m is the conventional figure and the one requested, but RERF's own DS02 dosimetry reassessment gives 600 m +/- 20 m. Both are recorded in the file. Yields are similarly ranged (12-18 kt / 19-23 kt)."
+  },
+  {
+   "t": "humancost",
+   "x": "No single true casualty figure exists for either city and none should be quoted without a range. The underlying problem is the denominator - wartime population was never known, since Korean and Chinese forced labourers, mobilised students, evacuees and garrison troops appear in no reliable census, and the record offices burned."
+  },
+  {
+   "t": "humancost",
+   "x": "Lop Nur health claims are SUSPECTED, not established. Jun Takada's ~194,000 acute deaths and 1.2 million exposed is a computer extrapolation by a researcher never permitted into China, using Kazakh measurements and Xinjiang population density; he called it 'a conservative minimum'. China has published nothing. No independent epidemiology exists and this number should never be presented as fact."
+  },
+  {
+   "t": "humancost",
+   "x": "Chernobyl's eventual death toll remains genuinely contested: ~4,000 (IAEA/WHO Chernobyl Forum, for the 600,000 most exposed) versus ~16,000 (IARC, wider Europe, 95% CI 7,000-38,000), with far higher figures from some NGOs and far lower from industry bodies. All are projections from linear no-threshold modelling, not counts."
+  },
+  {
+   "t": "humancost",
+   "x": "Jadugoda health findings come principally from an IPPNW/Indian Doctors for Peace and Development survey of ~9,000 people; UCIL and India's Department of Atomic Energy formally dispute them and independent replication is limited. Marked HIGH-CONFIDENCE rather than CONFIRMED."
+  },
+  {
+   "t": "humancost",
+   "x": "Congress.gov (CRS report R43956) and justice.gov RECA award tables both return HTTP 403 to WebFetch, so RECA totals were taken from secondary reporting of those pages rather than read directly. The $2.7bn / 42,308 figure as of 31 Dec 2025 should be re-verified against the DOJ page directly if possible."
+  },
+  {
+   "t": "humancost",
+   "x": "Shinkolobwe's Congolese miners have no casualty estimate at all - not a disputed one, an absent one. Belgian colonial records did not track them and no study has ever been attempted. The same is true of the Gilbertese and Ellice Islander labourers on Christmas Island."
+  },
+  {
+   "t": "humancost",
+   "x": "Rongelap resettlement status could not be confirmed past ~2022 from open sources; the file states it remains uncertain in 2026 rather than asserting a current condition."
+  },
+  {
+   "t": "humancost",
+   "x": "The Palomares soil removal remains unresolved: a 2015 statement of intent was never converted into a binding agreement, Spain's March 2023 request is unanswered, and I found nothing confirming movement in 2025-26."
+  },
+  {
+   "t": "numbers",
+   "x": "B83-1 status is genuinely contested. SIPRI's Jan-2026 US table omits it and reconciles to 3,700 without it, but secondary reporting as of 2026 says it is retired from policy yet not fully dismantled, with minimal maintenance funding pending B61-13 fielding. I recommended count 0 with a note rather than asserting full dismantlement."
+  },
+  {
+   "t": "numbers",
+   "x": "Whether Russia's central megatonnage 'should' be 873 Mt depends on convention. 873 is the maximum-yield sum matching topic-yields.json; 650 is defensible only on a mid-band convention (SS-18 at 650 kt not 800, Yars at 100 kt not SIPRI's 250). The real defect is that Russia and the US currently use DIFFERENT conventions — either is acceptable if applied to all nine and labelled."
+  },
+  {
+   "t": "numbers",
+   "x": "Russia's non-strategic average yield (1,794 warheads) is essentially unconstrained in open sources — 36 Mt at 20 kt average vs 179 Mt at 100 kt. This one unknown outweighs the entire French, British, Indian, Pakistani, Israeli and North Korean arsenals combined. topic-yields.json uses 100 kt for the air-force portion while state-russia.json uses 50 kt (a 24 Mt swing on 488 warheads); neither is better sourced."
+  },
+  {
+   "t": "numbers",
+   "x": "Israeli megatonnage cannot be verified at all — FAS and SIPRI both deliberately decline to publish Israeli yield estimates, so every figure traces to unverified Jane's-derived secondary sources. My 5.4 Mt correction fixes an internal contradiction; it does not make the number reliable."
+  },
+  {
+   "t": "numbers",
+   "x": "SIPRI and FAS diverge slightly on India: FAS shows 0 deployed / 178 reserve / 190 stockpile (internally inconsistent by 12), SIPRI shows 12 / 178 / 190. The files follow SIPRI and document it, but citing FAS alone for the deployed figure would cite a number FAS does not publish."
+  },
+  {
+   "t": "numbers",
+   "x": "Chinese warhead yields are not published by SIPRI at all — table 8A.6 says only that newer warheads are 'probably mainly several hundred kilotons'. Applying 425 kt uniformly to the 100 DF-26 regional-deterrence warheads is contradicted by SIPRI's own note that those may have lower-yield options; hence my widened low bound."
+  },
+  {
+   "t": "numbers",
+   "x": "I could not fetch the SIPRI visualization page (it returned only page chrome), but this did not matter — the full SIPRI Yearbook 2026 Chapter 8 text was already on disk as sipri2026.txt, and I read tables 8A.1 through 8A.8 directly from it."
+  },
+  {
+   "t": "numbers",
+   "x": "France's figure is now frozen: Macron announced in March 2026 that France will increase its stockpile and stop disclosing its size, so 290 is the last independently anchored number. Any 'as of' label must say January 2026, not 'current'."
+  },
+  {
+   "t": "coordinates",
+   "x": "The exact coordinate of the TESA/TABA centrifuge-component workshops at Karaj is not published by the IAEA or ISIS in anything I could reach; my correction only removes the integer-rounded longitude and falls back to the Karaj city reference"
+  },
+  {
+   "t": "coordinates",
+   "x": "No source publishes a coordinate for the BARC Special Material Enrichment Facility halls at Challakere (land is described only by village names), so the 17 km disagreement between state-india.json and topic-fuel-cycle.json cannot be resolved to a true position"
+  },
+  {
+   "t": "coordinates",
+   "x": "Kapustin Yar: sources genuinely split between ~45.72-45.90E (range HQ / Znamensk) and 46.25-46.33E (eastern launch complexes), so my fix is a consistency choice, not a proven fact"
+  },
+  {
+   "t": "coordinates",
+   "x": "Rokkasho: published sources conflict (Wikipedia 40.96722/141.37444, latitude.to 40.9575/141.3225), so I could not adjudicate between the corpus's two values 3.6 km apart"
+  },
+  {
+   "t": "coordinates",
+   "x": "Tokai reprocessing and KAERI Daejeon each have two corpus values ~3.5 km apart, both inside the respective complexes; no authoritative coordinate found"
+  },
+  {
+   "t": "coordinates",
+   "x": "Kansas City National Security Campus: the Botts Road address geocodes ~2.5 km from the stored value but no citable lat/lon was available, so I left it alone"
+  },
+  {
+   "t": "coordinates",
+   "x": "Mayak, Zheleznogorsk MCC and Seversk SCC each differ between files because the state file uses the closed town and the fuel-cycle file uses the plant - defensible either way, so not corrected"
+  },
+  {
+   "t": "coordinates",
+   "x": "The ocean/land test used a 1:50m coastline, which cannot resolve atolls, small islands or quayside facilities; I cleared all 40 such hits by hand but a finer coastline would be needed for an automated re-run"
+  },
+  {
+   "t": "coordinates",
+   "x": "state-china.json's Lop Nur value (41.5925, 88.712) and topic-tests.json's (41.725, 88.359) are both real but refer to different sub-areas of the base; the corpus never records which sub-area each means"
+  },
+  {
+   "t": "coordinates",
+   "x": "Marine event points (Arkhipov B-59 at exactly 23,-70; the 2026 Hormuz standoff labelled 'Iran' but mid-strait) are inherently approximate, so their integer/offshore values may be intentional rather than wrong"
+  },
+  {
    "t": "iso",
    "x": "Retired-code flags are correct regional-indicator sequences but NOT RGI, so SUN/YUG/DDR/CSK/ANT/ZAR (SU/YU/DD/CS/AN/ZR) and XKX (XK) render as two letter-boxes rather than flags on most platforms; substitute images if real glyphs are needed."
   },
@@ -502,6 +1118,94 @@ window.NUKE_RESEARCH = {
   {
    "t": "design",
    "x": "Burn-bed capacity and hospital-capacity datasets for differentiator #3 were not researched — the claim that a single detonation exceeds national burn-bed capacity is a well-known finding in the literature but no specific dataset or citation was located in this pass."
+  },
+  {
+   "t": "numbers",
+   "x": "CONVENTION COLLISION - THE HEADLINE ISSUE. topic-yields.json sums count x MAXIMUM yield; the state-*.json megatonnage blocks use ad-hoc mixed central assumptions. The two artifacts disagree for 8 of 9 countries and the world totals differ (state files sum to 1,859.45 Mt vs topic-yields worldTotal2026.totalMt = 1,941.6 Mt). Worse, the inconsistency is directional and reverses the ranking: the US is inflated (850 vs 679) while Russia is deflated (650 vs…"
+  },
+  {
+   "t": "numbers",
+   "x": "US STOCKPILE OVER-SUBSCRIBED - state-usa.json warheadTypes counts sum to 3,930 against a stated militaryStockpile of 3,700. The 230-warhead excess breaks down as W87-0 +340, W78 -200, W76-1 +25, B61-12 +20, B61-11 -5, B83-1 +50."
+  },
+  {
+   "t": "numbers",
+   "x": "RUSSIA STOCKPILE OVER-SUBSCRIBED - state-russia.json warheadTypes counts sum to 4,472 against a stated militaryStockpile of 4,400, from the 72-warhead Oreshnik double count."
+  },
+  {
+   "t": "numbers",
+   "x": "CHINA STOCKPILE UNDER-SUBSCRIBED - state-china.json warheadTypes counts sum to 406 against a stated militaryStockpile of 620; 214 warheads are unallocated because the #5x5 and DF-5C rows carry null counts."
+  },
+  {
+   "t": "numbers",
+   "x": "B83-1 STATUS GENUINELY CONTESTED - SIPRI's Jan-2026 US table omits it and reconciles to 3,700 without it, and topic-yields.json carries it at count 0 / status 'retiring'; but secondary reporting as of 2026 says the B83-1 is retired from policy yet not fully dismantled, with minimal maintenance funding, pending B61-13 fielding. Recommend count 0 in the stockpile with a note, and never counted at 1.2 Mt as current."
+  },
+  {
+   "t": "numbers",
+   "x": "UK 22.5 Mt IS NOTIONAL - it multiplies all 225 warheads by 100 kt, but SIPRI 8A.4 notes the 105 'other stored warheads' figure itself INCLUDES retired warheads not yet dismantled. The operationally meaningful figure is the 120 available warheads (~12 Mt) or the ~40 at sea (~4 Mt). The file says this, but the headline 22.5 Mt will be read as deployable yield if surfaced on a map without the caveat."
+  },
+  {
+   "t": "numbers",
+   "x": "FRANCE UPPER BOUND IS DRIVEN BY A SUPERSEDED YIELD - the 51 Mt high depends entirely on the TNA at 300 kt, which SIPRI attributes to non-official sources carrying over the older TN 81 figure and implicitly rejects."
+  },
+  {
+   "t": "numbers",
+   "x": "FRANCE FIGURE IS NOW FROZEN - Macron announced in March 2026 that France will increase its stockpile and stop disclosing its size. 290 is the last independently anchored number. The state file correctly notes this; make sure any 'as of' label on the map says January 2026 and not 'current'."
+  },
+  {
+   "t": "numbers",
+   "x": "RUSSIA'S NON-STRATEGIC AVERAGE YIELD IS THE LARGEST UNCONSTRAINED VARIABLE IN THE WHOLE DATASET - 1,794 warheads with essentially no open-source yield basis. At 20 kt average they contribute 36 Mt; at 100 kt, 179 Mt. This single unknown is worth more megatonnage than the entire French, British, Indian, Pakistani, Israeli and North Korean arsenals combined."
+  },
+  {
+   "t": "numbers",
+   "x": "ISRAEL MEGATONNAGE SHOULD CARRY A HEALTH WARNING - FAS and SIPRI both deliberately decline to publish Israeli yield estimates. Any number here is a reconstruction from unverified Jane's-derived secondary sources. The state file says so; keep that caveat attached to whatever value is used."
+  },
+  {
+   "t": "numbers",
+   "x": "SIPRI vs FAS MINOR DIVERGENCE ON INDIA - FAS shows India 0 deployed / 178 reserve / 190 stockpile (internally inconsistent by 12); SIPRI shows 12 / 178 / 190. Not an error in the data, but if the map cites FAS as the sole source for the deployed figure it will be citing a number FAS does not publish."
+  },
+  {
+   "t": "numbers",
+   "x": "topic-yields.json USES 100 kt FOR RUSSIAN AIR-FORCE NON-STRATEGIC WARHEADS WHILE state-russia.json USES 50 kt - a 24 Mt swing on 488 warheads. Neither is better sourced than the other; harmonise."
+  },
+  {
+   "t": "coordinates",
+   "x": "topic-iran.json / karaj-tesa: the exact coordinate of the TESA/TABA centrifuge-component workshops in Karaj is not published by IAEA or ISIS in any source I could reach; the correction above only removes the integer-rounded longitude and falls back to the Karaj city reference."
+  },
+  {
+   "t": "coordinates",
+   "x": "state-india.json + topic-fuel-cycle.json / Challakere SMEF: no source publishes a coordinate for the BARC enrichment halls themselves (land is described only as Ullarthi Kaval and Khudapura villages), so the two conflicting records cannot be resolved to a true position."
+  },
+  {
+   "t": "coordinates",
+   "x": "state-china.json lop-nur-test-site (41.5925, 88.712) vs topic-tests.json lop-nur (41.725, 88.359): both are real, separately documented parts of the Lop Nur base (Qinggir/eastern area vs Northern Tunnel area). Not an error, but the corpus never says which sub-area each record means."
+  },
+  {
+   "t": "coordinates",
+   "x": "state-russia.json kapustin-yar-test-range: sources genuinely disagree between ~45.72-45.90E (range HQ / Znamensk) and 46.25-46.33E (eastern launch complexes). The correction above is a consistency fix, not a proven fact."
+  },
+  {
+   "t": "coordinates",
+   "x": "JPN Rokkasho: topic-former.json + topic-fuel-cycle.json use 40.9625, 141.3264 while topic-latent.json uses 40.961, 141.368 (~3.6 km apart). Wikipedia gives 40.96722, 141.37444 and latitude.to gives 40.9575, 141.3225 - published sources conflict, so I did not pick a winner."
+  },
+  {
+   "t": "coordinates",
+   "x": "JPN Tokai reprocessing: topic-latent.json 36.466, 140.606 (matches the Tokai power station coordinate) vs topic-fuel-cycle.json 36.43925, 140.6035 (south end of the JAEA site). Both are inside the Tokai-mura nuclear complex; cannot adjudicate."
+  },
+  {
+   "t": "coordinates",
+   "x": "KOR KAERI Daejeon: topic-former.json 36.4239, 127.3703 vs topic-latent.json 36.392, 127.365 (~3.5 km). No authoritative coordinate found."
+  },
+  {
+   "t": "coordinates",
+   "x": "state-usa.json kansas-city-national-security-campus (38.861973, -94.552716): the KCNSC is at 14520 Botts Road, which geocodes ~2.5 km south-southeast; no source gave a citable lat/lon, so left alone."
+  },
+  {
+   "t": "coordinates",
+   "x": "RUS Mayak (55.75, 60.717 in state-russia.json vs 55.7125, 60.84806 in topic-fuel-cycle.json), Zheleznogorsk MCC (56.25, 93.5333 vs 56.3544, 93.6439) and Seversk SCC (56.6, 84.85 vs 56.6179, 84.874): in each case the state file uses the closed town and the fuel-cycle file uses the plant. Defensible either way; not corrected."
+  },
+  {
+   "t": "coordinates",
+   "x": "topic-events.json arkhipov-b59-1962 at exactly (23, -70) and hormuz-standoff-2026 at (26.5667, 56.25) labelled 'Iran' but sitting mid-strait: both are inherently approximate maritime points, so integer/offshore values are not necessarily errors."
   }
  ],
  "findings": [
@@ -932,6 +1636,634 @@ window.NUKE_RESEARCH = {
   {
    "t": "israel",
    "x": "The most recent dedicated FAS/Bulletin Nuclear Notebook on Israel is January 2022 — unlike the US, Russia and China, Israel got no 2025 or 2026 Notebook, so the 90 figure now rides on the FAS Status page rather than a fresh full analysis."
+  },
+  {
+   "t": "timeseries",
+   "x": "US series matches the NNSA/DoE declassified table exactly for every fiscal year 1962-2020 - 31,255 (1967), 23,317 (1986), 19,008 (1991), 3,750 (2020) - so this leg of the dataset is state-confirmed, not estimated"
+  },
+  {
+   "t": "timeseries",
+   "x": "Global peak was 70,374 in 1986, but the sum of country military stockpiles that year was only 64,452: nearly 6,000 warheads were already retired and queued for dismantlement at the Cold War high-water mark"
+  },
+  {
+   "t": "timeseries",
+   "x": "The 2026 arithmetic closes perfectly: 12,187 total inventory minus 9,745 stockpile = 2,442 retired = USA 1,342 + Russia 1,020 + France 80, confirming the stockpile/inventory split used throughout"
+  },
+  {
+   "t": "timeseries",
+   "x": "FAS and SIPRI have fully converged for January 2026 - both publish 12,187 total and 9,745 stockpiled - so the two normally independent estimates are no longer an independent cross-check at the top line"
+  },
+  {
+   "t": "timeseries",
+   "x": "The number of nuclear-armed states peaked at SEVEN in 1982-1989 (US, USSR, UK, France, China, Israel, South Africa), dipped back to six in 1990 when South Africa disarmed, and only reached nine in 2006"
+  },
+  {
+   "t": "timeseries",
+   "x": "China is the only state whose peak year is 2026: 620 warheads, up from 290 in 2019 - a 114% rise in seven years, while every other established power is flat or falling"
+  },
+  {
+   "t": "timeseries",
+   "x": "North Korea's arsenal has grown faster in the last three years than in its first fifteen: 25 (2022) to 60 (2026), with the single biggest jump 30 to 50 in 2024"
+  },
+  {
+   "t": "timeseries",
+   "x": "The US shed 13,547 warheads in the seven years 1985-1992 (23,368 to 13,708) - a faster absolute drawdown than anything since"
+  },
+  {
+   "t": "timeseries",
+   "x": "Ukraine held roughly 4,175 warheads at independence in Dec 1991 (1,900 strategic, 2,275 tactical), which would have made it the world's third-largest arsenal - larger than the UK, France and China combined at that time"
+  },
+  {
+   "t": "timeseries",
+   "x": "Russia's stockpile ticked UP in 2026 (4,309 to 4,400) for the first time in years, and USSTRATCOM's March 2026 testimony of 'approximately 4,600' runs slightly above the FAS/SIPRI figure"
+  },
+  {
+   "t": "timeseries",
+   "x": "South Africa's peak was six complete devices in 1989 - the only state ever to build a full arsenal and then verifiably give it up"
+  },
+  {
+   "t": "timeseries",
+   "x": "France holds 80 retired TN75 warheads in 2026, the first time in years FAS has credited France with a non-zero dismantlement queue (2025: zero)"
+  },
+  {
+   "t": "nato-sharing",
+   "x": "FAS (Jan 2026), ACA (June 2026) and the Bulletin's March 2026 Nuclear Notebook independently agree on ~100 US B61-12 bombs at six bases in five countries; my per-base estimates sum to exactly 100."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "RAF Lakenheath is the big open question of 2026, not a settled fact: two C-17s flew direct Kirtland AFB→Lakenheath on 17 and 23 July 2025, but FAS found the command post is not due to complete until July 2031 and barriers were built around only ~10 of 22 required shelters. No mainstream estimate counts UK-based bombs."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "Incirlik is structurally broken as a sharing site: 25 WS3 vaults (largest capacity in Europe, could hold 100 weapons) but zero nuclear-certified aircraft based there — Turkish F-16s are uncertified and Turkey was expelled from the F-35 programme in 2019."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "Vault capacity is a terrible proxy for inventory. Each WS3 vault holds up to 4 weapons; 215 were built for USAFE across 13 sites in 7 countries. Infrastructure work therefore does not prove weapons have arrived — the core of the Lakenheath ambiguity."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "The UK becomes both a nuclear-weapon state and a host: 12 F-35As ordered June 2025 to carry US-owned B61-12s at RAF Marham, restoring an RAF air-delivered nuclear role for the first time since the WE.177 retired in 1998."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "France's March 2026 offer to extend its umbrella drew nine countries by late May 2026 (Belgium, Denmark, Germany, Greece, Netherlands, Norway, Poland, Sweden, UK) — but Paris insists it is not nuclear sharing: no French warhead ever leaves French custody."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "The UK and France signed the Northwood Declaration on 10 July 2025, committing for the first time to coordinate nuclear policy, capabilities and operations and to strengthen joint decision-making."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "Poland's request has still not advanced. Nawrocki backed both nuclear sharing and an indigenous capability (Sept 2025, Feb 2026); Tusk signalled the same on 3 March 2026; US official Elbridge Colby said on 5 March 2026 Washington would 'strenuously oppose' independent European programmes."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "Russia's Belarus deployment is NOT a mirror of NATO sharing — Moscow states it retains full warhead control, and no open-source evidence confirms warheads are physically in Belarus despite Lukashenko's Dec 2024 claim of 'dozens'."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "The Asipovichy depot shows a distinctive signature: four concentric security perimeters by January 2024, a 'Relief-2' perimeter system typical of Russian nuclear sites, an SRK-AT2327 radiation indicator, and a rail spur with 6.4-tonne hoists sized for the 3.8-tonne Iskander missile."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "Oreshnik reached Belarus on schedule: Planet Labs imagery of 31 August 2025 showed four construction areas over 2 km² near Paulauka (Slutsk district, ~60 km south of Minsk); Lukashenko announced arrival 18 December 2025 and Russia's MoD declared combat duty 30 December 2025."
+  },
+  {
+   "t": "nato-sharing",
+   "x": "The 2025-26 Lakenheath and Marham moves are the first expansion of NATO's nuclear footprint in Europe since 1991 — reversing a contraction from ~4,000 weapons and 13 sites to ~100 weapons and 6 sites (Rimini 1991, Memmingen 1996, Turkey's Balikesir/Akinci 1995-96, Bruggen 1998, Araxos 2001, Ramstein ~2005, Lakenheath…"
+  },
+  {
+   "t": "democracy",
+   "x": "Freedom in the World 2026: the United States fell to 81/100 (political rights 32/40, civil liberties 49/60), down from 84 two editions earlier — read straight from freedomhouse.org, not a secondary source."
+  },
+  {
+   "t": "democracy",
+   "x": "EIU Democracy Index 2025 (published April 2026) cut the US by 0.20 to 7.65, rank 34= — EIU's own summary cites 'stark erosion of civil liberties and government functioning in the US'."
+  },
+  {
+   "t": "democracy",
+   "x": "France was upgraded to a FULL democracy in the 2025 edition (7.99 to 8.05); Canada posted the largest gain in this dataset, +0.39 to 9.08; Romania climbed back out of hybrid-regime status after its annulled 2024 election."
+  },
+  {
+   "t": "democracy",
+   "x": "India is the widest three-index disagreement in the file: EIU flawed democracy (6.96) vs V-Dem ELECTORAL AUTOCRACY (LDI 0.260) vs Freedom House Partly Free (62). Serbia is second (EIU 6.30 vs V-Dem 0.208)."
+  },
+  {
+   "t": "democracy",
+   "x": "Wartime Ukraine splits the indices the same way: V-Dem reclassifies it an electoral autocracy (elections suspended), EIU calls it a hybrid regime (4.79), FH says Partly Free (51)."
+  },
+  {
+   "t": "democracy",
+   "x": "Turkey is the only NATO nuclear-sharing host rated Not Free (FH 32) and a hybrid regime (EIU 4.26) — and uniquely among hosts has no nationally certified dual-capable aircraft, so Incirlik is effectively a US forward stockpile."
+  },
+  {
+   "t": "democracy",
+   "x": "Russia's November 2023 de-ratification of the CTBT is visible in the primary record: the UN depositary list now shows Russia with a 1996 signature and NO ratification date."
+  },
+  {
+   "t": "democracy",
+   "x": "Only 3 of the 43 entries are TPNW states parties — South Africa, Kazakhstan and Kiribati — all countries that gave up weapons or hosted tests. The Marshall Islands, site of 67 US atmospheric tests, has never signed."
+  },
+  {
+   "t": "democracy",
+   "x": "Saudi Arabia is the only NPT party here that has signed neither the CTBT nor the TPNW; Egypt is an Annex 2 state deliberately withholding CTBT ratification pending Israeli NPT accession, one of the specific blockages to entry into force."
+  },
+  {
+   "t": "democracy",
+   "x": "Iran remains an NPT party but told the IAEA in February 2026 that normal safeguards had become 'legally untenable and materially impracticable', leaving the Agency unable to verify its enrichment status."
+  },
+  {
+   "t": "democracy",
+   "x": "Denmark tops this dataset on all three indices (EIU 9.42, V-Dem 0.884, FH 97) yet secretly permitted US weapons at Thule in Greenland under the 1957 H.C. Hansen letter — the sharpest governance-vs-nuclear-history contrast in the file."
+  },
+  {
+   "t": "democracy",
+   "x": "Launch authority varies enormously in how many humans stand in the way: US President alone with no legal second check; UK PM alone plus handwritten Letters of Last Resort; France's President as sole 'cle de voute'; India's Political Council with de-mated civilian-custody warheads; Pakistan's PM-chaired NCA where the…"
+  },
+  {
+   "t": "iran",
+   "x": "A second US-Israeli war ran 28 Feb - 7/8 Apr 2026 (US 'Operation Epic Fury' / Israeli 'Lion's Roar'); Ali Khamenei was killed on day one and Mojtaba Khamenei became Supreme Leader on 8 March 2026."
+  },
+  {
+   "t": "iran",
+   "x": "Iran's last IAEA-verified 60% HEU figure is 440.9 kg (uranium mass) on 12 June 2025 — nominally material for 7-10+ weapons if enriched on. The Agency has had no idea where it is since."
+  },
+  {
+   "t": "iran",
+   "x": "Roughly 220-287 kg of that 60% stock is believed inside the Esfahan tunnel complex; 18 blue HEU transport casks were imaged going in on 9 June 2025, four days before the war."
+  },
+  {
+   "t": "iran",
+   "x": "All three Esfahan tunnel entrances were fully buried by February 2026, and Iran added 'cruise-missile chicane barriers' and roadblocks by April 2026. The uranium is probably intact but not reachable."
+  },
+  {
+   "t": "iran",
+   "x": "Pickaxe Mountain (Kuh-e Kolang Gaz La, 33.705N 51.710E) is the one major site never struck: >100 m under granite, four tunnel entrances, never inspected, still not operational. Trump threatened to bomb it on 22-24 July 2026."
+  },
+  {
+   "t": "iran",
+   "x": "ISIS judged in June 2026 that ~22,000 installed centrifuges were destroyed and Iran has 'no identifiable route' to weapon-grade uranium — a much harsher assessment than the low-end 'weeks' estimates."
+  },
+  {
+   "t": "iran",
+   "x": "The honest analyst spread on a weapon in 2026 runs from 'a few weeks' to 90% (Grossi, if a few hundred IR-6s could be run) through 9-12 months (US IC reporting) to 'at least two and a half years' (FDD, accounting for facility and scientist losses)."
+  },
+  {
+   "t": "iran",
+   "x": "UN snapback happened: E3 triggered it 28 August 2025; the full pre-2015 UN sanctions regime returned on 27 September 2025, with EU/UK measures on 29 September."
+  },
+  {
+   "t": "iran",
+   "x": "The IAEA stopped all verification activity in Iran on 28 February 2026. Bushehr is the sole exception — Russia insisted, and inspectors did a DIV there on 1-3 June 2026."
+  },
+  {
+   "t": "iran",
+   "x": "An NPT withdrawal bill (sponsor Malek Shariati) was submitted to the Majlis on 28 March 2026 and is still unpassed as of August 2026."
+  },
+  {
+   "t": "iran",
+   "x": "The Islamabad MOU, signed by Trump at Versailles on 17 June 2026, is fundamentally a non-nuclear deal: Iran reaffirms it won't seek weapons and agrees in principle to down-blend, but enrichment limits and inspection modalities are deferred to a 60-day clock now expiring."
+  },
+  {
+   "t": "iran",
+   "x": "Iran's front-end fuel cycle is severed: the Esfahan UCF (conversion) was destroyed in June 2025 and the Ardakan yellowcake plant on 27-28 March 2026, so Iran cannot readily make fresh centrifuge feed from its own Saghand ore."
+  },
+  {
+   "t": "tests",
+   "x": "2,056 tests by the ACA's event convention, or 2,121 events / 2,476 devices counting each device - about 540 megatons total, roughly 36,000 Hiroshimas, of which 91 percent was fired by the US and USSR"
+  },
+  {
+   "t": "tests",
+   "x": "Novaya Zemlya hosted only 130 of 715 Soviet tests but absorbed ~265 Mt, about 90 percent of all Soviet yield, because it was reserved for multi-megaton shots"
+  },
+  {
+   "t": "tests",
+   "x": "Four of the five largest explosions in history were fired in one zone - Sukhoy Nos, Novaya Zemlya - and eight of the top ten were Soviet"
+  },
+  {
+   "t": "tests",
+   "x": "The prompt's 'Chinese Test No. 6 = 4 Mt' conflates two tests: No. 6 (17 Jun 1967) was 3.3 Mt; China's largest was 4 Mt on 17 Nov 1976 (Test No. 21)"
+  },
+  {
+   "t": "tests",
+   "x": "China's 16 October 1980 shot was the last atmospheric nuclear test conducted by any country, anywhere"
+  },
+  {
+   "t": "tests",
+   "x": "Maralinga's worst contamination came from the Vixen B trials, which scattered ~22 kg of plutonium-239 with no nuclear yield at all - not from the seven actual tests"
+  },
+  {
+   "t": "tests",
+   "x": "On 31 October 2025 the United States cast the first-ever sole 'no' vote on the annual UN First Committee resolution supporting the test moratorium and the CTBT"
+  },
+  {
+   "t": "tests",
+   "x": "On 6 and 17 February 2026 US officials accused China of a yield-producing decoupled test at Lop Nur on 22 Jun 2020; NORSAR, the CTBTO and CSIS all declined to corroborate it and Beijing called it 'completely groundless'"
+  },
+  {
+   "t": "tests",
+   "x": "On 18 February 2026 a senior US official said the US is ready to conduct low-yield tests to match the explosions it alleges China and Russia have carried out - the clearest official signal since 1992"
+  },
+  {
+   "t": "tests",
+   "x": "Decoupling - the technique the US alleges China used - was pioneered by the US itself at the Salmon/Sterling shots in the Tatum Salt Dome, Mississippi, in 1964-66"
+  },
+  {
+   "t": "tests",
+   "x": "South Africa is the only state to have fully prepared test shafts (Vastrap, 1976-77) and never used them; they were sealed under IAEA supervision in July 1993"
+  },
+  {
+   "t": "tests",
+   "x": "RECA lapsed in June 2024 and was reinstated and expanded in July 2025, covering New Mexico Trinity downwinders for the first time - 80 years after the test - with a 31 December 2027 claims deadline"
+  },
+  {
+   "t": "tests",
+   "x": "North Korea's Tunnel No. 3 at Punggye-ri has been restored and assessed test-ready since 2022, but imagery from 3 November 2025 showed no cables, instruments, vehicles or people"
+  },
+  {
+   "t": "former",
+   "x": "South Africa built six complete gun-type devices (~55 kg HEU each, tungsten reflector, 10-18 kt) plus a partial seventh; dismantlement began July 1990 and all HEU was back at Pelindaba by 6 September 1991 — before the IAEA ever arrived, and before de Klerk told the world on 24 March 1993."
+  },
+  {
+   "t": "former",
+   "x": "SIPRI's Robert Kelley documents a facility almost nobody knows about: a small implosion test bunker built in three months in 1985 inside an artillery range near Potchefstroom (-26.6570, 27.0334), found by IAEA inspectors in 1993 and not previously declared — hard evidence the second-generation implosion programme was…"
+  },
+  {
+   "t": "former",
+   "x": "The Vastrap shafts (385 m and 216 m) were never used. Soviet satellites spotted them in August 1977 and told Washington; the shafts were renovated in 1988 and finally sealed with sand and concrete under IAEA supervision in July 1993 — inside what is now a nature reserve."
+  },
+  {
+   "t": "former",
+   "x": "Ukraine's ~1,900 strategic warheads sat on 176 ICBMs and 44 bombers, but Kyiv never held the launch codes; the ACA count of tactical weapons is 2,275 for Ukraine and 725 for Belarus, with Kazakhstan's tactical total still officially uncertain."
+  },
+  {
+   "t": "former",
+   "x": "Kazakhstan closed Semipalatinsk by decree on 29 August 1991 — four months before the USSR itself ceased to exist. The site had absorbed 456 tests and exposed roughly 1.5 million people."
+  },
+  {
+   "t": "former",
+   "x": "Project Sapphire (Nov 1994) airlifted 581 kg of weapons-grade HEU from the Ulba plant in Oskemen to Y-12 at Oak Ridge; ten years later the same destination received ~25 tonnes of Libyan centrifuges, UF6 and the Khan network's Chinese-origin weapon design."
+  },
+  {
+   "t": "former",
+   "x": "FAS has repeatedly declined to confirm that Russian warheads are physically in Belarus: the Asipovichy perimeter has two fence lines where Russian nuclear sites have three or four, and no visible climate-controlled bunkers or segregated Russian housing."
+  },
+  {
+   "t": "former",
+   "x": "Israel's 1981 strike on Osiraq is now widely judged to have pushed Iraq off a slow plutonium route and onto a much larger, better-hidden enrichment programme using 1940s calutron technology precisely because no supplier controls covered it."
+  },
+  {
+   "t": "former",
+   "x": "Al Atheer, Iraq's actual weaponisation site near Musayyib, was never bombed in 1991 because Western intelligence had not identified it; the IAEA found it afterwards and demolished it with explosives in April 1992."
+  },
+  {
+   "t": "former",
+   "x": "In August 2026 the US brokered a deal, under Israeli threat to bomb the site, for the IAEA to remove Assad-era yellowcake from a Syrian facility known only as 'Site 99' by end-2026 — the material had still not been removed as of 12 August 2026."
+  },
+  {
+   "t": "former",
+   "x": "South Korean support for an indigenous bomb hit a record 76.2 percent in the 2025 Asan poll; the February 2026 survey shows support for US tactical redeployment easing to 60.4 percent from 66.3 percent, against a president who opposes weapons but is negotiating enrichment and reprocessing rights."
+  },
+  {
+   "t": "former",
+   "x": "Sweden's Marviken reactor was the most weapons-relevant plant it ever built — on-load refuelling, natural uranium, heavy water — and was cancelled in 1970 without ever being switched on; it later became a reactor-safety test rig."
+  },
+  {
+   "t": "physics",
+   "x": "Blast constants cross-validate exactly: NUKEMAP's digitised G&D Fig. 3.73 curves give 1-kt optimum-HOB radii of 0.281/0.4435/0.7042/1.0008/2.140 km for 20/10/5/3/1 psi, matching the independently-published Nuclear Weapon Archive constants (0.28/0.45/0.71/1.0/2.2) to within 3%."
+  },
+  {
+   "t": "physics",
+   "x": "A 5-psi-optimised airburst produces NO 20 psi overpressure on the ground at all — the 5-psi optimum height (304·Y^1/3 m) exceeds the 282·Y^1/3 m ceiling above which 20 psi cannot reach the surface. Visualisers that always draw every ring are wrong here."
+  },
+  {
+   "t": "physics",
+   "x": "Thermal radii are not a single power law: the log-log slope drifts from ~0.44 at kiloton scale to ~0.40 at megaton scale, which is why published fits quote anything from Y^0.38 to Y^0.44. A one-power-law fit is 17% off at 50 Mt, so I supplied exact lookup tables instead."
+  },
+  {
+   "t": "physics",
+   "x": "The reason thermal isn't cube-root has two parts beyond inverse-square: the burn threshold itself RISES with yield (3rd-degree needs 7.0 cal/cm² at 1 kt but 11.3 at 1 Mt and 13.2 at 20 Mt) because the pulse lengthens as t_max = 0.0417·W^0.44 s, letting skin shed heat; plus atmospheric attenuation bites harder at long…"
+  },
+  {
+   "t": "physics",
+   "x": "Prompt radiation ceases to matter above ~3 kt: that is where the 5-psi airburst radius overtakes the 500-rem radius. At 1 Mt, 500 rem reaches only 2.50 km versus 7.04 km for 5 psi and 12.58 km for 3rd-degree burns — the whole lethal-radiation zone is already inside the fireball-and-rubble zone."
+  },
+  {
+   "t": "physics",
+   "x": "Fireball radius scales as Y^0.4, not Y^1/3, because it is set by radiative-transfer physics rather than energy-in-a-volume. The 50 Mt value (4.62 km) independently matches the observed Tsar Bomba fireball radius of ~4.6 km."
+  },
+  {
+   "t": "physics",
+   "x": "Glasstone Table 9.93 recovered verbatim and verified twice: downwind distance scales as C·W^0.45 statute miles for every dose rate (C = 0.95 to 40 for 3000 down to 1 rad/hr), with wind factor F = 1 + (v−15)/60 above 15 mph and 1 + (v−15)/30 below, valid 8–45 mph."
+  },
+  {
+   "t": "physics",
+   "x": "H+7 fallout needs no separate model: 7^1.2 = 10.33, so the H+7 contour for R rad/hr is exactly the H+1 contour for 10.33·R. The textbook 'rule of sevens' (factor of 10) is itself only a 3% approximation to the underlying t^-1.2 decay."
+  },
+  {
+   "t": "physics",
+   "x": "The two standard fallout models disagree badly in the far field. For 1 Mt at 1 rad/hr, G&D Table 9.93 gives 1,441 km downwind and 146 km wide; Miller's SFSS (which NUKEMAP actually uses) gives 414 km and 51 km. Their effective yield exponents are 0.45 versus 0.31."
+  },
+  {
+   "t": "physics",
+   "x": "NUKEMAP's casualty model is pure blast-proxy: ≥12 psi 98% dead, 5–12 psi 50% dead/40% hurt, 2–5 psi 5%/45%, 1–2 psi 0%/25%. It ignores fire entirely — historically the dominant killer at Hiroshima — so fire-based models like Toon et al. give higher totals for large airbursts."
+  },
+  {
+   "t": "physics",
+   "x": "Xia et al. 2022 Table 1 in full: 5 Tg/100 weapons → 27M direct deaths and 255M famine; 47 Tg/500 weapons → 164M and 2.512bn; 150 Tg/4,400 weapons → 360M and 5.341bn without food at end of Year 2."
+  },
+  {
+   "t": "physics",
+   "x": "Robock et al. 2007b for 150 Tg: global average cooling of 7–8 °C persisting for years and still 4 °C after a decade, >20 °C over North America and >30 °C over Eurasia, precipitation down ~45%. For scale, the last ice age was only ~5 °C cooler than today."
+  },
+  {
+   "t": "delivery",
+   "x": "The DF-61 exists and is real: it debuted at the 3 September 2025 Beijing parade, four units from 651 Brigade at Chifeng, on a launcher visually identical to the DF-41's. FAS lists it at 12,000 km with warhead count unknown; the 2025 Pentagon China report does not mention it at all."
+  },
+  {
+   "t": "delivery",
+   "x": "North Korea's Hwasong-20 was paraded on 11-axle launchers on 10 October 2025 and has still never been flight tested — the parade rounds may have been mock-ups. Its 1,971 kN motor was static-fired nine times, and an upgraded ~2,500 kN version surfaced in late March 2026."
+  },
+  {
+   "t": "delivery",
+   "x": "Sarmat has effectively failed. One clearly successful flight test since April 2022, a catastrophic September 2024 failure that destroyed the Plesetsk test silo, and as of March 2026 no missiles loaded for operational duty despite silo work at Uzhur."
+  },
+  {
+   "t": "delivery",
+   "x": "Sentinel breached Nunn-McCurdy in July 2024 at ~$141bn, had its Milestone B revoked, slipped IOC to FY2033, and requires all 450 launch facilities to be rebuilt from scratch because the existing Minuteman silos cannot take the missile. In summer 2025 $934m was diverted from it to retrofit a presidential aircraft."
+  },
+  {
+   "t": "delivery",
+   "x": "China's three new silo fields (Yumen 120, Hami 110, Yulin 90 = 320 silos) now exceed Russia's entire silo-based ICBM inventory, but FAS assesses China has produced only about half the DF-31B warheads needed to fill them."
+  },
+  {
+   "t": "delivery",
+   "x": "The nuclear DF-21 is gone. It has not appeared as operational in the last three Pentagon reports and is absent from the FAS 2026 table — its nuclear mission passed to the DF-26."
+  },
+  {
+   "t": "delivery",
+   "x": "China completed a triad in 2024-25: the JL-1 air-launched ballistic missile (CH-AS-X-13, unrelated to the 1980s JL-1 SLBM) is deployed on 20 H-6N bombers and was publicly shown in September 2025. All JL-2 SLBMs have been replaced by JL-3."
+  },
+  {
+   "t": "delivery",
+   "x": "New START expired in early February 2026 with no successor. FAS assesses Russia could raise its deployed force by up to 60 percent — bombers in hours or days, submarines in months, ICBMs in years."
+  },
+  {
+   "t": "delivery",
+   "x": "Oreshnik went from single combat use in November 2024 to series production (August 2025), combat duty in Belarus (30 December 2025) and two further combat strikes in 2026. FAS credits 12 launchers and 72 warheads at 6 x ~250 kt."
+  },
+  {
+   "t": "delivery",
+   "x": "Burevestnik flew 14,000 km for 15 hours in the October 2025 test, but NTI counts only two partial successes in at least 13 tests since 2016. Nine launch pads have been identified at Vologda-20; only four were complete in March 2026."
+  },
+  {
+   "t": "delivery",
+   "x": "Seven Tu-95MS and seven Tu-160 were destroyed by Ukrainian drones in June 2025 (Operation Spiderweb) — roughly a fifth of Russia's bomber leg — and Tu-160M deliveries are running at four aircraft against a target of ten by 2027."
+  },
+  {
+   "t": "delivery",
+   "x": "The UK is returning to air-delivered nuclear weapons for the first time since 1998: at least 12 F-35A at RAF Marham from the mid-2030s carrying US-owned B61-12s, while FAS assessed in December 2025 that bombs may already have been shipped back to RAF Lakenheath."
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "World stock is ~1,810 t of weapon-usable material: ~1,240 t HEU + ~570 t separated plutonium. At IAEA significant quantities (25 kg HEU / 8 kg Pu) that is ~120,000 weapons' worth of material against ~12,000 actual warheads. Counting only weapons-available material: ~61,500 weapons' worth."
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "The asymmetry that matters: military stocks are flat or falling, but CIVIL separated plutonium is growing several tonnes a year. The UK stores ~117 t of civil plutonium at Sellafield with no disposition route, France ~99 t, Japan 44.5 t, Russia ~65 t. Reactor-grade plutonium is weapon-usable even in a…"
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "China is the big 2026 development: the Jinta reprocessing plant (Gansu, 40.3338N 98.4942E) went operational around mid-2025 — Jan 2026 imagery shows plumes over the stacks. A second identical 200 tHM/yr plant is complete and a third is being built; each separates ~2 t Pu/yr. IPFM assesses China may already hold 4-5 t…"
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "Russia holds 680 t of HEU — over half the world's total — and is the only nuclear-weapon state still listed as 'continuing' HEU production, because Zelenogorsk restarted a dedicated HEU cascade in 2012 for fast-reactor and research fuel (weapon HEU stopped in 1988)."
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "Four states are still making weapon material: India, Pakistan, Israel, North Korea. All five NPT weapon states have stopped, though China has never formally declared it. Pakistan is the most active, with four Khushab reactors yielding ~40-45 kg of weapon-grade Pu/yr and two enrichment plants (Kahuta and Gadwal) still…"
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "North Korea is expanding fastest and most visibly: the Yongbyon 5 MWe reactor has been in its seventh irradiation cycle since Oct 2024, a reprocessing campaign ran Jan-Sep 2025, and a new enrichment building completed in 2026 is assessed by the IAEA to hold ~4,600 centrifuges in 28 cascades — 100-200 kg HEU/yr, four…"
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "Megatons to Megawatts remains the largest act of disarmament ever completed: 500 t of Soviet weapon HEU (20,000 warheads' worth) blended into 14,000+ t of reactor fuel, finishing Dec 2013. For two decades ~10% of all US electricity came from material that had been in Soviet warheads. It was commercially financed, not…"
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "Nunn-Lugar's final scorecard (31 May 2013): 7,616 strategic warheads deactivated, 3,600+ missiles and launchers, 33 submarines, 155 bombers destroyed, and Ukraine, Kazakhstan and Belarus completely denuclearised by 1996. Russia ended most cooperation in 2015 and terminated the framework agreement in 2023 — there is…"
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "2026 material-security picture is split: HEU keeps shrinking (NNSA has converted or shut 109 facilities and removed 7,340+ kg of weapon-usable material; all HEU gone from 35 countries plus Taiwan; only 22 countries still hold 1 kg or more; no HEU research reactors left in Africa) — while civil plutonium grows, the…"
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "Tritium is the material nobody can stop making: 12.3-year half-life means ~5.5% decays annually, so even a 'finished' arsenal needs continuous resupply. The US makes it in TVA's civilian Watts Bar reactors (record 13 extractions in 9 months to Jan 2026); Russia at Mayak's Ruslan and Lyudmila; the UK has no domestic…"
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "Iran's plutonium route is now closed and its uranium route is buried: the Khondab/Arak heavy-water plant was destroyed on 27 March 2026, and the IAEA estimates 265-287 kg of Iran's 60%-enriched uranium is entombed under rubble at the Esfahan tunnel complex. Iran's foreign minister said in March 2026 the material is…"
+  },
+  {
+   "t": "fuel-cycle",
+   "x": "Mining is not the bottleneck. World output was 60,213 t U in 2024 (Kazakhstan 23,270 t / 39%, Canada 14,309 t / 24%, Namibia 7,333 t / 12%); five mines supply 42% of it. No weapons programme has ever been stopped for want of ore — the real chokepoints are conversion, enrichment and reprocessing, a few dozen…"
+  },
+  {
+   "t": "latent",
+   "x": "The Saudi-Pakistan Strategic Mutual Defence Agreement (17-18 Sept 2025) is the single most important 2025-26 proliferation event: ACA calls it the first extended nuclear deterrence commitment by a non-NPT nuclear-armed state, but Belfer, MEI and APLN all argue it lacks basing, command arrangements and doctrine, so it…"
+  },
+  {
+   "t": "latent",
+   "x": "The US-Saudi 123 Agreement was signed 22 July 2026 (Wright and Abdulaziz bin Salman), runs 30 years, permits enrichment contingent on a two-year joint viability study, and reportedly does not require the IAEA Additional Protocol."
+  },
+  {
+   "t": "latent",
+   "x": "Saudi Arabia did rescind its IAEA Small Quantities Protocol on 31 December 2024, moving to a full Comprehensive Safeguards Agreement - a genuine transparency gain that cuts against the hedging narrative."
+  },
+  {
+   "t": "latent",
+   "x": "New START expired 5 February 2026. Putin's 22 Sept 2025 offer to observe the central limits informally for a year went unanswered; Lavrov told the Duma on 11 Feb 2026 Russia is complying with a self-declared moratorium. No negotiations exist or are planned."
+  },
+  {
+   "t": "latent",
+   "x": "Trump's 30 October 2025 testing announcement was clarified on 2 November by Energy Secretary Chris Wright to mean system tests and non-critical experiments, not nuclear explosions - a signal, not a policy (Just Security)."
+  },
+  {
+   "t": "latent",
+   "x": "The 2026 NPT Review Conference (27 April-22 May, New York, President Do Hung Viet of Viet Nam) ended with no consensus document - the third consecutive failure."
+  },
+  {
+   "t": "latent",
+   "x": "In October 2025 the US formally backed South Korean civil enrichment and reprocessing and approved ROK nuclear-powered submarines; Seoul is negotiating a 123 Agreement revision, with follow-up talks in June 2026."
+  },
+  {
+   "t": "latent",
+   "x": "South Korean support for indigenous nuclear weapons hit a record 76.2% in the 2025 Asan poll, but KINU polling that prices in sanctions, alliance rupture and war risk drops it to 35-40%."
+  },
+  {
+   "t": "latent",
+   "x": "Japan's PM Takaichi firmly rejected NATO-style nuclear sharing in February 2026, then at Hiroshima in August 2026 declined to promise the three non-nuclear principles would not change - read as leaving the third principle revisable without a Diet vote."
+  },
+  {
+   "t": "latent",
+   "x": "Finland moved in 2026 to strip its 1987 statutory ban on nuclear weapons from the Nuclear Energy Act and Criminal Code, permitting allied weapons on its soil in defined defence circumstances - manufacture and detonation stay illegal."
+  },
+  {
+   "t": "latent",
+   "x": "Both Polish President Nawrocki (Feb 2026) and PM Tusk (Mar 2026) publicly endorsed Polish nuclear potential, but split on route: Tusk opened talks with Paris, Nawrocki's office prefers US nuclear sharing."
+  },
+  {
+   "t": "latent",
+   "x": "US B61-12 bombs appear to have returned to RAF Lakenheath in July 2025 after ~20 years, with ~22 WS3 vaults reactivated and $253m in nuclear-operations facilities - neither government confirms it, so I tagged it medium confidence."
+  },
+  {
+   "t": "humancost",
+   "x": "Doomsday Clock, 27 Jan 2026: 85 seconds to midnight - the closest ever, moved 4 seconds on New START expiry, nuclear coercion rhetoric and Golden Dome / space militarisation"
+  },
+  {
+   "t": "humancost",
+   "x": "ICAN 'Premeditated' report (June 2026): nine states spent a record $118.8bn on nuclear weapons in 2025, up 19% in a year, about $3,768 every second; the US alone spent $69.2bn"
+  },
+  {
+   "t": "humancost",
+   "x": "Hibakusha fell below 100,000 for the first time in March 2025 (99,130) and to 91,105 by March 2026, average age 86.66 - within roughly a decade there will be no living witness"
+  },
+  {
+   "t": "humancost",
+   "x": "RECA lapsed 10 June 2024 and was revived and expanded on 4 July 2025 (One Big Beautiful Bill Act), doubling awards to $100,000 and covering Trinity downwinders in New Mexico for the first time, 80 years late; claims run to 31 Dec 2028"
+  },
+  {
+   "t": "humancost",
+   "x": "RECA has now paid over $2.7bn on 42,308 approved claims (original programme, as of 31 Dec 2025) plus 1,008 claims worth ~$76.1m under the expanded programme in its first six months"
+  },
+  {
+   "t": "humancost",
+   "x": "The Marshall Islands Nuclear Claims Tribunal awarded ~$2.3bn but was funded with only $150m; the fund ran dry in 2009 and the awards remain overwhelmingly unpaid"
+  },
+  {
+   "t": "humancost",
+   "x": "France's CIVEN had received only 2,846 claims and recognised 1,026 people (417 Polynesians, 2 Algerians) against the ~110,000 the 2021 'Toxique' study calculates were exposed"
+  },
+  {
+   "t": "humancost",
+   "x": "Nature Food 2022 (Xia/Robock): a US-Russia war could kill more than 5 billion people through famine, and an India-Pakistan war more than 2 billion - most of them in countries not party to the war"
+  },
+  {
+   "t": "humancost",
+   "x": "Princeton 'Plan A' (2019): 91.5 million casualties (34.1m dead, 57.4m injured) in about three hours, from immediate effects alone"
+  },
+  {
+   "t": "humancost",
+   "x": "Nihon Hidankyo won the 2024 Nobel Peace Prize for sustaining the 'nuclear taboo' through survivor testimony; ICAN won it in 2017 - the same movement, two generations apart"
+  },
+  {
+   "t": "humancost",
+   "x": "Roughly two-thirds of the Manhattan Project's uranium, including Little Boy's, came from Shinkolobwe in the Belgian Congo; those miners have never been counted or compensated"
+  },
+  {
+   "t": "humancost",
+   "x": "Fukushima inverts the intuition: UNSCEAR documents no radiation deaths among residents, but 2,313 'disaster-related deaths' among evacuees, ~90% of them over 66 - the evacuation, not the radiation, did the killing"
+  },
+  {
+   "t": "fix-numbers",
+   "x": "ALL NINE 2026 warhead counts are correct and current — exact match to SIPRI YB2026 table 8A.1 and FAS 2026. Both arithmetic identities hold for every country with zero discrepancy."
+  },
+  {
+   "t": "fix-numbers",
+   "x": "World total sums to exactly 12,187 — SIPRI's published January 2026 figure. Military stockpile 9,745, retired 2,442, deployed 4,012 all match SIPRI's published totals precisely."
+  },
+  {
+   "t": "fix-numbers",
+   "x": "BIGGEST ISSUE: US megatonnage inflated (850 → 679 Mt) while Russia's is deflated (650 → 873 Mt). This reverses the ranking — reconciled figures put Russia ~190 Mt AHEAD of the US, not behind."
+  },
+  {
+   "t": "fix-numbers",
+   "x": "state-usa.json warheadTypes counts sum to 3,930 against a stated stockpile of 3,700 — it counts 230 warheads that do not exist, which is where the 850 Mt comes from."
+  },
+  {
+   "t": "fix-numbers",
+   "x": "Worst single count error: W87-0 listed at 540, actual 200 (SIPRI 8A.2). 540 W87-0 + 400 W78 = 940 against an 800-warhead ICBM force — physically impossible. Adds ~102 Mt of phantom yield."
+  },
+  {
+   "t": "fix-numbers",
+   "x": "W78 listed at 400 — that is the central-storage subset, not the type total, which is 600. W76-1 at 1,511 double-counts the 25 W76-2 (1,486+25), and at 90 kt instead of 8 kt."
+  },
+  {
+   "t": "fix-numbers",
+   "x": "STALE: 50 B83-1 bombs at 1.2 Mt each (60 Mt, ~9% of the US total) carried as current. Retired in the 2022 NPR, absent from SIPRI's Jan-2026 table, and already zeroed in the project's own topic-yields.json."
+  },
+  {
+   "t": "fix-numbers",
+   "x": "state-russia.json double-counts 72 Oreshnik warheads — they are already inside SIPRI's 232 'Army weapons' row. Counts sum to 4,472 vs a 4,400 stockpile."
+  },
+  {
+   "t": "fix-numbers",
+   "x": "state-russia.json contradicts itself: method text claims '~590 Mt strategic' but its own warheadTypes rows sum to ~749 Mt for the strategic leg — a 160 Mt internal contradiction."
+  },
+  {
+   "t": "fix-numbers",
+   "x": "state-israel.json is self-contradictory: its own stated method (30×20kt + 50×60kt + 10×200kt) evaluates to 5.6 Mt, but it reports 3.0 Mt — apparently the middle term alone."
+  },
+  {
+   "t": "fix-numbers",
+   "x": "state-china.json warheadTypes sum to only 406 of 620 warheads (#5x5 and DF-5C rows are null), and 280 Mt does not follow from its own method text, which already exceeds 300 Mt. Reconciled: 308 Mt."
+  },
+  {
+   "t": "fix-numbers",
+   "x": "VERIFIED, NOT FABRICATED: France's surprising 80 retired / 370 total inventory is genuinely new for 2026 (SIPRI 8A.5, the TN 75s displaced by TNO-2), and China's 425 kt '#535' yield traces to Hui Zhang's work on the 1992 test."
+  },
+  {
+   "t": "fix-coordinates",
+   "x": "topic-delivery.json site-yulin (38.9, 109.35) is ~176 km from the Hanggin Banner silo field its own note describes, and lands in Shaanxi rather than Inner Mongolia; should be ~40.1597, 108.1113 (state-china.json already has this right)"
+  },
+  {
+   "t": "fix-coordinates",
+   "x": "topic-delivery.json site-hami (41.85, 93.65) is ~107 km SE of the Hami field, whose FAS-published perimeter gates put it near 42.3N 92.5E; should be 42.2806, 92.4959"
+  },
+  {
+   "t": "fix-coordinates",
+   "x": "topic-latent.json kaz-semipalatinsk-test-site has longitude 78.4333 (= 78 deg 26 min) instead of 78.7167 (= 78 deg 43 min) - a DMS conversion slip, ~20 km; three other files in the same corpus have it right"
+  },
+  {
+   "t": "fix-coordinates",
+   "x": "topic-latent.json sau-kacst-lprr-riyadh (24.7136, 46.6753) is byte-identical to the Riyadh entry in support-cities.json - a city-centroid placeholder; KACST is at 24.7174, 46.6430"
+  },
+  {
+   "t": "fix-coordinates",
+   "x": "topic-iran.json karaj-tesa longitude is exactly 51.0000 while its latitude is exactly the Karaj city value (whose true longitude is 50.9667) - an obviously rounded coordinate"
+  },
+  {
+   "t": "fix-coordinates",
+   "x": "state-russia.json novaya-zemlya-sukhoy-nos (73.7, 54.0) has an integer longitude and sits ~35 km from the Tsar Bomba burst point (73.85, 54.50) that its own description is about"
+  },
+  {
+   "t": "fix-coordinates",
+   "x": "topic-tests.json gives Long Shot the exact coordinate of Milrow (51.4157, 179.1794) - a duplicated coordinate across two different Amchitka tests; Long Shot is 2.3 km north"
+  },
+  {
+   "t": "fix-coordinates",
+   "x": "topic-tests.json gives 'Smiling Buddha (Pokhran-I)' the Pokhran-II shaft coordinate, which it also assigns to Shakti I and Shakti IV-V; state-india.json has the correct 1974 shaft at 27.095, 71.753"
+  },
+  {
+   "t": "fix-coordinates",
+   "x": "topic-latent.json chn-lop-nur-test-site (41.5, 88.5) is rounded to half-degrees; the corpus carries three mutually inconsistent Lop Nur coordinates across three files"
+  },
+  {
+   "t": "fix-coordinates",
+   "x": "Zero sign errors: all 838 site coordinates resolve to their declared host country or to water immediately adjacent - no E/W or N/S flips anywhere"
+  },
+  {
+   "t": "fix-coordinates",
+   "x": "The only wrong-country hits are two DDR-hosted depots resolving to DE, which is correct, not an error"
+  },
+  {
+   "t": "fix-coordinates",
+   "x": "Two coordinates that looked invented turned out to be genuine on verification: Portsmouth GDP really is at longitude exactly -83.0000, and Ellsworth AFB matches the published value to five decimals"
   }
  ]
 };
