@@ -67,20 +67,26 @@ const SITE_CATS = {
   deploy:  { label: 'Deployed weapons', color: '#ff4d4d', shape: 'dot',  on: true,
              types: ['silo_field', 'missile_field', 'mobile_missile_base', 'sub_base', 'air_base', 'bomber_base', 'deployment_hosted'] },
   store:   { label: 'Storage & depots', color: '#ff8c1a', shape: 'sq',   on: true,
-             types: ['storage', 'depot', 'command_bunker'] },
+             types: ['storage', 'depot'] },
   make:    { label: 'Making the bomb',  color: '#ffd23f', shape: 'dia',  on: true,
              types: ['production', 'enrichment', 'reprocessing', 'reactor', 'assembly', 'warhead_lab', 'research', 'mine', 'proposed'] },
   test:    { label: 'Test sites',       color: '#c07cff', shape: 'tri',  on: true,  types: ['test_site'] },
+  warn:    { label: 'Warning & command', color: '#4dc9ff', shape: 'ring', on: false,
+             types: ['early_warning', 'nc3', 'command_bunker'] },
+  wreck:   { label: 'Lost at sea & broken arrows', color: '#8ad6ff', shape: 'dia', on: false,
+             types: ['wreck'] },
   human:   { label: 'Where it landed on people', color: '#ff6b9d', shape: 'cross', on: true,
              types: ['affected'] },
   gone:    { label: 'Former & dismantled', color: '#7a8b99', shape: 'ring', on: false,
              types: ['former', 'dismantled', 'destroyed'] },
 };
-const CAT_ORDER = ['deploy', 'store', 'make', 'test', 'human', 'gone'];
+const CAT_ORDER = ['deploy', 'store', 'make', 'test', 'warn', 'wreck', 'human', 'gone'];
 const TYPE_TO_CAT = {};
 CAT_ORDER.forEach(k => SITE_CATS[k].types.forEach(t => (TYPE_TO_CAT[t] = k)));
 function catOf(s) {
   if (s.type === 'affected' || s.human || s.bombing) return 'human';
+  if (s.type === 'wreck') return 'wreck';
+  if (s.type === 'early_warning' || s.type === 'nc3' || s.type === 'command_bunker') return 'warn';
   /* Nearly every test site on Earth is inactive. Filing them under "former &
      dismantled" would empty the Test sites layer, so type wins here. */
   if (s.type === 'test_site') return 'test';
@@ -450,6 +456,7 @@ function siteActive(s, y) {
 /* How much a site earns its place on screen when there are too many to draw.
    Warheads first, then how sure we are, then what kind of place it is. */
 const TYPE_WEIGHT = {
+  early_warning: 28, nc3: 26, wreck: 22,
   silo_field: 60, missile_field: 60, deployment_hosted: 70, sub_base: 55, bomber_base: 50,
   mobile_missile_base: 50, air_base: 40, storage: 45, depot: 30, test_site: 55,
   enrichment: 35, reprocessing: 35, reactor: 25, assembly: 30, warhead_lab: 30,
@@ -667,6 +674,8 @@ function makeMarker(d) {
    what lets you read Incirlik as American and Dimona as unconfirmed at a glance. */
 function siteColor(s) {
   if (s.type === 'affected' || s.human || s.bombing) return SITE_CATS.human.color;
+  if (s.type === 'wreck') return SITE_CATS.wreck.color;
+  if (s.type === 'early_warning' || s.type === 'nc3') return SITE_CATS.warn.color;
   if (s.status === 'former' || s.status === 'dismantled' || s.status === 'destroyed') return STATUS.former.color;
   if (s.owner && s.host && s.owner !== s.host) return STATUS.host.color;
   const iso = s.owner || s.host;
@@ -926,7 +935,7 @@ function selectSite(id, fly) {
   refreshMarkers();
 
   document.getElementById('siteGlyph').textContent =
-    ({ deploy: '🚀', store: '🏔', make: '⚙️', test: '☢️', human: '🕯', gone: '⌀' })[catOf(s)] || '◉';
+    ({ deploy: '🚀', store: '🏔', make: '⚙️', test: '☢️', warn: '📡', wreck: '⚓', human: '🕯', gone: '⌀' })[catOf(s)] || '◉';
   document.getElementById('siteName').textContent = s.name;
   const bits = [SITE_CATS[catOf(s)].label, nameOf(s.host)];
   if (s.status && s.status !== 'active') bits.push(s.status);
@@ -944,9 +953,15 @@ function selectSite(id, fly) {
       ? `<b>${esc(cap(theName(own)))}</b> tested nuclear weapons here, on ${esc(possessive(hostN))} territory. The weapons were never ${esc(theName(hostN))}'s.`
       : cat === 'human'
         ? `The weapons responsible were <b>${esc(theName(own))}'s</b>. The people who lived here were not asked.`
-        : s.status === 'active' || s.status === 'suspected'
-          ? `These are <b>${esc(possessive(own))}</b> weapons, stationed on ${esc(possessive(hostN))} territory. ${esc(theName(hostN))} does not own them and cannot use them alone.`
-          : `<b>${esc(cap(possessive(own)))}</b> weapons were once kept here, on ${esc(possessive(hostN))} territory. They have since been withdrawn.`;
+        : cat === 'warn'
+          /* No warheads here at all — this is somebody else's eyes and ears on
+             a third country's soil, which is its own kind of entanglement. */
+          ? `<b>${esc(cap(theName(own)))}</b> operates this installation on ${esc(possessive(hostN))} territory. No weapons are kept here — it is part of the network that watches for an attack and passes the order to respond.`
+          : cat === 'wreck'
+            ? `The weapons lost here were <b>${esc(possessive(own))}</b>.`
+            : s.status === 'active' || s.status === 'suspected'
+              ? `These are <b>${esc(possessive(own))}</b> weapons, stationed on ${esc(possessive(hostN))} territory. ${esc(cap(theName(hostN)))} does not own them and cannot use them alone.`
+              : `<b>${esc(cap(possessive(own)))}</b> weapons were once kept here, on ${esc(possessive(hostN))} territory. They have since been withdrawn.`;
     ownerBox.innerHTML = `<span class="of">${flagOf(s.owner)}</span><div>${body}</div>`;
   } else { ownerBox.style.display = 'none'; ownerBox.innerHTML = ''; }
 
