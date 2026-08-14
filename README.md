@@ -16,11 +16,17 @@ kept, what they would do — and how the arsenals rose and fell from 1938 to 202
 | **Colour = certainty** | 🟢 declared arsenal · 🟡 undeclared but universally assessed (Israel) · 🔴 pursuing or threshold (Iran) · 🔵 hosting another state's weapons (Belgium, Germany, Italy, Netherlands, Türkiye, Belarus) · 🟣 built the bomb and gave it up (South Africa, Ukraine, Kazakhstan). Countries that ran a programme and stopped, and countries that once hosted foreign weapons, are separate categories — the distinctions matter. |
 | **Shape = kind of site** | ● deployed weapons · ■ storage · ◆ making the bomb · ▲ test site · ○ warning &amp; command · ◆ lost at sea · ✚ where it landed on people · ○ former/dismantled. |
 | **Owner flags** | Where one country's weapons sit on another's soil — US B61s at Incirlik, Kleine Brogel, Büchel, Ghedi, Aviano, Volkel and Lakenheath; Russian weapons at Asipovichy in Belarus — the marker flies the **owner's** flag, because those warheads are not the host's. |
+| **Fissile material** | Two views of the same dataset, with a toggle: how many **tonnes** of weapon-usable material each country holds (highly enriched uranium and separated plutonium), and **how many weapons that material could make** at the IAEA significant quantity — 25 kg of HEU or 8 kg of plutonium, or a modern design's 15 kg / 4 kg. Filter to HEU, plutonium, or military stocks only. |
 | **Megatonnage badges** | A 💥 sized by each country's total explosive yield, so you can see at a glance who holds the most destructive power — not just the most warheads. |
 | **Timeline** | Scrub or play 1938 → 2026. Watch military stockpiles peak at 64,452 warheads in 1986 and fall back, South Africa's six bombs appear in 1979 and vanish in 1991 — shown as an *undeclared* arsenal, which is what it was — and Ukraine's inherited weapons go home to Russia. |
 | **Detonation simulator** | Standard published effect radii for any warhead on any city — fireball, blast, burns, prompt radiation, fallout plume, crater, casualty ranges, shockwave arrival times. Or place a country's **entire arsenal** on the world's largest cities. |
 | **Reach rings** | How far each state's missiles actually get, drawn from where the arsenal really sits. |
 | **Filtering** | Click a row in the key to narrow the whole map — countries, markers, event pins and the ranking list — to that category, and it stays narrowed until cleared. Combine rows, clear with the button or Esc, and share the filtered view by link. |
+
+The fissile layer is the one that changes how the map reads. Japan holds 44.5 tonnes of civil plutonium and no
+weapons — enough material for about **5,600**. The UK's Sellafield stockpile is worth roughly **15,900**. The
+world holds enough for about **120,000 weapons** and has built around **12,000**. North Korea is marked with a
+`+`: its enrichment output is not published, so its figure is a floor rather than a total.
 
 Also inside: **241 timeline events**, all **2,056 nuclear tests**, **134 delivery systems**, **15 treaties** with
 where each stands in 2026, national **fissile-material stockpiles**, **threshold assessments** for every state

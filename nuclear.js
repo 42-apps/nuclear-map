@@ -20,6 +20,40 @@ const HUMAN    = window.NUKE_HUMAN || {};
 const ISOMAP   = window.NUKE_ISO || {};
 const ALIASES  = window.NUKE_ALIASES || {};
 const CITIES   = window.NUKE_CITIES || [];
+const FISSILE  = window.NUKE_FISSILE || [];
+const FISSILE_WORLD = window.NUKE_FISSILE_WORLD || null;
+
+/* --------------------------- fissile material ---------------------------
+   The IAEA's "significant quantity" is the amount of material from which a
+   weapon could be made: 25 kg of U-235 in HEU, 8 kg of plutonium. It is a
+   safeguards accounting threshold, deliberately conservative — real designs
+   use less — so the weapons-potential figures below are the standard published
+   conversion, not a claim about anyone's actual arsenal. */
+const SQ = { heu: 25, pu: 8, heuModern: 15, puModern: 4 };
+const fissileOf = iso => (C[iso] && C[iso].fissile) || null;
+function fissileTonnes(iso, which) {
+  const f = fissileOf(iso); if (!f) return null;
+  const heu = f.heu || 0, mil = f.milPu || 0, civ = f.civPu || 0;
+  const pu = f.totalPu != null ? f.totalPu : mil + civ;
+  const v = which === 'heu' ? heu : which === 'pu' ? pu : which === 'mil' ? heu + mil : heu + pu;
+  return v > 0 ? v : null;
+}
+/* Weapons-worth of material, at the IAEA significant quantity. */
+function fissileWeapons(iso, which, modern) {
+  const f = fissileOf(iso); if (!f) return null;
+  const kgHeu = modern ? SQ.heuModern : SQ.heu, kgPu = modern ? SQ.puModern : SQ.pu;
+  const heu = (f.heu || 0) * 1000 / kgHeu;
+  const mil = (f.milPu || 0) * 1000 / kgPu;
+  const civ = (f.civPu != null ? f.civPu : Math.max(0, (f.totalPu || 0) - (f.milPu || 0))) * 1000 / kgPu;
+  const v = which === 'heu' ? heu : which === 'pu' ? mil + civ : which === 'mil' ? heu + mil : heu + mil + civ;
+  return v > 0 ? Math.round(v) : null;
+}
+const MATERIALS = {
+  all: { label: 'All weapon-usable', short: 'all material' },
+  heu: { label: 'Highly enriched uranium', short: 'HEU' },
+  pu:  { label: 'Separated plutonium', short: 'plutonium' },
+  mil: { label: 'Military stocks only', short: 'military stocks' },
+};
 const META     = window.NUKE_META || {};
 const RESEARCH = window.NUKE_RESEARCH || { gaps: [], findings: [] };
 
@@ -159,6 +193,20 @@ const LAYERS = {
     val: (iso, y) => { const n = seriesAt(iso, y), p = C[iso] && C[iso].pop; return n && p ? n / (p / 1e6) : null; },
     statLabel: 'world average per million', stat: y => { const g = globalAt(y).n, p = 8.1e9; return g / (p / 1e6); }, statFmt: 'dec1',
   },
+  fissile: {
+    label: 'Fissile material held', kind: 'num', ramp: 'cool', fmt: 'dec1', unit: ' t', scale: 'log',
+    desc: 'Weapon-usable material each country holds: highly enriched uranium and separated plutonium, in tonnes.',
+    val: iso => fissileTonnes(iso, state.fisMat),
+    statLabel: 'tonnes worldwide', stat: () => worldFissile('t'), statFmt: 'int',
+    sub: true,
+  },
+  weaponsPotential: {
+    label: 'Weapons that material could make', kind: 'num', ramp: 'fire', fmt: 'int', scale: 'log',
+    desc: 'How many weapons each stockpile is equivalent to, at the IAEA significant quantity of 25 kg of HEU or 8 kg of plutonium. Nobody has built anything like this many.',
+    val: iso => fissileWeapons(iso, state.fisMat, state.fisModern),
+    statLabel: "weapons' worth worldwide", stat: () => worldFissile('w'), statFmt: 'int',
+    sub: true,
+  },
   treaty: {
     label: 'Treaty commitments', kind: 'cat', field: 'nptCat',
     desc: 'How each country sits with the Non-Proliferation Treaty and the Treaty on the Prohibition of Nuclear Weapons.',
@@ -173,7 +221,27 @@ const LAYERS = {
     statLabel: 'NPT parties worldwide', stat: () => 191, statFmt: 'int',
   },
 };
-const LAYER_ORDER = ['status', 'warheads', 'megatons', 'democracy', 'tests', 'firstTest', 'perCapita', 'treaty'];
+const LAYER_ORDER = ['status', 'warheads', 'megatons', 'fissile', 'weaponsPotential', 'democracy', 'tests', 'firstTest', 'perCapita', 'treaty'];
+
+/* World totals come from the compiler's own world row where it exists, so the
+   headline matches the published figure rather than the sum of what we mapped. */
+function worldFissile(kind) {
+  const W = FISSILE_WORLD;
+  if (W) {
+    const heu = W.heu || 0, pu = W.totalPu != null ? W.totalPu : (W.milPu || 0) + (W.civPu || 0);
+    const mil = W.milPu || 0;
+    if (kind === 't') {
+      return state.fisMat === 'heu' ? heu : state.fisMat === 'pu' ? pu : state.fisMat === 'mil' ? heu + mil : heu + pu;
+    }
+    const kgHeu = state.fisModern ? SQ.heuModern : SQ.heu, kgPu = state.fisModern ? SQ.puModern : SQ.pu;
+    const wHeu = heu * 1000 / kgHeu, wMil = mil * 1000 / kgPu, wPu = pu * 1000 / kgPu;
+    return Math.round(state.fisMat === 'heu' ? wHeu : state.fisMat === 'pu' ? wPu
+      : state.fisMat === 'mil' ? wHeu + wMil : wHeu + wPu);
+  }
+  let t = 0;
+  for (const iso in C) t += (kind === 't' ? fissileTonnes(iso, state.fisMat) : fissileWeapons(iso, state.fisMat, state.fisModern)) || 0;
+  return Math.round(t);
+}
 
 /* ------------------------------- state ------------------------------- */
 const state = {
@@ -181,6 +249,7 @@ const state = {
   selectedEvent: null, playing: false, playDir: 1, flat: false, reach: null,
   zoomAlt: 2.45,
   catFilter: new Set(),   // legend rows clicked: show only these statuses
+  fisMat: 'all', fisModern: false,   // fissile-material sub-view
   cats: Object.fromEntries(CAT_ORDER.map(k => [k, SITE_CATS[k].on])),
   evCats: Object.fromEntries(Object.keys(EVENT_CATS).map(k => [k, true])),
 };
@@ -923,6 +992,27 @@ function showDetail(iso, feat) {
       + (mine.length > 40 ? `<div class="ds-row" style="cursor:default"><span class="ds-l" style="color:#8c9cab">…and ${mine.length - 40} more</span></div>` : '')
     : '';
 
+  /* Fissile material: the raw ingredient, and what it could become. */
+  const fb = document.getElementById('detailFissile');
+  const f = c.fissile;
+  if (f && y === Y1) {
+    const row = (l, v, sub) => v == null ? '' :
+      `<div class="mrow${sub ? ' sub' : ''}"><span class="m-l">${esc(l)}</span><span class="m-v">${v}</span></div>`;
+    const t = n => n == null ? null : (n >= 100 ? fmtInt(n) : n.toFixed(n < 10 ? 2 : 1)) + ' t';
+    const wAll = fissileWeapons(iso, 'all', false);
+    fb.innerHTML = '<div class="sec-cap">Fissile material</div>' +
+      row('Highly enriched uranium', f.heu == null ? '<span style="font-weight:600;font-size:11px;color:#8c9cab">not published</span>' : t(f.heu)) +
+      row('Plutonium, military', t(f.milPu), true) +
+      row('Plutonium, civil', t(f.civPu), true) +
+      (wAll ? `<div class="mrow"><span class="m-l">Enough material for</span><span class="m-v">${fmtInt(wAll)} weapons</span></div>` : '') +
+      (f.production ? `<div class="fis-note"><b>Production:</b> ${esc(f.production)}</div>` : '') +
+      (f.partial
+        ? `<div class="fis-note"><b>Incomplete.</b> Part of ${esc(possessive(nameOf(iso)))} stock is not published, so this is a floor rather than a total — the figure above counts only what is known.</div>`
+        : wAll && seriesAt(iso, y)
+          ? `<div class="fis-note">It holds about ${fmtInt(wAll)} weapons' worth of material and has built ${fmtInt(seriesAt(iso, y))}. The gap is the point: material, not warheads, is what a stockpile is made of.</div>`
+          : '');
+  } else fb.innerHTML = '';
+
   document.getElementById('detailNarrative').textContent = c.narrative || '';
   /* For states that do not have weapons, the interesting question is how close
      they are — so say so, in the researchers' words. */
@@ -1071,6 +1161,49 @@ function setLayer(k) {
   updateLegend(); updateGlobal();
   if (state.selected) showDetail(state.selected, countries.find(c => isoOf(c.properties) === state.selected));
 }
+/* The two fissile layers are two views of one dataset, so they get a control
+   that switches between them directly rather than making you hunt the dropdown. */
+function updateSubToggle() {
+  const box = document.getElementById('subToggle');
+  const L = LAYERS[state.layer];
+  if (!L.sub) { box.classList.add('hidden'); box.innerHTML = ''; return; }
+  box.classList.remove('hidden');
+  const isWeapons = state.layer === 'weaponsPotential';
+  const seg = (name, items, cur) => `<div class="sub-row"><span class="sub-lab">${name}</span><div class="seg sub-seg">` +
+    items.map(i => `<button class="seg-b${i.k === cur ? ' on' : ''}" data-${i.g}="${i.k}" title="${esc(i.t || '')}">${esc(i.l)}</button>`).join('') +
+    '</div></div>';
+  box.innerHTML =
+    seg('View', [
+      { g: 'view', k: 'fissile', l: 'Tonnes', t: 'How much material each country holds' },
+      { g: 'view', k: 'weaponsPotential', l: 'Weapons', t: 'How many weapons that material could make' },
+    ], state.layer) +
+    seg('Material', [
+      { g: 'mat', k: 'all', l: 'All', t: 'Highly enriched uranium plus all separated plutonium' },
+      { g: 'mat', k: 'heu', l: 'HEU', t: 'Highly enriched uranium only' },
+      { g: 'mat', k: 'pu', l: 'Pu', t: 'Separated plutonium, military and civil' },
+      { g: 'mat', k: 'mil', l: 'Military', t: 'HEU plus military plutonium — excludes civil stocks' },
+    ], state.fisMat) +
+    (isWeapons ? seg('Per weapon', [
+      { g: 'sq', k: 'iaea', l: 'IAEA', t: 'The IAEA significant quantity: 25 kg of HEU or 8 kg of plutonium' },
+      { g: 'sq', k: 'modern', l: 'Modern', t: 'What a modern design actually uses: about 15 kg of HEU or 4 kg of plutonium' },
+    ], state.fisModern ? 'modern' : 'iaea') : '') +
+    `<div class="sub-note">${isWeapons
+      ? 'Material, not warheads. The world holds enough for roughly ' + fmtInt(worldFissile('w')) + " weapons and has built about 12,000 — and most of this material is under safeguards or pledged never to be used for one."
+      : 'IPFM and SIPRI estimates for 1 January 2025. Reactor-grade plutonium is weapon-usable too: the civil/military line is legal, not physical.'}</div>`;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('#subToggle .seg-b');
+  if (!b) return;
+  if (b.dataset.view) setLayer(b.dataset.view);
+  else if (b.dataset.mat) { state.fisMat = b.dataset.mat; refreshLayerView(); }
+  else if (b.dataset.sq) { state.fisModern = b.dataset.sq === 'modern'; refreshLayerView(); }
+});
+function refreshLayerView() {
+  if (state.flat) updateFlatColors(); else refreshGlobe();
+  updateLegend(); updateGlobal();
+  if (state.selected) showDetail(state.selected, countries.find(c => isoOf(c.properties) === state.selected));
+}
+
 function updateFilterBar() {
   const bar = document.getElementById('filterBar');
   const L = LAYERS[state.layer];
@@ -1083,6 +1216,7 @@ function updateFilterBar() {
 function updateLegend() {
   const L = LAYERS[state.layer], el = document.getElementById('legend');
   updateFilterBar();
+  updateSubToggle();
   if (L.kind === 'cat') {
     const order = L.order || Object.keys(L.cats);
     const on = state.catFilter;
@@ -1128,7 +1262,7 @@ function updateGlobal() {
     document.getElementById('gbRows').innerHTML = rows.map((r, i) =>
       `<div class="gb-row" data-iso="${r.iso}"><span class="gb-rank">${i + 1}</span>` +
       `<span class="gb-fl">${flagOf(r.iso)}</span><span class="gb-l">${esc(r.n)}</span>` +
-      `<span class="gb-v">${fmtNum(r.v, L.fmt)}${L.unit || ''}</span></div>`).join('');
+      `<span class="gb-v">${fmtNum(r.v, L.fmt)}${L.unit || ''}${L.sub && fissileOf(r.iso) && fissileOf(r.iso).partial ? '<span title="Part of this stock is not published — a floor, not a total" style="color:#8c9cab">+</span>' : ''}</span></div>`).join('');
   }
 }
 document.getElementById('filterBar').addEventListener('click', e => {

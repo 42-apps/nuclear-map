@@ -154,6 +154,16 @@ body{
 .cat-row.on{background:rgba(255,210,63,.13); border-color:rgba(255,210,63,.45); color:#fff}
 .cat-row.off{opacity:.38}
 .cat-row.off:hover{opacity:.7}
+#subToggle{margin:0 0 10px}
+.sub-row{display:flex; align-items:center; gap:8px; margin-bottom:5px}
+.sub-lab{flex:none; width:56px; font-size:9.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); font-weight:700}
+.sub-seg{flex:1; padding:2px}
+.sub-seg .seg-b{padding:4px 5px; font-size:10.5px; letter-spacing:.01em}
+.sub-note{margin-top:7px; font-size:9.5px; line-height:1.5; color:#6f8091}
+.detail-fissile{margin-top:2px}
+.fis-note{margin-top:7px; font-size:11px; line-height:1.55; color:#9fb3c4}
+.fis-note b{color:#cbd8e2}
+
 #filterBar{display:flex; align-items:center; gap:8px; margin:0 0 10px; padding:7px 9px; border-radius:9px;
   background:rgba(255,210,63,.10); border:1px solid rgba(255,210,63,.38)}
 .fb-txt{flex:1; font-size:10.5px; line-height:1.4; color:#ffd894}
