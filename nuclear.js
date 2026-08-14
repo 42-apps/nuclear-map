@@ -180,6 +180,7 @@ const state = {
   layer: 'status', year: Y1, hovered: null, selected: null, selectedSite: null,
   selectedEvent: null, playing: false, playDir: 1, flat: false, reach: null,
   zoomAlt: 2.45,
+  catFilter: new Set(),   // legend rows clicked: show only these statuses
   cats: Object.fromEntries(CAT_ORDER.map(k => [k, SITE_CATS[k].on])),
   evCats: Object.fromEntries(Object.keys(EVENT_CATS).map(k => [k, true])),
 };
@@ -356,6 +357,35 @@ function layerDomain(key) {
   const max = Math.max(...vals);
   return [0, max];
 }
+/* --------------------------- legend filtering ---------------------------
+   Clicking a legend row narrows the map to that category and stays narrowed
+   until it is cleared. Filtering only makes sense for the categorical layers;
+   the numeric ones show a ramp, not rows. */
+const filterActive = () => LAYERS[state.layer].kind === 'cat' && state.catFilter.size > 0;
+function countryPasses(iso) {
+  if (!filterActive()) return true;
+  return state.catFilter.has(valOf(iso, state.layer));
+}
+/* A site passes if EITHER the country hosting it or the country that owns the
+   weapons is in the filter — a US bomb at Incirlik belongs to both "declared
+   arsenal" and "hosts another state's weapons", and hiding it from either
+   would be the wrong answer. */
+function sitePasses(s) {
+  if (!filterActive()) return true;
+  return (s.host && countryPasses(s.host)) || (s.owner && countryPasses(s.owner));
+}
+function toggleCatFilter(k) {
+  if (state.catFilter.has(k)) state.catFilter.delete(k); else state.catFilter.add(k);
+  applyFilter();
+}
+function clearCatFilter() { if (!state.catFilter.size) return; state.catFilter.clear(); applyFilter(); }
+function applyFilter() {
+  if (state.flat) { updateFlatColors(); updateFlatMarkers(); } else refreshGlobe();
+  refreshMarkers();
+  updateLegend();
+  updateGlobal();
+}
+
 function valOf(iso, key, y) {
   const L = LAYERS[key];
   if (!C[iso]) return null;
@@ -388,11 +418,13 @@ let globe, countries = [];
 const elViz = document.getElementById('globeViz');
 const tooltip = document.getElementById('tooltip');
 
+const FILTERED_OUT = 'rgba(60,74,88,0.10)';
 function capColor(feat) {
   const iso = isoOf(feat.properties);
   const v = iso ? valOf(iso, state.layer) : null;
   const sel = state.selected && iso === state.selected, hov = state.hovered && iso === state.hovered;
   if (v == null) return (sel || hov) ? 'rgba(140,160,180,0.34)' : (C[iso] ? NEUTRAL : NODATA);
+  if (!countryPasses(iso)) return FILTERED_OUT;
   return colorFor(state.layer, v, sel ? 0.99 : hov ? 0.95 : 0.84);
 }
 function altOf(feat) {
@@ -486,7 +518,7 @@ function markerCap() {
 let lodTrimmed = 0;
 function visibleSites(y) {
   y = y == null ? state.year : y;
-  const all = SITES.filter(s => s.lat != null && s.lon != null && state.cats[catOf(s)] && siteActive(s, y));
+  const all = SITES.filter(s => s.lat != null && s.lon != null && state.cats[catOf(s)] && siteActive(s, y) && sitePasses(s));
   const cap = state.flat ? 4000 : markerCap();
   if (all.length <= cap) { lodTrimmed = 0; return all; }
   lodTrimmed = all.length - cap;
@@ -497,7 +529,7 @@ function markerData() {
   // one megatonnage badge per nuclear-armed country, at its arsenal's centre of gravity
   for (const iso in C) {
     const n = seriesAt(iso, state.year);
-    if (!n) continue;
+    if (!n || !countryPasses(iso)) continue;
     const mt = mtAt(iso, state.year);
     const p = countryCentroid(iso);
     if (!p) continue;
@@ -508,6 +540,7 @@ function markerData() {
   EVENTS.forEach(e => {
     if (e.lat == null || e.lon == null) return;
     if (!state.evCats[e.cat]) return;
+    if (filterActive() && !(e.iso3 && countryPasses(e.iso3)) && state.selectedEvent !== e.id) return;
     if (Math.abs(e.y - state.year) > band && state.selectedEvent !== e.id) return;
     out.push({ kind: 'ev', id: 'ev-' + e.id, lat: e.lat, lon: e.lon, e });
   });
@@ -546,7 +579,8 @@ function refreshMarkers() {
   const note = document.getElementById('gbNote');
   if (note) note.textContent = lodTrimmed
     ? `Showing the ${fmtInt(SITES.length - lodTrimmed)} most significant sites — zoom in for the other ${fmtInt(lodTrimmed)}`
-    : 'Click a country for its full nuclear profile · click a marker for the site';
+    : filterActive() ? 'Filtered · click the key again, or press Esc, to show everything'
+    : 'Click a country for its full profile · click a row in the key to filter';
 }
 
 /* ------------------------- reach rings (missile range) ------------------------- */
@@ -1030,21 +1064,37 @@ layerSel.innerHTML = LAYER_ORDER.map(k => `<option value="${k}">${LAYERS[k].labe
 layerSel.addEventListener('change', () => setLayer(layerSel.value));
 function setLayer(k) {
   if (!LAYERS[k]) return;
+  if (k !== state.layer) state.catFilter.clear();
   state.layer = k; layerSel.value = k;
   document.getElementById('layerDesc').textContent = LAYERS[k].desc || '';
   if (state.flat) updateFlatColors(); else refreshGlobe();
   updateLegend(); updateGlobal();
   if (state.selected) showDetail(state.selected, countries.find(c => isoOf(c.properties) === state.selected));
 }
+function updateFilterBar() {
+  const bar = document.getElementById('filterBar');
+  const L = LAYERS[state.layer];
+  if (!filterActive()) { bar.classList.add('hidden'); bar.innerHTML = ''; return; }
+  const names = [...state.catFilter].map(k => (L.cats[k] && L.cats[k].label) || k);
+  bar.classList.remove('hidden');
+  bar.innerHTML = `<span class="fb-txt">Showing only <b>${esc(names.join(' + ').toLowerCase())}</b></span>` +
+    `<button class="fb-clear" id="filtClear" title="Show everything again (Esc)">Clear</button>`;
+}
 function updateLegend() {
   const L = LAYERS[state.layer], el = document.getElementById('legend');
+  updateFilterBar();
   if (L.kind === 'cat') {
     const order = L.order || Object.keys(L.cats);
+    const on = state.catFilter;
     el.innerHTML = '<div class="cat-legend">' + order.map(k => {
       const n = Object.keys(C).filter(iso => valOf(iso, state.layer) === k).length;
       if (!n && k === 'none') return '';
-      return `<div class="cat-row" title="${esc((L.cats[k].desc || ''))}"><span class="cat-sw" style="background:${L.cats[k].color}"></span><span style="flex:1">${esc(L.cats[k].label)}</span><span class="cat-n">${n}</span></div>`;
-    }).join('') + '</div>';
+      const dim = on.size && !on.has(k);
+      return `<div class="cat-row${on.has(k) ? ' on' : ''}${dim ? ' off' : ''}" data-cat="${esc(k)}" role="button" tabindex="0"` +
+        ` title="${esc(L.cats[k].desc || '')}${L.cats[k].desc ? ' — ' : ''}Click to show only these"><span class="cat-sw" style="background:${L.cats[k].color}"></span>` +
+        `<span style="flex:1">${esc(L.cats[k].label)}</span><span class="cat-n">${n}</span></div>`;
+    }).join('') + '</div>' +
+    (on.size ? '' : '<div class="filt-hint">Click a row to show only those countries</div>');
   } else {
     const d = layerDomain(state.layer);
     const stops = [];
@@ -1067,20 +1117,32 @@ function updateGlobal() {
   let rows = Object.keys(C).map(iso => ({ iso, n: nameOf(iso), v: valOf(iso, state.layer), wh: seriesAt(iso, state.year) }));
   if (L.kind === 'cat') {
     const order = L.order || Object.keys(L.cats);
-    rows = rows.filter(r => r.v != null).sort((a, b) =>
+    rows = rows.filter(r => r.v != null && countryPasses(r.iso)).sort((a, b) =>
       order.indexOf(a.v) - order.indexOf(b.v) || (b.wh || 0) - (a.wh || 0) || a.n.localeCompare(b.n));
     document.getElementById('gbRows').innerHTML = rows.map(r =>
       `<div class="gb-row" data-iso="${r.iso}"><span class="gb-sw" style="background:${colorSolid(state.layer, r.v)}"></span>` +
       `<span class="gb-fl">${flagOf(r.iso)}</span><span class="gb-l">${esc(r.n)}</span>` +
       `<span class="gb-v">${r.wh ? fmtInt(r.wh) : ''}</span></div>`).join('');
   } else {
-    rows = rows.filter(r => r.v != null && r.v > 0).sort((a, b) => (L.sortAsc ? a.v - b.v : b.v - a.v));
+    rows = rows.filter(r => r.v != null && r.v > 0 && countryPasses(r.iso)).sort((a, b) => (L.sortAsc ? a.v - b.v : b.v - a.v));
     document.getElementById('gbRows').innerHTML = rows.map((r, i) =>
       `<div class="gb-row" data-iso="${r.iso}"><span class="gb-rank">${i + 1}</span>` +
       `<span class="gb-fl">${flagOf(r.iso)}</span><span class="gb-l">${esc(r.n)}</span>` +
       `<span class="gb-v">${fmtNum(r.v, L.fmt)}${L.unit || ''}</span></div>`).join('');
   }
 }
+document.getElementById('filterBar').addEventListener('click', e => {
+  if (e.target.closest('#filtClear')) clearCatFilter();
+});
+document.getElementById('legend').addEventListener('click', e => {
+  const r = e.target.closest('.cat-row');
+  if (r && r.dataset.cat) toggleCatFilter(r.dataset.cat);
+});
+document.getElementById('legend').addEventListener('keydown', e => {
+  const r = e.target.closest('.cat-row');
+  if (r && r.dataset.cat && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); toggleCatFilter(r.dataset.cat); }
+});
+
 document.getElementById('gbRows').addEventListener('click', e => {
   const r = e.target.closest('.gb-row'); if (r) gotoCountry(r.dataset.iso);
 });
@@ -1295,7 +1357,8 @@ function updateFlatColors() {
   if (!flatBuilt) return;
   document.querySelectorAll('.flat-cell').forEach(el => {
     const iso = el.dataset.iso, v = valOf(iso, state.layer);
-    el.setAttribute('fill', v == null ? (C[iso] ? NEUTRAL : NODATA) : colorFor(state.layer, v, 0.9));
+    el.setAttribute('fill', v == null ? (C[iso] ? NEUTRAL : NODATA)
+      : !countryPasses(iso) ? FILTERED_OUT : colorFor(state.layer, v, 0.9));
   });
   syncFlatSelection();
 }
@@ -1515,6 +1578,7 @@ function showToast(msg) {
 }
 function buildShareURL() {
   const seg = [state.layer, String(state.year), state.selected || '', state.selectedSite || ''];
+  if (state.catFilter.size) seg.push('f:' + [...state.catFilter].join('+'));
   if (state.flat) seg.push('flat');
   while (seg.length > 2 && seg[seg.length - 1] === '') seg.pop();
   return location.origin + location.pathname + '#' + seg.join(',');
@@ -1540,6 +1604,8 @@ function applyHash() {
   const p = h.split(',');
   if (p[0] && LAYERS[p[0]]) setLayer(p[0]);
   if (p[1] && /^\d{4}$/.test(p[1])) { state.year = Math.max(Y0, Math.min(Y1, parseInt(p[1], 10))); applyYear(); }
+  const f = p.find(x => x.startsWith('f:'));
+  if (f) { f.slice(2).split('+').filter(Boolean).forEach(k => state.catFilter.add(k)); applyFilter(); }
   if (p.includes('flat')) setFlat(true);
   if (p[2] && C[p[2]]) gotoCountry(p[2]);
   if (p[3] && SITE_BY_ID[p[3]]) selectSite(p[3], true);
@@ -1684,6 +1750,7 @@ document.addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
   if (e.key === 'Escape') {
     if (!document.getElementById('simOverlay').classList.contains('hidden')) return; // blast.js handles
+    if (state.catFilter.size) { clearCatFilter(); return; }
     ['aboutOverlay', 'chartOverlay', 'tutorial', 'flatTip'].forEach(hide);
     closeAll(); return;
   }

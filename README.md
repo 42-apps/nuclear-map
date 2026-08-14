@@ -20,6 +20,7 @@ kept, what they would do — and how the arsenals rose and fell from 1938 to 202
 | **Timeline** | Scrub or play 1938 → 2026. Watch military stockpiles peak at 64,452 warheads in 1986 and fall back, South Africa's six bombs appear in 1979 and vanish in 1991 — shown as an *undeclared* arsenal, which is what it was — and Ukraine's inherited weapons go home to Russia. |
 | **Detonation simulator** | Standard published effect radii for any warhead on any city — fireball, blast, burns, prompt radiation, fallout plume, crater, casualty ranges, shockwave arrival times. Or place a country's **entire arsenal** on the world's largest cities. |
 | **Reach rings** | How far each state's missiles actually get, drawn from where the arsenal really sits. |
+| **Filtering** | Click a row in the key to narrow the whole map — countries, markers, event pins and the ranking list — to that category, and it stays narrowed until cleared. Combine rows, clear with the button or Esc, and share the filtered view by link. |
 
 Also inside: **241 timeline events**, all **2,056 nuclear tests**, **134 delivery systems**, **15 treaties** with
 where each stands in 2026, national **fissile-material stockpiles**, **threshold assessments** for every state

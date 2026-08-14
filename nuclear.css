@@ -147,7 +147,21 @@ body{
 .ramp-bar{height:10px; border-radius:5px; box-shadow:inset 0 0 0 1px rgba(0,0,0,.35)}
 .ramp-ends{display:flex; justify-content:space-between; font-size:9.5px; color:var(--muted); margin-top:3px; font-variant-numeric:tabular-nums}
 .cat-legend{display:flex; flex-direction:column; gap:5px}
-.cat-row{display:flex; align-items:center; gap:8px; font-size:12px; color:#cbd8e2; cursor:default}
+.cat-row{display:flex; align-items:center; gap:8px; font-size:12px; color:#cbd8e2; cursor:pointer;
+  padding:3px 6px; margin:0 -6px; border-radius:6px; border:1px solid transparent; transition:background .12s, opacity .12s}
+.cat-row:hover{background:rgba(255,255,255,.08)}
+.cat-row:focus-visible{outline:none; border-color:var(--accent)}
+.cat-row.on{background:rgba(255,210,63,.13); border-color:rgba(255,210,63,.45); color:#fff}
+.cat-row.off{opacity:.38}
+.cat-row.off:hover{opacity:.7}
+#filterBar{display:flex; align-items:center; gap:8px; margin:0 0 10px; padding:7px 9px; border-radius:9px;
+  background:rgba(255,210,63,.10); border:1px solid rgba(255,210,63,.38)}
+.fb-txt{flex:1; font-size:10.5px; line-height:1.4; color:#ffd894}
+.fb-txt b{color:#fff}
+.fb-clear{flex:none; padding:4px 10px; border-radius:7px; cursor:pointer; font:inherit; font-size:10.5px; font-weight:800;
+  letter-spacing:.05em; text-transform:uppercase; background:var(--accent); color:var(--accent-ink); border:none}
+.fb-clear:hover{background:#ffdf6d}
+.filt-hint{margin-top:7px; font-size:9.5px; color:#6f8091; letter-spacing:.02em}
 .cat-sw{width:12px; height:12px; border-radius:3px; flex:none; box-shadow:0 0 0 1px rgba(0,0,0,.35)}
 .cat-n{color:var(--muted); font-variant-numeric:tabular-nums}
 .site-toggles{display:flex; flex-wrap:wrap; gap:5px}
