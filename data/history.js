@@ -1262,6 +1262,1332 @@ window.NUKE_TESTS = [
 ];
 
 window.NUKE_HUMAN = {
+ "bombings": [
+  {
+   "city": "Hiroshima",
+   "lat": 34.3946,
+   "lon": 132.4548,
+   "date": "1945-08-06",
+   "weapon": "Little Boy",
+   "kt": 15,
+   "burstM": 580,
+   "immediate": "70000-80000",
+   "byEnd1945": "90000-166000 (Hiroshima City's own figure: roughly 140,000, +/- 10,000)",
+   "injured": "approx. 70,000 (Manhattan Engineer District: 69,000-72,000); some Japanese surveys give up to 79,000",
+   "destroyedKm2": 13,
+   "b": "At 08:15 on 6 August 1945 a single gun-type uranium bomb detonated about 580 m above the centre of Hiroshima. Roughly 70,000-80,000 people died that day; about 140,000 were dead by the end of 1945. The city's official position is that the exact toll will never be known. Almost two-thirds of the city's buildings were destroyed outright and 13 sq km burned. The uranium in the bomb came in substantial part from the Shinkolobwe mine in the Belgian Congo, linking Hiroshima to a second group of victims 12,000 km away.",
+   "sources": [
+    {
+     "title": "https://www.city.hiroshima.lg.jp/english/peace/1029875/1010074.html"
+    },
+    {
+     "title": "https://thebulletin.org/2020/08/counting-the-dead-at-hiroshima-and-nagasaki/"
+    },
+    {
+     "title": "https://www.hiroshimapeacemedia.jp/?p=101616"
+    },
+    {
+     "title": "https://www.rerf.or.jp/library/scidata/scids/ds02/pdf/chapter01/cha01-p42-61.pdf"
+    },
+    {
+     "title": "https://www.icanw.org/hiroshima_and_nagasaki_bombings"
+    },
+    {
+     "title": "https://www.atomicarchive.com/resources/documents/med/med_chp10.html"
+    }
+   ]
+  },
+  {
+   "city": "Nagasaki",
+   "lat": 32.7702,
+   "lon": 129.8657,
+   "date": "1945-08-09",
+   "weapon": "Fat Man",
+   "kt": 21,
+   "burstM": 503,
+   "immediate": "35000-40000",
+   "byEnd1945": "60000-80000 (most commonly given as approximately 70,000 +/- 10,000)",
+   "injured": "74,909 (Nagasaki City 1950 figures); the Manhattan Engineer District survey gave only about 25,000",
+   "destroyedKm2": 6.7,
+   "b": "Nagasaki was not the intended target. Cloud over Kokura sent Bockscar to its secondary, and cloud over Nagasaki pushed the drop about 3 km off the aiming point into the Urakami valley - the historic heart of Japanese Catholicism, home to a community descended from the 'hidden Christians' who had survived 250 years of persecution. Between 60,000 and 80,000 people were dead by the end of 1945. The hills that limited the destroyed area to about 6.7 sq km also concentrated it: within the valley, survival was rare.",
+   "sources": [
+    {
+     "title": "https://nagasakipeace.jp/en/reference/materials/kids/higai.html"
+    },
+    {
+     "title": "https://thebulletin.org/2020/08/counting-the-dead-at-hiroshima-and-nagasaki/"
+    },
+    {
+     "title": "https://www.rerf.or.jp/library/scidata/scids/ds02/pdf/chapter01/cha01-p42-61.pdf"
+    },
+    {
+     "title": "https://www.atomicarchive.com/resources/documents/med/med_chp10.html"
+    },
+    {
+     "title": "https://www.icanw.org/hiroshima_and_nagasaki_bombings"
+    },
+    {
+     "title": "https://nagasakipeace.jp/en/search/record/photo/part_2_03.html"
+    }
+   ]
+  }
+ ],
+ "affected": [
+  {
+   "name": "Genbaku Dome (Hiroshima Peace Memorial)",
+   "lat": 34.3955,
+   "lon": 132.4536,
+   "iso3": "JPN",
+   "b": "The former Hiroshima Prefectural Industrial Promotion Hall, about 160 m from the hypocentre. Because the detonation was almost directly overhead the blast pressed down rather than sideways, leaving the steel dome frame and parts of the walls standing. Preserved after a long civic debate, listed by UNESCO in 1996 as a 'stark and powerful symbol' of the world's most destructive force.",
+   "people": "Everyone inside the building at 08:15 was killed instantly.",
+   "sources": [
+    {
+     "title": "https://whc.unesco.org/en/list/775/"
+    },
+    {
+     "title": "https://www.pcf.city.hiroshima.jp/virtual/map-e/irei/tour_43_e.html"
+    }
+   ]
+  },
+  {
+   "name": "Urakami Cathedral, Nagasaki",
+   "lat": 32.7773,
+   "lon": 129.8683,
+   "iso3": "JPN",
+   "b": "About 500 m from the hypocentre. The largest Catholic cathedral in East Asia was destroyed with its congregation inside. The ruined facade stood until 1958; over survivor objections it was cleared and a new cathedral built in 1959. A surviving section of the original wall was moved to Nagasaki Peace Park.",
+   "people": "Nagasaki's Catholic community, roughly 12,000 strong in the Urakami district, lost an estimated 8,500 members.",
+   "sources": [
+    {
+     "title": "https://nagasakipeace.jp/en/search/record/photo/part_2_03.html"
+    },
+    {
+     "title": "https://www.japan-guide.com/e/e4416.html"
+    }
+   ]
+  },
+  {
+   "name": "Bikini Atoll",
+   "lat": 11.5833,
+   "lon": 165.3833,
+   "iso3": "MHL",
+   "b": "23 US nuclear tests, 1946-1958, including Castle Bravo (1 March 1954, 15 Mt - the largest US test ever, and roughly 2.5 times the predicted yield). The 167 Bikinians were moved to Rongerik in March 1946 after being asked to leave 'for the good of mankind'. Rongerik could not feed them; near-starvation followed, then a stint in tents beside the Kwajalein runway, then Kili Island in 1948. Most Bikinians still cannot go home.",
+   "people": "167 people displaced in 1946; their descendants, now several thousand, remain in exile 80 years later.",
+   "sources": [
+    {
+     "title": "https://www.armscontrol.org/act/2014-03/no-promised-land-shared-legacy-castle-bravo-nucle…"
+    },
+    {
+     "title": "https://nsarchive.gwu.edu/briefing-book/nuclear-vault/2024-02-29/castle-bravo-70-worst-nu…"
+    },
+    {
+     "title": "https://www.bikiniatoll.com/history.html"
+    }
+   ]
+  },
+  {
+   "name": "Rongelap Atoll",
+   "lat": 11.15,
+   "lon": 166.85,
+   "iso3": "MHL",
+   "b": "Roughly 160 km downwind of Castle Bravo. Hours after the 1 March 1954 shot, white fallout ash fell like snow on Rongelap; children played in it. The US evacuated the islanders two days later. Skin burns, hair loss, and depressed blood counts followed within weeks; thyroid disease, thyroid cancers and a childhood leukaemia death followed over decades. Islanders were returned in 1957 to an atoll still contaminated, and were studied without informed consent under 'Project 4.1' - a study of human response to fallout that the Marshallese were never told they were part of. In 1985 the community evacuated itself aboard the Greenpeace vessel Rainbow Warrior. Resettlement remains uncertain in 2026.",
+   "people": "64 people on Rongelap and 18 on Ailinginae at the time of the fallout; 236-253 Marshallese in total evacuated from Rongelap, Rongerik and Utrik. Estimated adult internal doses of 60-300 rem; external exposure around 130 roentgen.",
+   "sources": [
+    {
+     "title": "https://www.armscontrol.org/act/2014-03/no-promised-land-shared-legacy-castle-bravo-nucle…"
+    },
+    {
+     "title": "https://nsarchive.gwu.edu/briefing-book/nuclear-vault/2024-02-29/castle-bravo-70-worst-nu…"
+    },
+    {
+     "title": "https://marshallislands.llnl.gov/affected-areas/rongelap-atoll"
+    },
+    {
+     "title": "https://www.ncbi.nlm.nih.gov/books/NBK236609/"
+    }
+   ]
+  },
+  {
+   "name": "Utrik (Utirik) Atoll",
+   "lat": 11.2333,
+   "lon": 169.85,
+   "iso3": "MHL",
+   "b": "About 500 km east of Bikini and also dusted by Castle Bravo fallout. Its 157 residents were evacuated three days after the test and returned in June 1954. Utrik people were enrolled in the same long-term medical surveillance programme as the Rongelapese and have elevated thyroid disease rates.",
+   "people": "157 people evacuated in March 1954.",
+   "sources": [
+    {
+     "title": "https://www.armscontrol.org/act/2014-03/no-promised-land-shared-legacy-castle-bravo-nucle…"
+    },
+    {
+     "title": "https://marshallislands.llnl.gov/affected-areas/rongelap-atoll"
+    }
+   ]
+  },
+  {
+   "name": "Runit Dome (Cactus Dome), Enewetak Atoll",
+   "lat": 11.5525,
+   "lon": 162.3474,
+   "iso3": "MHL",
+   "b": "A 115 m wide, 46 cm thick unreinforced concrete cap poured over the crater left by the 1958 Cactus shot, filled between 1977 and 1980 with roughly 73,000-85,000 cubic metres of plutonium-contaminated soil and debris scraped from six islands. The crater floor was never lined: it sits on porous coral, and the US Department of Energy accepts that groundwater beneath the dome rises and falls with the tide and exchanges with the lagoon. Surface cracks have appeared and the structure is exposed to sea-level rise and storm surge; a 2024 Pacific Northwest National Laboratory study identified storm surge and sea-level rise as the dominant future pathways for radionuclide spread. DOE maintains the…",
+   "people": "Roughly 4,000-6,000 US servicemen carried out the 1977-80 cleanup in t-shirts and shorts without dosimetry or protective equipment. A 2018 Department of Defense report concluded they were not exposed to harmful levels; the VA therefore grants them no presumption of exposure, and over 86% of their claims have been denied. The Enewetak people themselves were displaced from 1947 and only partially resettled from 1980.",
+   "sources": [
+    {
+     "title": "https://www.doi.gov/oia/press/interior-and-energy-leverage-resources-and-expertise-conduc…"
+    },
+    {
+     "title": "https://www.energy.gov/node/4844384"
+    },
+    {
+     "title": "https://ahf.nuclearmuseum.org/ahf/history/atomic-veterans-enewetak-atoll/"
+    },
+    {
+     "title": "https://www.wagingpeace.org/runit-dome-cracks-marshall-islands-nuclear-waste/"
+    }
+   ]
+  },
+  {
+   "name": "Kili Island (Bikinian exile community)",
+   "lat": 5.6442,
+   "lon": 169.1206,
+   "iso3": "MHL",
+   "b": "A single 80-hectare island with no lagoon and no safe anchorage, where the Bikinians were finally settled in 1948 after Rongerik and Kwajalein. A people who had lived by lagoon fishing were placed somewhere they could not fish for months of the year. Kili is now itself threatened by inundation.",
+   "people": "The majority of the Bikinian population still lives on Kili or on Ejit in Majuro.",
+   "sources": [
+    {
+     "title": "https://www.bikiniatoll.com/history.html"
+    },
+    {
+     "title": "https://thebikiniproject.org/the-bikini-people/"
+    }
+   ]
+  },
+  {
+   "name": "Daigo Fukuryu Maru (Lucky Dragon No. 5) memorial, Tokyo",
+   "lat": 35.6478,
+   "lon": 139.8272,
+   "iso3": "JPN",
+   "b": "A Japanese tuna longliner from Yaizu, fishing well outside the declared danger zone, was covered in Castle Bravo fallout ash on 1 March 1954. All 23 crew developed acute radiation sickness. Chief radio operator Aikichi Kuboyama died on 23 September 1954, aged 40 - generally counted as the first fatality of the hydrogen bomb. Contaminated tuna reaching Japanese markets triggered a nationwide panic, a petition drive that gathered over 30 million signatures, the founding of the Japanese anti-nuclear movement, and, indirectly, Godzilla. The boat is preserved in a hall in Yumenoshima Park, Tokyo. Hundreds of other Japanese fishing vessels were also contaminated; their crews were largely…",
+   "people": "23 crew irradiated, 1 died within seven months.",
+   "sources": [
+    {
+     "title": "https://en.wikipedia.org/wiki/Daigo_Fukury%C5%AB_Maru"
+    },
+    {
+     "title": "https://www.dark-tourism.com/index.php/1317-luckydragon5"
+    }
+   ]
+  },
+  {
+   "name": "Semipalatinsk Test Site - Opytnoye Pole ground zero, 'the Polygon'",
+   "lat": 50.4381,
+   "lon": 77.8142,
+   "iso3": "KAZ",
+   "b": "18,500 sq km of Kazakh steppe where the USSR conducted 456 nuclear tests between 1949 and 1989, including 111 atmospheric shots. Villages downwind were never evacuated; in some cases residents were deliberately left in place and studied. Kazakhstan closed the site by presidential decree on 29 August 1991 - the date the UN now marks as the International Day against Nuclear Tests.",
+   "people": "Commonly cited as 1.5 million people exposed; Kazakhstan's 1992 social protection law originally registered 1.6 million eligible victims, revised to about 1.2 million by 1998. Documented excesses of leukaemia, solid cancers, thyroid disease, congenital anomalies and hypertension in the downwind districts persist into the third generation.",
+   "sources": [
+    {
+     "title": "https://www.nti.org/education-center/facilities/semipalatinsk-test-site/"
+    },
+    {
+     "title": "https://nuclear-justice.net/law/kazakhstan/"
+    },
+    {
+     "title": "https://www.hiroshimapeacemedia.jp/?p=24211"
+    },
+    {
+     "title": "https://www.sciencedirect.com/science/article/abs/pii/S0013935118303815"
+    }
+   ]
+  },
+  {
+   "name": "Kurchatov (Semipalatinsk-21), Kazakhstan",
+   "lat": 50.7539,
+   "lon": 78.5406,
+   "iso3": "KAZ",
+   "b": "The closed city built in 1947 on the Irtysh as headquarters for the Soviet test programme, named after physicist Igor Kurchatov. Today it hosts Kazakhstan's National Nuclear Center, which monitors the residual contamination and the health of the exposed population.",
+   "people": "Approx. 10,000 residents today, down from around 50,000 at the programme's peak.",
+   "sources": [
+    {
+     "title": "https://www.nti.org/education-center/facilities/semipalatinsk-test-site/"
+    },
+    {
+     "title": "https://caravanistan.com/kazakhstan/north/semey/kurchatov-polygon/"
+    }
+   ]
+  },
+  {
+   "name": "Semey (formerly Semipalatinsk) city",
+   "lat": 50.4111,
+   "lon": 80.2275,
+   "iso3": "KAZ",
+   "b": "The regional city about 150 km from the test field, whose name became a byword for the Soviet programme's human cost. Its oncology and genetics institutes hold much of the surviving clinical record.",
+   "people": "Population around 350,000; part of the 1.2-1.5 million registered as exposed.",
+   "sources": [
+    {
+     "title": "https://www.hiroshimapeacemedia.jp/?p=24211"
+    },
+    {
+     "title": "https://cabar.asia/en/semipalatinsk-test-site-the-legacy-of-the-past-hopes-for-the-future"
+    }
+   ]
+  },
+  {
+   "name": "Maralinga, South Australia",
+   "lat": -30.1667,
+   "lon": 131.6167,
+   "iso3": "AUS",
+   "b": "Seven British nuclear tests, 1956-1957, on the traditional lands of the Maralinga Tjarutja and Pitjantjatjara Anangu. The land was declared 'uninhabited'; it was not. Anangu families walked through contaminated country, and the 'black mist' of the earlier Emu Field tests was reported over Aboriginal communities. The 1985 McClelland Royal Commission found significant hazards remained and criticised the failure to ensure Aboriginal safety.",
+   "people": "Anangu traditional owners displaced and exposed; British, Australian and New Zealand servicemen exposed. Australia paid A$13.5 million to the Maralinga Tjarutja in 1994 - for the contaminated land, not for the people. Aboriginal people near the sites and test veterans show higher cancer incidence and mortality than the general population.",
+   "sources": [
+    {
+     "title": "https://en.wikipedia.org/wiki/British_nuclear_tests_at_Maralinga"
+    },
+    {
+     "title": "https://www.nma.gov.au/defining-moments/resources/maralinga"
+    },
+    {
+     "title": "https://aiatsis.gov.au/collections/item/M0036082"
+    }
+   ]
+  },
+  {
+   "name": "Taranaki site, Maralinga (Vixen B plutonium trials)",
+   "lat": -29.8922,
+   "lon": 131.5917,
+   "iso3": "AUS",
+   "b": "Site of the last Maralinga detonation (October 1957) and of 12 'Vixen B' safety trials in 1960-63 which blew apart nuclear devices with conventional explosive, scattering about 22 kg of plutonium-239 and more than 40 kg of uranium across the desert. Rehabilitated at a cost of over A$100 million and declared clean in March 2000, with the explicit exception of about 120 sq km at Taranaki which may be traversed but is not safe to live on.",
+   "people": "Anangu were formally handed back the land in 2009, minus the still-restricted Taranaki area.",
+   "sources": [
+    {
+     "title": "https://en.wikipedia.org/wiki/British_nuclear_tests_at_Maralinga"
+    },
+    {
+     "title": "https://www.osti.gov/etdeweb/servlets/purl/611834"
+    }
+   ]
+  },
+  {
+   "name": "Emu Field, South Australia",
+   "lat": -28.7,
+   "lon": 132.3667,
+   "iso3": "AUS",
+   "b": "Two British tests (Operation Totem, October 1953). The 'black mist' reported rolling over Anangu camps at Wallatinna and Mintabie after Totem 1 is one of the most contested episodes in the Australian record; Aboriginal witnesses described a black oily cloud followed by vomiting, skin sores, eye problems and deaths.",
+   "people": "Anangu communities downwind. The Royal Commission accepted the black mist accounts as genuine reports of a real event.",
+   "sources": [
+    {
+     "title": "https://www.nma.gov.au/defining-moments/resources/maralinga"
+    },
+    {
+     "title": "https://aiatsis.gov.au/collections/item/M0036082"
+    }
+   ]
+  },
+  {
+   "name": "Monte Bello Islands, Western Australia",
+   "lat": -20.4083,
+   "lon": 115.5333,
+   "iso3": "AUS",
+   "b": "Britain's first nuclear test (Hurricane, 3 October 1952, detonated in the hull of HMS Plym) and two 1956 Mosaic tests. Mosaic G2 produced a far larger yield than announced and its plume drifted over the Australian mainland.",
+   "people": "British and Australian naval and RAF personnel; fallout crossed populated parts of northern Australia.",
+   "sources": [
+    {
+     "title": "https://www.nma.gov.au/defining-moments/resources/maralinga"
+    }
+   ]
+  },
+  {
+   "name": "Moruroa Atoll",
+   "lat": -21.8333,
+   "lon": -138.9167,
+   "iso3": "PYF",
+   "b": "The main French Pacific test site: 41 atmospheric tests 1966-1974 and 137 underground tests to 1996, together with Fangataufa. The atoll's basalt is fissured by the underground shots and subsidence has occurred; France monitors it under the Telsite programme.",
+   "people": "Roughly 6,000 Polynesian workers were employed at the sites. The 2021 Toxique investigation reconstructed the fallout and concluded that approximately 110,000 people - effectively the entire population of French Polynesia at the time - were exposed to doses that would qualify them for compensation, about ten times the official French estimate.",
+   "sources": [
+    {
+     "title": "https://disclose.ngo/en/investigations/moruroa-files"
+    },
+    {
+     "title": "https://scienceandglobalsecurity.org/archive/sgs30philippe.pdf"
+    },
+    {
+     "title": "https://sgs.princeton.edu/news-announcements/news-2021-03-10"
+    }
+   ]
+  },
+  {
+   "name": "Fangataufa Atoll",
+   "lat": -22.2333,
+   "lon": -138.75,
+   "iso3": "PYF",
+   "b": "The second French Pacific site, used for the highest-yield French tests including Canopus (24 August 1968, 2.6 Mt), France's first thermonuclear test.",
+   "people": "Test-site workforce; fallout from the atmospheric series reached inhabited atolls to the north and west.",
+   "sources": [
+    {
+     "title": "https://disclose.ngo/en/investigations/moruroa-files"
+    },
+    {
+     "title": "https://scienceandglobalsecurity.org/archive/sgs30philippe.pdf"
+    }
+   ]
+  },
+  {
+   "name": "Tureia Atoll",
+   "lat": -20.7833,
+   "lon": -138.5667,
+   "iso3": "PYF",
+   "b": "The inhabited atoll closest to Moruroa, roughly 100 km away, repeatedly under the plume of atmospheric tests. Toxique reconstructed doses to its small population far above what French authorities had acknowledged.",
+   "people": "A few hundred residents at the time of the tests.",
+   "sources": [
+    {
+     "title": "https://disclose.ngo/en/investigations/moruroa-files"
+    },
+    {
+     "title": "https://scienceandglobalsecurity.org/archive/sgs30philippe.pdf"
+    }
+   ]
+  },
+  {
+   "name": "Papeete, Tahiti",
+   "lat": -17.5516,
+   "lon": -149.5585,
+   "iso3": "PYF",
+   "b": "The Toxique / Moruroa Files investigation (2021) reconstructed the plume from the Centaure test of 17 July 1974 and concluded it passed directly over Tahiti, then home to about 110,000 people, delivering doses two to ten times higher than the French Atomic Energy Commission had recorded - in part because official reconstructions omitted contaminated rainwater, the island's main drinking supply.",
+   "people": "Approximately 110,000 people in French Polynesia estimated to have been exposed above the compensation threshold.",
+   "sources": [
+    {
+     "title": "https://disclose.ngo/en/investigations/moruroa-files"
+    },
+    {
+     "title": "https://www.tandfonline.com/doi/abs/10.1080/08929882.2022.2111757"
+    },
+    {
+     "title": "https://arxiv.org/pdf/2103.06128"
+    }
+   ]
+  },
+  {
+   "name": "Reggane (Hamoudia), Algerian Sahara",
+   "lat": 26.7167,
+   "lon": 0.1667,
+   "iso3": "DZA",
+   "b": "Four French atmospheric tests, February 1960 to April 1961, beginning with Gerboise Bleue (70 kt, about four times Hiroshima). France employed roughly 6,500 engineers, soldiers and researchers alongside about 3,500 Algerian labourers. Contaminated equipment and waste were buried on site and remain there.",
+   "people": "Algerian labourers, conscripts and nomadic Tuareg communities. Algeria's APS news agency has cited at least 30,000 Algerians sickened by fallout - a figure not independently verified. Of 545 people compensated under France's 2010 Morin law as of 2021, one was Algerian.",
+   "sources": [
+    {
+     "title": "https://www.icanw.org/66_years_after_first_french_nuclear_test_in_algeria"
+    },
+    {
+     "title": "https://eu.boell.org/sites/default/files/importedFiles/2020/07/13/Collin-Bouveret-2020-Ra…"
+    },
+    {
+     "title": "https://newint.org/arms/2026/open-wounds-legacy-french-nuclear-tests-algeria"
+    }
+   ]
+  },
+  {
+   "name": "In Ekker / Tan Afella, Hoggar Mountains, Algeria",
+   "lat": 24.05,
+   "lon": 5.05,
+   "iso3": "DZA",
+   "b": "Thirteen French underground tests, 1961-1966 - eleven of them after Algerian independence in 1962. The Beryl shot of 1 May 1962 vented catastrophically when the tunnel seal failed: radioactive rock and dust jetted from the mountainside as ministers and officials watched. Nine soldiers received up to 600 mSv, around 100 more roughly 50 mSv, and villagers nearby were also exposed. In February 2026 Algeria announced its first clean-up operations at Tan Afella, collecting contaminated waste into concrete containers.",
+   "people": "Nine soldiers heavily contaminated, approx. 100 more exposed, plus local Tuareg populations. Algeria's parliament debated the issue for the first time in February 2025 and issued 13 recommendations on justice, transparency and research.",
+   "sources": [
+    {
+     "title": "https://en.wikipedia.org/wiki/B%C3%A9ryl_incident"
+    },
+    {
+     "title": "https://www.icanw.org/66_years_after_first_french_nuclear_test_in_algeria"
+    },
+    {
+     "title": "https://newint.org/arms/2026/open-wounds-legacy-french-nuclear-tests-algeria"
+    }
+   ]
+  },
+  {
+   "name": "Nevada National Security Site (Yucca Flat)",
+   "lat": 37.05,
+   "lon": -116.05,
+   "iso3": "USA",
+   "b": "928 US nuclear tests between 1951 and 1992, including 100 atmospheric shots whose fallout crossed the continental United States. The land is the traditional territory of the Western Shoshone, who have never ceded it.",
+   "people": "Approximately 200,000 'atomic veterans' participated in US atmospheric tests. A 1997 National Cancer Institute study estimated that iodine-131 fallout from Nevada testing, concentrated in milk, could cause on the order of 10,000-75,000 additional thyroid cancers among Americans alive at the time.",
+   "sources": [
+    {
+     "title": "https://www.cancer.gov/about-nci/legislative/hearings/1997-estimated-exposures-thyroid-do…"
+    },
+    {
+     "title": "https://www.ncbi.nlm.nih.gov/books/NBK100833/"
+    },
+    {
+     "title": "https://thenevadaindependent.com/article/complicated-legacy-of-nuclear-testing-in-nevada-…"
+    }
+   ]
+  },
+  {
+   "name": "St George, Utah (Nevada downwinders)",
+   "lat": 37.0965,
+   "lon": -113.5684,
+   "iso3": "USA",
+   "b": "The archetypal downwind town, repeatedly under fallout plumes from Nevada shots in the 1950s - notably the 1953 Harry shot, nicknamed 'Dirty Harry'. Residents were told the fallout was harmless. Elevated leukaemia and thyroid cancer among those who were children there in the 1950s is documented in the epidemiological literature and is the historical basis of the Radiation Exposure Compensation Act.",
+   "people": "Downwind communities across Utah, Nevada and Arizona; RECA was created for them in 1990.",
+   "sources": [
+    {
+     "title": "https://www.congress.gov/crs-product/R43956"
+    },
+    {
+     "title": "https://www.scientificamerican.com/article/nuclear-testing-downwinders-speak-about-histor…"
+    }
+   ]
+  },
+  {
+   "name": "Trinity Site, New Mexico",
+   "lat": 33.6773,
+   "lon": -106.4754,
+   "iso3": "USA",
+   "b": "The first nuclear explosion, 16 July 1945, 21 kt. Nobody living nearby was warned, evacuated or monitored. Ranching families in the Tularosa Basin, many Hispano and Mescalero Apache, drank from open cisterns and ate food grown in the fallout. They were excluded from RECA for 35 years.",
+   "people": "Tens of thousands of people lived within 80 km. The Tularosa Basin Downwinders Consortium campaigned from 2005; the 2025 RECA reauthorisation made New Mexico downwinders eligible for the first time.",
+   "sources": [
+    {
+     "title": "https://www.nps.gov/articles/000/trinity-test-downwinders.htm"
+    },
+    {
+     "title": "https://nukewatch.org/new-and-updated-item/tbdc-reca-new-info/"
+    },
+    {
+     "title": "https://www.abqjournal.com/opinion/opinion-new-mexico-downwinders-are-now-able-to-apply-f…"
+    }
+   ]
+  },
+  {
+   "name": "Lop Nur nuclear test base (Malan), Xinjiang",
+   "lat": 41.5448,
+   "lon": 88.712,
+   "iso3": "CHN",
+   "b": "China's only nuclear test site: 45 tests between 1964 and 1996, of which 23 were atmospheric - the last atmospheric test by any state, in 1980. The surrounding region of Xinjiang is home to Uyghur and Kazakh populations. China has published no health data.",
+   "people": "Japanese physicist Jun Takada modelled fallout from the atmospheric series and estimated approximately 194,000 deaths from acute exposure and 1.2 million people receiving doses high enough to induce leukaemia, solid cancers or foetal damage. This estimate is SUSPECTED, not established: Takada was never permitted into China, extrapolated from Soviet-era data and population density, and described his own figure as 'a conservative minimum'. Other exiled Uyghur medical practitioners have made comparable claims. No independent epidemiology exists.",
+   "sources": [
+    {
+     "title": "https://www.scientificamerican.com/article/did-chinas-nuclear-tests/"
+    },
+    {
+     "title": "https://hibakusha-worldwide.org/en/locations/lop-nor"
+    },
+    {
+     "title": "https://www.tandfonline.com/doi/full/10.1080/10736700.2025.2497201"
+    }
+   ]
+  },
+  {
+   "name": "Kiritimati (Christmas Island), Kiribati",
+   "lat": 1.8721,
+   "lon": -157.4278,
+   "iso3": "KIR",
+   "b": "Britain's Operation Grapple thermonuclear tests (1957-58) and UK participation in the US Operation Dominic (1962). Servicemen were ordered to sit on the beach with their backs to the blast, hands over closed eyes, in shorts and shirtsleeves; many describe seeing the bones of their own hands. Gilbertese and Ellice Islander labourers and their families were on the island, as were plantation workers, and were not evacuated for all shots.",
+   "people": "More than 22,000 British servicemen took part in UK nuclear tests and clean-ups. Veterans' groups report elevated leukaemia, liver, stomach, lung, prostate, bladder and CNS cancers, and blood disorders. A campaign medal was finally awarded in 2022, but unlike the US, France and Russia the UK has never established a compensation scheme; a fight continues in 2025-26 over missing blood-test records held by the Atomic Weapons Establishment.",
+   "sources": [
+    {
+     "title": "https://www.chathamhouse.org/publications/the-world-today/2025-06/long-fight-justice-brit…"
+    },
+    {
+     "title": "https://www.forcesnews.com/veterans/justice-nuclear-test-veterans-2025-andy-burnham-urges"
+    },
+    {
+     "title": "https://www.tandfonline.com/doi/full/10.1080/13619462.2025.2485894"
+    }
+   ]
+  },
+  {
+   "name": "Malden Island, Kiribati",
+   "lat": -4.0333,
+   "lon": -154.9167,
+   "iso3": "KIR",
+   "b": "Target island for the first three Grapple tests in May-June 1957, with the observing fleet and personnel stationed offshore and on Christmas Island.",
+   "people": "British naval and RAF personnel.",
+   "sources": [
+    {
+     "title": "https://unireadinghistory.com/2025/09/29/britains-atomic-bombs-operation-grapple/"
+    }
+   ]
+  },
+  {
+   "name": "Navajo Nation uranium mining region (Window Rock, AZ)",
+   "lat": 35.6781,
+   "lon": -109.0578,
+   "iso3": "USA",
+   "b": "From 1944 to 1986 nearly 30 million tons of uranium ore were mined on and around Navajo lands for the US weapons programme. EPA has screened 521 abandoned uranium mine areas across the Nation. Miners worked without ventilation, respirators or any explanation of radon; families built homes from mine tailings and drank from unmarked contaminated wells. The link between the disease and the work was known to the US government before most of the mining took place.",
+   "people": "Thousands of Navajo miners and their families. Excess lung cancer, silicosis and kidney disease are documented. Navajo miners were a core original beneficiary group of RECA (1990); more than 500,000 people on the Nation still lack reliable safe drinking water in parts of the affected area.",
+   "sources": [
+    {
+     "title": "https://www.epa.gov/navajo-nation-uranium-cleanup"
+    },
+    {
+     "title": "https://archive.epa.gov/region9/superfund/web/html/abandoned-uranium.html"
+    },
+    {
+     "title": "https://energyhistory.yale.edu/uranium-mining-in-the-navajo-nation"
+    },
+    {
+     "title": "https://www.congress.gov/crs-product/R43956"
+    }
+   ]
+  },
+  {
+   "name": "Church Rock uranium mill spill, New Mexico",
+   "lat": 35.6417,
+   "lon": -108.6061,
+   "iso3": "USA",
+   "b": "On 16 July 1979 - the 34th anniversary of Trinity - a United Nuclear Corporation tailings dam failed, releasing about 94 million US gallons of acidic radioactive liquid and 1,100 tons of solid waste into the Puerco River. It remains the largest accidental release of radioactive material in US history by volume, larger in radioactivity terms than Three Mile Island, and is far less well known. Navajo families and livestock used the Puerco. Contamination was still being detected 80 km downstream at Sanders, Arizona, in 2015. The Northeast Church Rock Mine cleanup, involving about 1.4 million tons of contaminated soil, is ongoing.",
+   "people": "Downstream Navajo communities; no evacuation was ordered and residents were not promptly warned.",
+   "sources": [
+    {
+     "title": "https://archive.epa.gov/region9/superfund/web/html/ne-church-rock-mine.html"
+    },
+    {
+     "title": "https://nmindepth.com/2014/remembering-the-largest-radioactive-spill-in-u-s-history/"
+    },
+    {
+     "title": "https://www.environmentandsociety.org/tools/keywords/church-rock-uranium-mill-spill"
+    }
+   ]
+  },
+  {
+   "name": "Wismut uranium mining region, Ronneburg, Thuringia",
+   "lat": 50.8667,
+   "lon": 12.1833,
+   "iso3": "DEU",
+   "b": "SDAG Wismut mined East Germany and western Czechoslovakia for the Soviet weapons programme from 1946 to 1990, producing roughly 216,000 tonnes of uranium - the third largest output in the world. Early years used forced and conscripted labour in dry drilling with no ventilation and radon levels orders of magnitude above any modern limit. This is the single largest occupational radiation cohort in history and much of what is known about radon and lung cancer comes from it.",
+   "people": "About 400,000 people worked for the company. By 1999, 7,695 workers had been compensated for radiation-induced lung cancer; other counts give 7,963 recognised occupational lung cancers, and the true number is believed higher. German taxpayers had spent over EUR 7 billion on remediation by 2014.",
+   "sources": [
+    {
+     "title": "http://www.wise-uranium.org/uwis.html"
+    },
+    {
+     "title": "https://link.springer.com/content/pdf/10.1007/PL00014215.pdf"
+    },
+    {
+     "title": "https://www.nature.com/articles/6603403"
+    },
+    {
+     "title": "https://hibakusha-worldwide.org/en/locations/wismut-region"
+    }
+   ]
+  },
+  {
+   "name": "Shinkolobwe mine, Haut-Katanga",
+   "lat": -11.055,
+   "lon": 26.5473,
+   "iso3": "COD",
+   "b": "The richest uranium deposit ever found: ore assaying up to 75% uranium oxide, against 0.02% in typical North American ore. Roughly two-thirds of the fissile material in the Manhattan Project came from here, including the uranium in Little Boy. Congolese miners under Belgian colonial rule dug it by hand with no protection and no knowledge of what it was; they were never told, never monitored, never compensated, and are almost entirely absent from the historical record. The mine was officially closed in 2004 after a shaft collapse killed artisanal diggers, but informal mining continued.",
+   "people": "Thousands of Congolese labourers, unrecorded. Present-day artisanal miners continue to work the site at severe risk.",
+   "sources": [
+    {
+     "title": "https://theconversation.com/the-link-between-uranium-from-the-congo-and-hiroshima-a-story…"
+    },
+    {
+     "title": "https://nonproliferation.org/uranium-security-in-the-drc/"
+    },
+    {
+     "title": "https://www.oregonpsr.org/uranium_mining_shinkolobwe"
+    },
+    {
+     "title": "https://ahf.nuclearmuseum.org/ahf/history/uranium-mining/"
+    }
+   ]
+  },
+  {
+   "name": "Jadugoda (Jaduguda) uranium mines, Jharkhand",
+   "lat": 22.65,
+   "lon": 86.35,
+   "iso3": "IND",
+   "b": "India's first uranium mine, operating since 1967, run by Uranium Corporation of India Ltd. Tailings ponds sit close to Adivasi villages of the Ho, Santhal, Munda and Mahali peoples; seepage into groundwater and the food chain is documented. UCIL and the Department of Atomic Energy dispute the health findings.",
+   "people": "A health survey of more than 9,000 people across five villages by Indian Doctors for Peace and Development found significantly elevated congenital deformities, sterility, spontaneous abortion, cancer and chronic lung disease compared with control villages, and an excess of congenital deformity among those born after mining began. Independent replication is limited and the government contests the results.",
+   "sources": [
+    {
+     "title": "https://www.ippnw.org/wp-content/uploads/2020/07/JadugodaHealthSurvey.pdf"
+    },
+    {
+     "title": "https://www.aljazeera.com/features/2014/8/12/india-uranium-mining-fuels-health-crisis"
+    },
+    {
+     "title": "https://www.downtoearth.org.in/environment/uranium-mine-waste-imperils-villages-in-jadugu…"
+    },
+    {
+     "title": "https://dae.gov.in/press-release-from-uranium-corporation-of-india-ltd-on-times-of-india-…"
+    }
+   ]
+  },
+  {
+   "name": "Mayak Production Association / Ozyorsk (Kyshtym disaster)",
+   "lat": 55.7125,
+   "lon": 60.8481,
+   "iso3": "RUS",
+   "b": "On 29 September 1957 the cooling system of a buried high-level waste tank at the Soviet Union's first plutonium production complex failed and the contents exploded chemically, releasing about 20 MCi (740 PBq) of radionuclides. Roughly 2 MCi (74 PBq) blew downwind to form the East Urals Radioactive Trace. INES Level 6 - the third worst nuclear accident on record. The USSR concealed it for 32 years; the site was not on any map, so the disaster took the name of the nearest town that was.",
+   "people": "10,000-12,000 people evacuated, some only after many months. About 270,000 people lived in the roughly 20,000 sq km affected region. Villages were bulldozed and livestock destroyed.",
+   "sources": [
+    {
+     "title": "https://www.britannica.com/event/Kyshtym-disaster"
+    },
+    {
+     "title": "https://iopscience.iop.org/article/10.1088/1361-6498/aa7f8d"
+    },
+    {
+     "title": "https://www.icheme.org/media/19545/lpb289_pg18.pdf"
+    }
+   ]
+  },
+  {
+   "name": "Muslyumovo and the Techa River villages",
+   "lat": 55.61,
+   "lon": 61.63,
+   "iso3": "RUS",
+   "b": "Separate from, and in exposure terms larger than, the 1957 explosion: between 1949 and 1956 Mayak discharged liquid radioactive waste directly into the Techa River, with about 98% of the activity released between December 1949 and November 1951. Downstream villagers drank, washed, watered livestock and fished in it without being told. Muslyumovo, a Tatar village of some 4,500 people, was hit three times - river discharges, the 1957 explosion trace, and the 1967 Lake Karachay dust dispersal - and was the last to be moved, only in 2006-2012.",
+   "people": "Up to 124,000 riverside residents are considered irradiated, of whom about 28,000 have official 'significant dose' status. Over 7,000 people from 19 villages were resettled between 1954 and 1960 - roughly 30% of the riverside population; the rest stayed.",
+   "sources": [
+    {
+     "title": "https://pubmed.ncbi.nlm.nih.gov/30703313/"
+    },
+    {
+     "title": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2672329/"
+    },
+    {
+     "title": "https://bellona.org/news/nuclear-issues/radwaste-storage-at-nuclear-fuel-cycle-plants-in-…"
+    },
+    {
+     "title": "https://www.sciencedirect.com/science/article/pii/S2666765722000886"
+    }
+   ]
+  },
+  {
+   "name": "Windscale Pile No. 1 (Sellafield), Cumbria",
+   "lat": 54.4211,
+   "lon": -3.4981,
+   "iso3": "GBR",
+   "b": "On 10 October 1957 the graphite core of Pile No. 1 - a reactor built to make plutonium for British bombs - caught fire and burned for three days, releasing about 1,800 TBq of iodine-131 and other radionuclides. Operators eventually doused it with water in the knowledge it might explode. Milk from about 500 sq km around the plant was poured away for several weeks. It remains the worst nuclear accident in British history.",
+   "people": "Estimates of resulting cancers have been revised from around 200 to about 240 additional cases. Measured thyroid doses in exposed children were typically tens of mGy, with some above 100 mGy. The official report was censored by the Prime Minister; the full text was not released for 30 years.",
+   "sources": [
+    {
+     "title": "https://www.ebsco.com/research-starters/science/windscale-radiation-release"
+    },
+    {
+     "title": "https://pubmed.ncbi.nlm.nih.gov/27893453/"
+    },
+    {
+     "title": "https://iopscience.iop.org/journal/0952-4746/page/Focus_on_Kyshtym_and_Windscale"
+    }
+   ]
+  },
+  {
+   "name": "Chernobyl Nuclear Power Plant, Unit 4",
+   "lat": 51.3892,
+   "lon": 30.0993,
+   "iso3": "UKR",
+   "b": "26 April 1986. A botched safety test destroyed Reactor 4 and burned for ten days, releasing more radioactivity into the environment than any other event in history. INES Level 7. Included here not as a weapons event but because it is the largest data set humanity has on what a large radiological release does to a population - and because the reactor design descended from plutonium-production technology.",
+   "people": "Two died in the explosion; 134 plant staff and firefighters developed acute radiation syndrome and 28 of them died within three months. About 115,000 people were evacuated in 1986 and about 220,000 relocated afterwards - roughly 350,000 permanently displaced. Around 600,000 'liquidators' worked on the cleanup. Roughly 20,000 cases of thyroid cancer have been recorded among those under 18 at the time, with 15 deaths as of the 2018 UNSCEAR assessment. Projected eventual radiation-attributable cancer deaths range from about 4,000 (IAEA/WHO Chernobyl Forum, for the 600,000 most exposed) to about 16,000 (IARC, wider European population, 95% CI 7,000-38,000), with far higher figures claimed by some groups and far lower by others. The psychological and social toll is universally described as the largest single public health consequence.",
+   "sources": [
+    {
+     "title": "https://www.iaea.org/newscenter/pressreleases/chernobyl-true-scale-accident"
+    },
+    {
+     "title": "https://www.unscear.org/unscear/en/chernobyl.html"
+    },
+    {
+     "title": "https://world-nuclear.org/information-library/safety-and-security/safety-of-plants/cherno…"
+    }
+   ]
+  },
+  {
+   "name": "Pripyat, Ukraine",
+   "lat": 51.4055,
+   "lon": 30.0569,
+   "iso3": "UKR",
+   "b": "The purpose-built city for Chernobyl's workers, 3 km from the reactor. Its 49,360 residents were evacuated on the afternoon of 27 April 1986, 36 hours after the explosion, and told to pack for three days. Nobody went back.",
+   "people": "49,360 people, average age 26.",
+   "sources": [
+    {
+     "title": "https://www.iaea.org/newscenter/pressreleases/chernobyl-true-scale-accident"
+    },
+    {
+     "title": "https://www.unscear.org/unscear/en/chernobyl.html"
+    }
+   ]
+  },
+  {
+   "name": "Fukushima Daiichi Nuclear Power Station",
+   "lat": 37.4213,
+   "lon": 141.0328,
+   "iso3": "JPN",
+   "b": "11 March 2011. A magnitude 9.0 earthquake and 14 m tsunami knocked out power and cooling at six reactors; three melted down and hydrogen explosions breached containment buildings. INES Level 7. Its lesson for this atlas is the inverse of the intuitive one: the radiation killed almost nobody, and the evacuation killed thousands.",
+   "people": "164,865 people evacuated from Fukushima Prefecture. UNSCEAR has documented no adverse health effects among residents attributable to radiation exposure, and no radiation deaths or acute effects among approximately 25,000 workers; Japan has recognised one worker's fatal lung cancer for compensation purposes. Against that, 2,313 'disaster-related deaths' are officially recorded among Fukushima evacuees - overwhelmingly elderly people who died from the disruption of care, cold, stress and displacement, roughly 90% of them over 66.",
+   "sources": [
+    {
+     "title": "https://www.unscear.org/unscear/en/areas-of-work/fukushima.html"
+    },
+    {
+     "title": "https://www.unscear.org/unscear/en/news/content/a-decade-after-the-fukushima-accident_-ra…"
+    },
+    {
+     "title": "https://world-nuclear.org/information-library/safety-and-security/safety-of-plants/fukush…"
+    }
+   ]
+  },
+  {
+   "name": "Goiania caesium-137 accident, Brazil",
+   "lat": -16.6869,
+   "lon": -49.2648,
+   "iso3": "BRA",
+   "b": "On 13 September 1987 two scavengers removed a radiotherapy source from an abandoned clinic in Goiania and broke open its capsule, releasing about 90 g of caesium chloride - roughly 1,375 Ci. The powder glowed blue in the dark. It was shared among family and neighbours as a curiosity; a six-year-old girl, Leide das Neves Ferreira, ate a sandwich with it on her hands. INES Level 5. Included because it shows what a small quantity of loose radioactive material does to an ordinary neighbourhood.",
+   "people": "4 deaths, 249 people contaminated, 20 requiring hospital treatment, and approximately 112,000 people monitored. 85 houses were significantly contaminated and several demolished; 3,500 cubic metres of waste were removed. Survivors and their children faced lasting stigma and discrimination.",
+   "sources": [
+    {
+     "title": "https://www.iaea.org/newscenter/news/goianias-legacy-two-decades-on"
+    },
+    {
+     "title": "https://www.iaea.org/sites/default/files/publications/magazines/bulletin/bull30-4/3040278…"
+    },
+    {
+     "title": "https://www.britannica.com/topic/Goiania-accident"
+    }
+   ]
+  },
+  {
+   "name": "JCO fuel conversion plant, Tokai-mura, Ibaraki",
+   "lat": 36.4667,
+   "lon": 140.6,
+   "iso3": "JPN",
+   "b": "On 30 September 1999 workers hand-poured 18.8% enriched uranyl nitrate solution into a precipitation vessel using stainless steel buckets, bypassing the approved procedure, and exceeded critical mass. A blue flash; criticality persisted for about 19 hours. INES Level 4.",
+   "people": "Three workers received serious doses and two died - Hisashi Ouchi after 83 days and Masato Shinohara after seven months. Doses were assessed for 234 residents, 169 JCO employees and 260 emergency personnel. About 320,000 nearby residents were asked to shelter indoors and 161 people within 350 m were evacuated.",
+   "sources": [
+    {
+     "title": "https://world-nuclear.org/information-library/safety-and-security/safety-of-plants/tokaim…"
+    },
+    {
+     "title": "https://www-ns.iaea.org/downloads/iec/tokaimura-report.pdf"
+    },
+    {
+     "title": "https://www.jstage.jst.go.jp/article/jrr/42/SUPPL/42_SUPPL_S1/_pdf"
+    }
+   ]
+  },
+  {
+   "name": "Palomares, Almeria, Spain (1966 Broken Arrow)",
+   "lat": 37.2367,
+   "lon": -1.7714,
+   "iso3": "ESP",
+   "b": "On 17 January 1966 a US B-52 and a KC-135 tanker collided during refuelling over the Spanish coast, killing seven airmen and dropping four B28 thermonuclear bombs. There was no nuclear detonation, but the conventional explosives in two of them fired on impact, scattering roughly 3 kg of plutonium-239 over farmland. A fourth bomb fell into the sea and took 80 days to recover. The US Ambassador and a Spanish minister swam at the nearby beach for the cameras.",
+   "people": "About 1,600 tonnes of contaminated soil and tomato plants were shipped to South Carolina, but roughly 50,000 cubic metres of contaminated soil remain in place 60 years later. Spain and the US signed a statement of intent in October 2015 to negotiate a binding cleanup agreement; as of 2026 no such agreement has been signed and Spain's formal requests, including in March 2023, are unanswered. US veterans of the cleanup have fought for recognition through the Yale Law School veterans clinic; legislation proposed in 2026 would add Palomares veterans to RECA.",
+   "sources": [
+    {
+     "title": "https://edition.cnn.com/2015/10/20/europe/spain-us-palomares-nuclear-accident-cleanup/ind…"
+    },
+    {
+     "title": "https://law.yale.edu/studying-law-yale/clinical-and-experiential-learning/our-clinics/vet…"
+    },
+    {
+     "title": "https://www.smith.senate.gov/senator-smiths-bipartisan-legislation-to-secure-health-care-…"
+    }
+   ]
+  },
+  {
+   "name": "Thule (Pituffik), Greenland (1968 Broken Arrow)",
+   "lat": 76.5312,
+   "lon": -68.7032,
+   "iso3": "GRL",
+   "b": "On 21 January 1968 a cabin fire forced the crew of a B-52 on 'Chrome Dome' airborne alert to bail out; one man died. The aircraft hit the sea ice of North Star Bay about 11 km west of Thule Air Base with four B28 thermonuclear weapons aboard. The conventional explosives in all four detonated, spreading plutonium, uranium, americium and tritium across the ice. Project Crested Ice recovered contaminated ice and debris over the following months. The accident also exposed that the US had nuclear weapons over Denmark - which had a declared nuclear-free policy - causing a lasting political scandal in Copenhagen.",
+   "people": "About 1,700 Danish and Greenlandic workers took part in the cleanup with minimal protection. Denmark made ex gratia payments of DKK 50,000 per worker in 1995-96. US courts dismissed a 1987 suit by nearly 200 cleanup participants on sovereign immunity grounds, and the Supreme Court denied certiorari in February 2022. The Inughuit of Uummannaq had already been forcibly relocated in 1953 to make room for the base.",
+   "sources": [
+    {
+     "title": "https://nsarchive.gwu.edu/briefing-book/nuclear-vault/2025-10-15/united-states-and-greenl…"
+    },
+    {
+     "title": "https://www.osti.gov/opennet/servlets/purl/1735362.pdf"
+    },
+    {
+     "title": "https://hibakusha-worldwide.org/en/locations/thule"
+    },
+    {
+     "title": "https://www.military.com/daily-news/investigations-and-features/2026/01/16/how-b-52-crash…"
+    }
+   ]
+  },
+  {
+   "name": "Hanford Site, Washington State",
+   "lat": 46.55,
+   "lon": -119.49,
+   "iso3": "USA",
+   "b": "Where the plutonium for the Trinity device and for Fat Man was made. Deliberate and accidental releases of iodine-131 into the air over the Columbia Basin during the 1940s - including the intentional 'Green Run' of December 1949 - exposed downwind communities without their knowledge. Declassification in 1986 revealed the scale and gave rise to the Hanford Downwinders litigation and the Hanford Thyroid Disease Study.",
+   "people": "Tens of thousands of downwinders in Washington, Oregon and Idaho, and the Yakama, Umatilla and Nez Perce peoples whose fishing and food gathering on the Columbia was affected.",
+   "sources": [
+    {
+     "title": "https://www.cdc.gov/nceh/radiation/hanford/index.html"
+    },
+    {
+     "title": "https://ahf.nuclearmuseum.org/ahf/location/hanford-wa/"
+    }
+   ]
+  },
+  {
+   "name": "Radiation Effects Research Foundation (RERF), Hijiyama, Hiroshima",
+   "lat": 34.3831,
+   "lon": 132.4733,
+   "iso3": "JPN",
+   "b": "The Radiation Effects Research Foundation, on Hijiyama hill in Hiroshima, is the successor to the US Atomic Bomb Casualty Commission (1947) and since 1975 has been jointly funded by Japan and the United States. Its Life Span Study has followed about 120,000 people - roughly 94,000 survivors and 27,000 unexposed controls - since 1950, and is the foundation of essentially every radiation protection standard in the world. Survivors have noted, with justice, that the ABCC studied them without treating them.",
+   "people": "The Life Span Study cohort: approx. 94,000 hibakusha plus 27,000 controls, plus about 77,000 children of survivors in the F1 study.",
+   "sources": [
+    {
+     "title": "https://www.rerf.or.jp/en/faq/"
+    },
+    {
+     "title": "https://www.rerf.or.jp/en/programs/roadmap_e/health_effects-en/late-en/leukemia/"
+    },
+    {
+     "title": "https://pubmed.ncbi.nlm.nih.gov/29553058/"
+    }
+   ]
+  }
+ ],
+ "doomsdayClock": [
+  {
+   "year": 1947,
+   "time": "7 minutes",
+   "seconds": 420,
+   "reason": "First setting, drawn by artist Martyl Langsdorf for the Bulletin's cover: two years into the atomic age with no international control of the bomb."
+  },
+  {
+   "year": 1949,
+   "time": "3 minutes",
+   "seconds": 180,
+   "reason": "The Soviet Union tests its first atomic device; the arms race begins in earnest."
+  },
+  {
+   "year": 1953,
+   "time": "2 minutes",
+   "seconds": 120,
+   "reason": "The United States and the USSR test thermonuclear devices within nine months of each other."
+  },
+  {
+   "year": 1960,
+   "time": "7 minutes",
+   "seconds": 420,
+   "reason": "Growing scientific cooperation and public awareness; the superpowers avoid direct confrontation."
+  },
+  {
+   "year": 1963,
+   "time": "12 minutes",
+   "seconds": 720,
+   "reason": "The Partial Test Ban Treaty ends US, Soviet and British atmospheric testing."
+  },
+  {
+   "year": 1968,
+   "time": "7 minutes",
+   "seconds": 420,
+   "reason": "France and China become nuclear powers; war in Vietnam and conflicts in the Middle East and South Asia."
+  },
+  {
+   "year": 1969,
+   "time": "10 minutes",
+   "seconds": 600,
+   "reason": "The Nuclear Non-Proliferation Treaty is signed and ratified by the US Senate."
+  },
+  {
+   "year": 1972,
+   "time": "12 minutes",
+   "seconds": 720,
+   "reason": "The US and USSR sign SALT I and the Anti-Ballistic Missile Treaty."
+  },
+  {
+   "year": 1974,
+   "time": "9 minutes",
+   "seconds": 540,
+   "reason": "India tests a nuclear device; SALT II stalls and both superpowers MIRV their missiles."
+  },
+  {
+   "year": 1980,
+   "time": "7 minutes",
+   "seconds": 420,
+   "reason": "Arms talks deadlock, the Soviet Union invades Afghanistan, and nationalism rises."
+  },
+  {
+   "year": 1981,
+   "time": "4 minutes",
+   "seconds": 240,
+   "reason": "Both superpowers abandon arms control; Afghanistan, Poland and South Africa raise tensions further."
+  },
+  {
+   "year": 1984,
+   "time": "3 minutes",
+   "seconds": 180,
+   "reason": "US-Soviet dialogue effectively ceases; Pershing II and cruise missiles deploy in Europe."
+  },
+  {
+   "year": 1988,
+   "time": "6 minutes",
+   "seconds": 360,
+   "reason": "The Intermediate-Range Nuclear Forces Treaty eliminates an entire class of missiles."
+  },
+  {
+   "year": 1990,
+   "time": "10 minutes",
+   "seconds": 600,
+   "reason": "The Berlin Wall falls and the Eastern Bloc unravels; the Cold War is ending."
+  },
+  {
+   "year": 1991,
+   "time": "17 minutes",
+   "seconds": 1020,
+   "reason": "START I is signed and the Soviet Union dissolves - the furthest from midnight the Clock has ever stood."
+  },
+  {
+   "year": 1995,
+   "time": "14 minutes",
+   "seconds": 840,
+   "reason": "The post-Cold War dividend fades: over 40,000 warheads remain and loose nuclear material worries grow."
+  },
+  {
+   "year": 1998,
+   "time": "9 minutes",
+   "seconds": 540,
+   "reason": "India and Pakistan test nuclear weapons weeks apart; US-Russian reductions stall with thousands of warheads on alert."
+  },
+  {
+   "year": 2002,
+   "time": "7 minutes",
+   "seconds": 420,
+   "reason": "The US withdraws from the ABM Treaty and rejects a series of arms control accords; fears of nuclear terrorism after 9/11."
+  },
+  {
+   "year": 2007,
+   "time": "5 minutes",
+   "seconds": 300,
+   "reason": "North Korea's first test and Iran's programme; climate change is formally added as a second existential threat."
+  },
+  {
+   "year": 2010,
+   "time": "6 minutes",
+   "seconds": 360,
+   "reason": "New START negotiations and the Copenhagen climate conference offer grounds for cautious hope."
+  },
+  {
+   "year": 2012,
+   "time": "5 minutes",
+   "seconds": 300,
+   "reason": "Hope fades: no follow-through on arms reductions or emissions, and Fukushima raises nuclear safety fears."
+  },
+  {
+   "year": 2015,
+   "time": "3 minutes",
+   "seconds": 180,
+   "reason": "Unchecked climate change, sweeping nuclear modernisation programmes, and outsized arsenals."
+  },
+  {
+   "year": 2016,
+   "time": "3 minutes",
+   "seconds": 180,
+   "reason": "No change: the Iran deal and Paris Agreement were welcome but nowhere near sufficient. 'The Clock ticks.'"
+  },
+  {
+   "year": 2017,
+   "time": "2.5 minutes",
+   "seconds": 150,
+   "reason": "Nuclear and climate rhetoric from world leaders, especially in the US and Russia; the first half-minute move in the Clock's history."
+  },
+  {
+   "year": 2018,
+   "time": "2 minutes",
+   "seconds": 120,
+   "reason": "US-North Korean nuclear brinkmanship, the breakdown of arms control diplomacy, and information warfare corroding public debate."
+  },
+  {
+   "year": 2019,
+   "time": "2 minutes",
+   "seconds": 120,
+   "reason": "No change: a 'new abnormal' in which extreme nuclear and climate danger has become normalised."
+  },
+  {
+   "year": 2020,
+   "time": "100 seconds",
+   "seconds": 100,
+   "reason": "The end of the INF Treaty, no US-Russia strategic dialogue, and cyber-enabled disinformation. The Clock is stated in seconds for the first time."
+  },
+  {
+   "year": 2021,
+   "time": "100 seconds",
+   "seconds": 100,
+   "reason": "No change: COVID-19 demonstrated how poorly the world manages a genuinely global emergency."
+  },
+  {
+   "year": 2022,
+   "time": "100 seconds",
+   "seconds": 100,
+   "reason": "No change: set six weeks before Russia's full-scale invasion of Ukraine."
+  },
+  {
+   "year": 2023,
+   "time": "90 seconds",
+   "seconds": 90,
+   "reason": "Russia's war in Ukraine and its explicit nuclear threats; at the time, the closest to midnight the Clock had ever been."
+  },
+  {
+   "year": 2024,
+   "time": "90 seconds",
+   "seconds": 90,
+   "reason": "No change: Ukraine, Gaza, universal nuclear modernisation, and the hottest year then on record."
+  },
+  {
+   "year": 2025,
+   "time": "89 seconds",
+   "seconds": 89,
+   "reason": "A deliberate one-second move to signal that nothing had improved: nuclear risk, climate, biological threats and AI all worsening."
+  },
+  {
+   "year": 2026,
+   "time": "85 seconds",
+   "seconds": 85,
+   "reason": "Announced 27 January 2026 - the closest to midnight ever. New START expiring with no successor, states openly discussing nuclear weapons for coercion rather than deterrence, hundreds of billions…"
+  }
+ ],
+ "notes": [
+  {
+   "title": "The hibakusha",
+   "body": "'Hibakusha' means, literally, 'person affected by the bomb'. Japan's 1957 Atomic Bomb Survivors Medical Care Act created a legal category with a certificate (techo) granting free medical care; eligibility covers those in the cities at the time, those who entered within two weeks, those exposed to fallout ('black rain'), and those in utero. Recognition has been fought for repeatedly in the courts, particularly by Korean survivors - tens of thousands of Koreans, mostly forced labourers, were in Hiroshima and Nagasaki - and by overseas hibakusha and 'black rain' claimants, who won a landmark ruling in 2021. Numbers: a peak of 372,264 certificate holders in 1981; 99,130 as of 31 March 2025, the first time below 100,000, average age 86.13; 91,105 as of 31 March 2026, average age 86.66, a fall of 8,025 in one year, of whom 33,232 live in Hiroshima Prefecture and 15,582 in Nagasaki…",
+   "sources": [
+    {
+     "title": "https://www.japantimes.co.jp/news/2026/07/01/japan/hibakusha-number-drops/"
+    },
+    {
+     "title": "https://www.nippon.com/en/japan-data/h02464/"
+    },
+    {
+     "title": "https://www.pbs.org/articles/hibakusha-stories-of-survivors-of-hiroshima-and-nagasaki"
+    }
+   ]
+  },
+  {
+   "title": "What the survivors' health record actually shows",
+   "body": "The RERF Life Span Study has followed about 94,000 survivors and 27,000 controls since 1950. Its findings are more specific and, in some respects, more measured than popular accounts. Leukaemia appeared first, peaking in the early 1950s: among about 49,200 survivors with a bone marrow dose of at least 0.005 Gy there were 204 leukaemia deaths to the year 2000, of which about 94 - roughly 46% - are attributed to radiation. Solid cancers began appearing about a decade later and continue to appear: roughly 10% of solid cancers in the exposed cohort are attributable to the radiation. Cardiovascular disease, cataracts and non-cancer effects are also elevated at higher doses. Notably, no statistically significant increase in genetic disease or mutation has been detected in the children of survivors, despite decades of dedicated study - a finding that mattered enormously to survivors, who…",
+   "sources": [
+    {
+     "title": "https://www.rerf.or.jp/en/faq/"
+    },
+    {
+     "title": "https://www.rerf.or.jp/en/programs/roadmap_e/health_effects-en/late-en/leukemia/"
+    },
+    {
+     "title": "https://pubmed.ncbi.nlm.nih.gov/29553058/"
+    },
+    {
+     "title": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3875218/"
+    }
+   ]
+  },
+  {
+   "title": "The 2024 Nobel Peace Prize: Nihon Hidankyo",
+   "body": "On 11 October 2024 the Norwegian Nobel Committee awarded the Peace Prize to Nihon Hidankyo - the Japan Confederation of A- and H-Bomb Sufferers Organizations - 'for its efforts to achieve a world free of nuclear weapons and for demonstrating through witness testimony that nuclear weapons must never again be used'. Founded in August 1956, two years after Castle Bravo and the Lucky Dragon, Nihon Hidankyo is a grassroots movement of survivors that has gathered thousands of testimonies, sent delegations to the UN year after year, and campaigned for state recognition of hibakusha. Committee chair Jorgen Watne Frydnes credited it with helping sustain the 'nuclear taboo', which he called 'a precondition of a peaceful future for humanity'. The award came at a moment when the last witnesses were dying and the taboo itself was audibly weakening. The ceremony was held in Oslo on 10 December 2024;…",
+   "sources": [
+    {
+     "title": "https://www.nobelprize.org/prizes/peace/2024/press-release/"
+    },
+    {
+     "title": "https://www.nobelprize.org/prizes/peace/2024/nihon-hidankyo/facts/"
+    },
+    {
+     "title": "https://www.nobelprize.org/prizes/peace/2017/press-release/"
+    }
+   ]
+  },
+  {
+   "title": "RECA: lapse, revival and what it still leaves out",
+   "body": "The US Radiation Exposure Compensation Act (1990) was the first, and remains the largest, state compensation scheme for the domestic victims of nuclear weapons. It pays one-time lump sums for a specified list of cancers and diseases to downwinders, on-site test participants, and uranium miners, millers and ore transporters. It expired on 10 June 2024 after Congress failed to reauthorise it, leaving claimants in limbo for over a year. It was revived and substantially expanded on 4 July 2025 as part of the One Big Beautiful Bill Act (P.L. 119-21). Key changes: the maximum award doubled from $50,000 to $100,000; downwinder eligibility extended to all of New Mexico (covering the Trinity downwinders for the very first time, 80 years after the fact), all of Utah and Idaho, and additional parts of Arizona; uranium worker coverage extended from 1971 to 1990; and, for the first time, a…",
+   "sources": [
+    {
+     "title": "https://www.congress.gov/crs-product/R43956"
+    },
+    {
+     "title": "https://crane.house.gov/2025/08/22/applications-now-open-for-the-reauthorized-and-expande…"
+    },
+    {
+     "title": "https://www.justice.gov/civil/awards-date-12312025"
+    },
+    {
+     "title": "https://www.firstalert4.com/2026/07/08/one-year-after-reca-expansion-nearly-15000-missour…"
+    },
+    {
+     "title": "https://uclawreview.org/2025/09/26/the-revival-of-reca-a-temporary-apology-for-a-lasting-…"
+    }
+   ]
+  },
+  {
+   "title": "Compensation regimes compared",
+   "body": "United States (RECA, 1990-): lump sums of $50,000-$100,000 for listed diseases; over $2.7 billion paid on 42,308+ claims; lapsed 2024, reauthorised July 2025 to end-2028. Marshall Islands (Nuclear Claims Tribunal, 1988-): the US provided a $150 million settlement fund; the Tribunal awarded about $2.3 billion, of which the overwhelming majority - including over $23 million in personal injury awards - remains unpaid because the fund ran dry in 2009. The RMI's 2000 'Changed Circumstances Petition' seeking over $3 billion more has never been acted on by Congress. France (Loi Morin, Law 2010-2 of 5 January 2010, administered by CIVEN): as of the 2023 activity report only 2,846 claims had ever been filed and 1,026 people recognised - 607 from metropolitan France, 417 Polynesians and 2 Algerians - against the roughly 110,000 people the Toxique study calculates were exposed. A 2017 reform…",
+   "sources": [
+    {
+     "title": "https://www.congress.gov/crs-product/R43956"
+    },
+    {
+     "title": "https://www.americanbar.org/groups/international_law/resources/international-law-news/202…"
+    },
+    {
+     "title": "https://nuclear-justice.net/law/france/"
+    },
+    {
+     "title": "https://nuclear-justice.net/law/kazakhstan/"
+    },
+    {
+     "title": "https://www.chathamhouse.org/publications/the-world-today/2025-06/long-fight-justice-brit…"
+    },
+    {
+     "title": "https://scienceandglobalsecurity.org/archive/sgs30philippe.pdf"
+    }
+   ]
+  },
+  {
+   "title": "What the world spends on nuclear weapons",
+   "body": "ICAN publishes an annual accounting of nuclear weapons spending by the nine armed states. In its report covering calendar year 2025, published June 2026, the nine states spent a record $118.8 billion - an increase of $16.8 billion, or 19%, on 2024, and equivalent to about $3,768 every second of the year. The United States alone spent $69.2 billion, more than all the others combined, and accounted for $12.4 billion of the annual increase. China was second at $13.5 billion; the United Kingdom overtook Russia for third place with a 17% rise to $12.6 billion. For scale: the 2025 figure is roughly 1,000 times the $118 million or so that the entire Marshall Islands Nuclear Claims Tribunal was originally funded with, and comfortably more than the annual budget of the World Health Organization and the World Food Programme combined.",
+   "sources": [
+    {
+     "title": "https://www.icanw.org/2025_nuclear_weapons_spending_reaches_119_billion"
+    },
+    {
+     "title": "https://www.icanw.org/premeditated_2025_global_nuclear_weapons_spending"
+    },
+    {
+     "title": "https://www.aljazeera.com/economy/2026/6/9/nuclear-weapons-spending-surges-to-record-high…"
+    }
+   ]
+  },
+  {
+   "title": "Modelled casualties: Princeton 'Plan A' (2019)",
+   "body": "Princeton's Program on Science and Global Security built 'Plan A' to test the claim that a nuclear war could stay limited. Using actual declared US and Russian force postures, doctrine and targeting categories - and NUKEMAP effects data - the simulation escalates from a single Russian 'warning shot' in Europe. Within three hours, roughly 480 weapons are used in the European phase alone, then some 600 in a counterforce exchange, then several thousand against cities. The result: 34.1 million dead and 57.4 million injured - 91.5 million casualties - in about three hours. The authors stress this counts only the immediate effects; fallout, infrastructure collapse, medical system destruction and climate effects would raise the toll enormously. The point of the exercise is not the precise number but the demonstration that no plausible off-ramp exists once the first weapon is used.",
+   "sources": [
+    {
+     "title": "https://sgs.princeton.edu/the-lab/plan-a"
+    },
+    {
+     "title": "https://www.icanw.org/new_study_on_us_russia_nuclear_war"
+    },
+    {
+     "title": "https://sgs.princeton.edu/sites/default/files/2022-03/Glaser-2022-APS-PlanA.pdf"
+    }
+   ]
+  },
+  {
+   "title": "Modelled casualties: nuclear famine (Nature Food, 2022)",
+   "body": "Lili Xia, Alan Robock and colleagues published the most detailed nuclear famine study to date in Nature Food in August 2022. They modelled soot injection from firestorms in six scenarios - five India-Pakistan wars of increasing size and one full US-Russia exchange - ran the soot through the Community Earth System Model, and calculated resulting changes in maize, rice, spring wheat and soybean yields, marine fishery output and livestock production country by country, including trade effects. Findings: soot injections above 5 teragrams cause mass food shortages that livestock and fisheries cannot offset in almost any country. A regional India-Pakistan war (about 27-47 Tg soot) could kill more than 2 billion people from famine in the following two years. A US-Russia war (about 150 Tg) could kill more than 5 billion - the great majority of them people in countries that had nothing to do…",
+   "sources": [
+    {
+     "title": "https://www.nature.com/articles/s43016-022-00573-0"
+    },
+    {
+     "title": "https://sebsnjaesnews.rutgers.edu/2022/08/nuclear-war-would-cause-a-global-famine-and-kil…"
+    },
+    {
+     "title": "https://www.ippnw.org/wp-content/uploads/2022/08/Nuclear-Famine-2022.pdf"
+    }
+   ]
+  },
+  {
+   "title": "Castle Bravo: the accident that made the world pay attention",
+   "body": "Castle Bravo, 1 March 1954, Bikini Atoll, was designed for 6 megatons. It yielded 15 - the largest US detonation ever - because the designers had wrongly assumed lithium-7 in the fuel would be inert. The fireball was nearly 7 km across; the crater is still visible from orbit. The wind was not as forecast, and the fallout plume travelled east over inhabited atolls. Rongelap, Ailinginae and Utrik were dusted; a Japanese fishing boat 160 km away was covered; the test crew themselves had to shelter. It produced the first acknowledged foreign civilian victim of a US nuclear test (Aikichi Kuboyama), the first mass fallout casualties, and a global political crisis over contaminated tuna that fed directly into the founding of Japan's anti-nuclear movement, the Pugwash Conferences, and eventually the 1963 Partial Test Ban Treaty. Bikini's people had been moved off in 1946; they and the…",
+   "sources": [
+    {
+     "title": "https://www.armscontrol.org/act/2014-03/no-promised-land-shared-legacy-castle-bravo-nucle…"
+    },
+    {
+     "title": "https://nsarchive.gwu.edu/briefing-book/nuclear-vault/2024-02-29/castle-bravo-70-worst-nu…"
+    },
+    {
+     "title": "https://apps.dtic.mil/sti/html/tr/ADA572278/index.html"
+    }
+   ]
+  },
+  {
+   "title": "Project 4.1 and the ethics of studying the exposed",
+   "body": "Within days of Castle Bravo the US Atomic Energy Commission established Project 4.1, formally a 'Study of Response of Human Beings Exposed to Significant Beta and Gamma Radiation Due to Fallout from High Yield Weapons', led by Eugene Cronkite. The Marshallese were not asked to consent and were not told a study was under way. Rongelapese were returned to their atoll in 1957 while it was still contaminated, and an internal AEC document described the resulting situation as offering 'most valuable ecological radiation data on human beings'. Whether the exposure itself was foreseeable remains disputed; the conduct of the research afterwards is not. The same pattern - study without treatment, information withheld from the exposed - recurs in the early ABCC work in Hiroshima and Nagasaki, in the Soviet handling of the Techa villages, and in the British and Australian record at Maralinga. It…",
+   "sources": [
+    {
+     "title": "https://nsarchive.gwu.edu/briefing-book/nuclear-vault/2024-02-29/castle-bravo-70-worst-nu…"
+    },
+    {
+     "title": "https://www.armscontrol.org/act/2014-03/no-promised-land-shared-legacy-castle-bravo-nucle…"
+    },
+    {
+     "title": "https://ahf.nuclearmuseum.org/ahf/location/marshall-islands/"
+    }
+   ]
+  },
+  {
+   "title": "The front end of the chain: uranium",
+   "body": "Every warhead begins in a mine, and the mines have been dug overwhelmingly by colonised, indigenous and captive populations. Shinkolobwe in the Belgian Congo supplied roughly two-thirds of the Manhattan Project's uranium, including the material in the Hiroshima bomb; its Congolese miners were never told what they handled and have never been counted, let alone compensated. Wismut in Soviet-occupied Germany employed some 400,000 people, initially including forced labour, and produced the largest occupational radiation cohort ever assembled - 7,695 compensated radiation-induced lung cancers by 1999 and over EUR 7 billion in remediation costs. On the Navajo Nation, 521 abandoned mine areas remain from ore dug for the US arsenal by men who worked without ventilation or respirators, in families who then built houses from tailings. At Jadugoda in Jharkhand, Adivasi villages next to the…",
+   "sources": [
+    {
+     "title": "https://theconversation.com/the-link-between-uranium-from-the-congo-and-hiroshima-a-story…"
+    },
+    {
+     "title": "http://www.wise-uranium.org/uwis.html"
+    },
+    {
+     "title": "https://archive.epa.gov/region9/superfund/web/html/abandoned-uranium.html"
+    },
+    {
+     "title": "https://www.ippnw.org/wp-content/uploads/2020/07/JadugodaHealthSurvey.pdf"
+    }
+   ]
+  },
+  {
+   "title": "Broken Arrows",
+   "body": "The US Department of Defense acknowledges 32 'Broken Arrow' incidents - accidents involving nuclear weapons that did not create a risk of nuclear war. Two produced significant civilian contamination. At Palomares, Spain (17 January 1966) a mid-air collision dropped four thermonuclear bombs; the conventional explosives in two fired, scattering about 3 kg of plutonium over farmland, and roughly 50,000 cubic metres of contaminated soil are still in place sixty years later despite a 2015 statement of intent to remove it. At Thule, Greenland (21 January 1968) a B-52 crashed onto sea ice with four weapons aboard; all four conventional charges detonated, contaminating the ice with plutonium, uranium, americium and tritium, and about 1,700 Danish and Greenlandic cleanup workers received DKK 50,000 each in ex gratia payments in the 1990s while US courts dismissed their American counterparts'…",
+   "sources": [
+    {
+     "title": "https://www.osti.gov/opennet/servlets/purl/1735362.pdf"
+    },
+    {
+     "title": "https://edition.cnn.com/2015/10/20/europe/spain-us-palomares-nuclear-accident-cleanup/ind…"
+    },
+    {
+     "title": "https://nsarchive.gwu.edu/briefing-book/nuclear-vault/2025-10-15/united-states-and-greenl…"
+    },
+    {
+     "title": "https://scalar.usc.edu/works/brokenarrowproject/1968---thule-greenland"
+    }
+   ]
+  },
+  {
+   "title": "Counting the dead honestly",
+   "body": "There is no single true number for Hiroshima or Nagasaki, and anyone who gives one without a range is overstating what is known. The core problem is the denominator: nobody knew accurately how many people were in either city on the morning in question. Wartime Japan had evacuated children, mobilised students and workers, imported Korean and Chinese forced labourers who appear in no census, and garrisoned troops. Records burned along with the record offices. Two clusters of estimates result. The contemporaneous surveys of 1945-51 - the Manhattan Engineer District, the US Strategic Bombing Survey, the Joint Commission - produced roughly 64,000-70,000 for Hiroshima and 39,000-40,000 for Nagasaki, and were compiled by the bombing state. A 1976-77 Japanese-led international investigation, deliberately counting the previously uncounted, produced roughly 140,000 and 70,000 - the figures the…",
+   "sources": [
+    {
+     "title": "https://thebulletin.org/2020/08/counting-the-dead-at-hiroshima-and-nagasaki/"
+    },
+    {
+     "title": "https://www.city.hiroshima.lg.jp/english/peace/1029875/1010074.html"
+    },
+    {
+     "title": "https://nagasakipeace.jp/en/reference/materials/kids/higai.html"
+    },
+    {
+     "title": "https://asianews.network/in-pictures-hiroshima-nagasaki-pray-for-peace-on-81st-anniversar…"
+    },
+    {
+     "title": "https://www.scientificamerican.com/article/did-chinas-nuclear-tests/"
+    }
+   ]
+  },
+  {
+   "title": "The Treaty on the Prohibition of Nuclear Weapons",
+   "body": "The TPNW is the legal expression of the humanitarian case assembled in this file. Negotiated in 2017 with 122 states voting in favour, opened for signature on 20 September 2017 and entered into force on 22 January 2021, it prohibits developing, testing, producing, stockpiling, transferring, using or threatening to use nuclear weapons for its parties. Uniquely, Articles 6 and 7 impose positive obligations of victim assistance and environmental remediation for those harmed by use and testing - drafted with direct input from Marshallese, Kazakh and hibakusha representatives. As of 2026 it has roughly 95 signatories and around 74 states parties. No nuclear-armed state, and no state under a nuclear umbrella, has joined; Japan, the only country to have suffered nuclear attack, has not signed, a fact Nihon Hidankyo has protested repeatedly and which the mayors of both Hiroshima and Nagasaki…",
+   "sources": [
+    {
+     "title": "https://www.icanw.org/signature_and_ratification_status"
+    },
+    {
+     "title": "https://www.armscontrol.org/factsheets/treaty-prohibition-nuclear-weapons-glance"
+    },
+    {
+     "title": "https://disarmament.unoda.org/wmd/nuclear/tpnw/"
+    },
+    {
+     "title": "https://www.nti.org/education-center/treaties-and-regimes/treaty-on-the-prohibition-of-nu…"
+    }
+   ]
+  }
+ ],
  "nuclearWinter": [
   {
    "scenario": "India-Pakistan regional war (2008-era arsenals)",

@@ -71,13 +71,19 @@ const SITE_CATS = {
   make:    { label: 'Making the bomb',  color: '#ffd23f', shape: 'dia',  on: true,
              types: ['production', 'enrichment', 'reprocessing', 'reactor', 'assembly', 'warhead_lab', 'research', 'mine', 'proposed'] },
   test:    { label: 'Test sites',       color: '#c07cff', shape: 'tri',  on: true,  types: ['test_site'] },
+  human:   { label: 'Where it landed on people', color: '#ff6b9d', shape: 'cross', on: true,
+             types: ['affected'] },
   gone:    { label: 'Former & dismantled', color: '#7a8b99', shape: 'ring', on: false,
              types: ['former', 'dismantled', 'destroyed'] },
 };
-const CAT_ORDER = ['deploy', 'store', 'make', 'test', 'gone'];
+const CAT_ORDER = ['deploy', 'store', 'make', 'test', 'human', 'gone'];
 const TYPE_TO_CAT = {};
 CAT_ORDER.forEach(k => SITE_CATS[k].types.forEach(t => (TYPE_TO_CAT[t] = k)));
 function catOf(s) {
+  if (s.type === 'affected' || s.human || s.bombing) return 'human';
+  /* Nearly every test site on Earth is inactive. Filing them under "former &
+     dismantled" would empty the Test sites layer, so type wins here. */
+  if (s.type === 'test_site') return 'test';
   if (s.status === 'former' || s.status === 'dismantled' || s.status === 'destroyed') return 'gone';
   return TYPE_TO_CAT[s.type] || 'store';
 }
@@ -190,6 +196,7 @@ const nameOf = (iso, feat) => (C[iso] && C[iso].n) || (ISOMAP[iso] && ISOMAP[iso
 const TAKES_THE = /^(United States|United Kingdom|Netherlands|Philippines|Czech Republic|Russian Federation|Republic of|Democratic)/;
 const theName = n => (TAKES_THE.test(n) ? 'the ' + n : n);
 const possessive = n => theName(n) + (/s$/i.test(n) ? "'" : "'s");
+const cap = s => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
 
 const nf = new Intl.NumberFormat('en-US');
 const fmtInt = n => (n == null ? '—' : nf.format(Math.round(n)));
@@ -659,6 +666,7 @@ function makeMarker(d) {
    answers "what kind of place is it?". Keeping those on separate channels is
    what lets you read Incirlik as American and Dimona as unconfirmed at a glance. */
 function siteColor(s) {
+  if (s.type === 'affected' || s.human || s.bombing) return SITE_CATS.human.color;
   if (s.status === 'former' || s.status === 'dismantled' || s.status === 'destroyed') return STATUS.former.color;
   if (s.owner && s.host && s.owner !== s.host) return STATUS.host.color;
   const iso = s.owner || s.host;
@@ -918,7 +926,7 @@ function selectSite(id, fly) {
   refreshMarkers();
 
   document.getElementById('siteGlyph').textContent =
-    ({ deploy: '🚀', store: '🏔', make: '⚙️', test: '☢️', gone: '⌀' })[catOf(s)] || '◉';
+    ({ deploy: '🚀', store: '🏔', make: '⚙️', test: '☢️', human: '🕯', gone: '⌀' })[catOf(s)] || '◉';
   document.getElementById('siteName').textContent = s.name;
   const bits = [SITE_CATS[catOf(s)].label, nameOf(s.host)];
   if (s.status && s.status !== 'active') bits.push(s.status);
@@ -928,8 +936,19 @@ function selectSite(id, fly) {
   if (s.owner && s.host && s.owner !== s.host) {
     ownerBox.style.display = '';
     const own = nameOf(s.owner), hostN = nameOf(s.host);
-    ownerBox.innerHTML = `<span class="of">${flagOf(s.owner)}</span><div>These are <b>${esc(possessive(own))}</b> weapons, stationed on ${esc(possessive(hostN))} territory. ${esc(theName(hostN))} does not own them and cannot use them alone.</div>`;
-  } else ownerBox.style.display = 'none';
+    const cat = catOf(s);
+    /* "Stationed here" is only true of weapons in storage. A test range is a
+       place someone else's weapons were set off; a contaminated village is
+       neither. Say the right thing for each. */
+    const body = cat === 'test'
+      ? `<b>${esc(cap(theName(own)))}</b> tested nuclear weapons here, on ${esc(possessive(hostN))} territory. The weapons were never ${esc(theName(hostN))}'s.`
+      : cat === 'human'
+        ? `The weapons responsible were <b>${esc(theName(own))}'s</b>. The people who lived here were not asked.`
+        : s.status === 'active' || s.status === 'suspected'
+          ? `These are <b>${esc(possessive(own))}</b> weapons, stationed on ${esc(possessive(hostN))} territory. ${esc(theName(hostN))} does not own them and cannot use them alone.`
+          : `<b>${esc(cap(possessive(own)))}</b> weapons were once kept here, on ${esc(possessive(hostN))} territory. They have since been withdrawn.`;
+    ownerBox.innerHTML = `<span class="of">${flagOf(s.owner)}</span><div>${body}</div>`;
+  } else { ownerBox.style.display = 'none'; ownerBox.innerHTML = ''; }
 
   const rows = [];
   const push = (l, v) => { if (v != null && v !== '') rows.push(`<div class="mrow"><span class="m-l">${esc(l)}</span><span class="m-v">${v}</span></div>`); };

@@ -83,6 +83,9 @@ body{
 .nk-dot.tri{width:0;height:0;border-radius:0;background:none;box-shadow:none;filter:drop-shadow(0 0 4px currentColor);
   border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:10px solid currentColor}
 .nk-dot.ring{background:transparent; border:2.5px solid currentColor; box-shadow:0 0 8px currentColor}
+.nk-dot.cross{background:transparent; box-shadow:none; filter:drop-shadow(0 0 5px currentColor);
+  background-image:linear-gradient(currentColor,currentColor),linear-gradient(currentColor,currentColor);
+  background-size:100% 3px,3px 100%; background-position:center,center; background-repeat:no-repeat}
 .nk-marker.sel .nk-dot{outline:2px solid #fff; outline-offset:2px}
 .nk-marker.big .nk-dot{width:15px;height:15px}
 .nk-flag{position:absolute; left:9px; top:-9px; font-size:12px; line-height:1; text-shadow:0 1px 3px rgba(0,0,0,.9); pointer-events:none}
@@ -157,6 +160,9 @@ body{
 .stog .sw-dia{border-radius:1px; transform:rotate(45deg)}
 .stog .sw-tri{width:0;height:0;background:none;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:9px solid #cbd8e2}
 .stog .sw-ring{background:transparent; border:2px solid #cbd8e2}
+.stog .sw-cross{background:transparent; border-radius:0;
+  background-image:linear-gradient(#cbd8e2,#cbd8e2),linear-gradient(#cbd8e2,#cbd8e2);
+  background-size:100% 2.5px,2.5px 100%; background-position:center,center; background-repeat:no-repeat}
 .stog-note{width:100%; margin-top:6px; font-size:9.5px; line-height:1.5; color:#6f8091}
 .stog-note b{color:#9fb0bf}
 .gb-rows{flex:0 0 auto; max-height:250px; overflow-y:auto; overscroll-behavior:contain; margin:9px 0 2px}
