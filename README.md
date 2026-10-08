@@ -112,6 +112,29 @@ tools/
 
 No build step, no dependencies, no network calls at runtime. Everything is bundled.
 
+## Languages
+
+The header selector supports English (the first-visit default), Chinese, Japanese, Korean and French.
+The chosen language is stored locally as `nk_language`; browser locale does not override the default.
+Interface text, country/site descriptions, history, charts and simulator output use the bundled dictionaries
+in `data/i18n/`. Necessary source citations and some proper names retain their original spelling.
+The dictionaries contain machine-translated research prose; technical wording should be reviewed against
+the original English sources before formal use. No translation service is called by the running app.
+
+In Chinese mode, mainland China and Taiwan share one `MultiPolygon` map feature and therefore the same
+colour, hover, elevation and selection state. Other languages restore the original separate features.
+The source GeoJSON and nuclear data remain unchanged.
+
+`i18n.js` retains original text and localizes newly inserted content, tooltips and accessible labels.
+When adding visible English text, add its translation to all four JSON dictionaries. Variable templates
+use `9876500`, `9876501`, etc. as preserved slots, not literal displayed values.
+
+Run the dependency-free regression checks with:
+
+```bash
+node tests/i18n.cjs
+```
+
 ## Corrections
 
 Data errors are likely in a project this size, and corrections are genuinely welcome — open an issue with a

@@ -265,13 +265,21 @@ function flagOf(iso) {
   if (!a2 || a2.length !== 2) return '🏳️';
   return String.fromCodePoint(...[...a2.toUpperCase()].map(ch => 0x1f1e6 + ch.charCodeAt(0) - 65));
 }
-const nameOf = (iso, feat) => (C[iso] && C[iso].n) || (ISOMAP[iso] && ISOMAP[iso].name) ||
-  (feat && (feat.properties.ADMIN || feat.properties.NAME)) || iso;
+const nameOf = (iso, feat) => window.NukeI18n.countryName(iso, a2Of(iso),
+  (C[iso] && C[iso].n) || (ISOMAP[iso] && ISOMAP[iso].name) ||
+  (feat && (feat.properties.ADMIN || feat.properties.NAME)) || iso);
 
 /* "the United States'" not "United States's"; "Turkey's" not "the Turkey's". */
 const TAKES_THE = /^(United States|United Kingdom|Netherlands|Philippines|Czech Republic|Russian Federation|Republic of|Democratic)/;
-const theName = n => (TAKES_THE.test(n) ? 'the ' + n : n);
-const possessive = n => theName(n) + (/s$/i.test(n) ? "'" : "'s");
+const theName = n => (window.NukeI18n.language === 'en' && TAKES_THE.test(n) ? 'the ' + n : n);
+const possessive = n => {
+  const language = window.NukeI18n.language;
+  if (language === 'zh') return n + '的';
+  if (language === 'ja') return n + 'の';
+  if (language === 'ko') return n + '의';
+  if (language === 'fr') return 'de ' + n;
+  return theName(n) + (/s$/i.test(n) ? "'" : "'s");
+};
 const cap = s => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
 
 const nf = new Intl.NumberFormat('en-US');
@@ -483,7 +491,7 @@ function colorFor(key, v, alpha) {
 const colorSolid = (key, v) => colorFor(key, v, 1);
 
 /* -------------------------------- globe -------------------------------- */
-let globe, countries = [];
+let globe, countries = [], originalCountries = [], refreshOpenChart = null;
 const elViz = document.getElementById('globeViz');
 const tooltip = document.getElementById('tooltip');
 
@@ -504,7 +512,8 @@ function altOf(feat) {
 }
 
 function initGlobe(geo) {
-  countries = geo.features.filter(f => (f.properties.ADMIN || f.properties.NAME) !== 'Antarctica');
+  originalCountries = geo.features.filter(f => (f.properties.ADMIN || f.properties.NAME) !== 'Antarctica');
+  countries = countriesForLanguage();
   globe = Globe()(elViz)
     .backgroundColor('rgba(0,0,0,0)')
     .showAtmosphere(true).atmosphereColor('#5fd0a8').atmosphereAltitude(0.15)
@@ -546,6 +555,44 @@ function sizeGlobe() {
   globe.width(w).height(h);
 }
 function refreshGlobe() { if (globe) globe.polygonCapColor(capColor).polygonAltitude(altOf); }
+
+function countriesForLanguage() {
+  if (window.NukeI18n.language !== 'zh') return originalCountries;
+  const china = originalCountries.find(f => isoOf(f.properties) === 'CHN');
+  const taiwan = originalCountries.find(f => isoOf(f.properties) === 'TWN');
+  if (!china || !taiwan) return originalCountries;
+  const polygons = f => f.geometry.type === 'Polygon' ? [f.geometry.coordinates] : f.geometry.coordinates;
+  // One feature controls colour, elevation and picking for both landmasses.
+  const merged = { ...china, geometry: {
+    type: 'MultiPolygon', coordinates: [...polygons(china), ...polygons(taiwan)],
+  } };
+  return originalCountries.filter(f => f !== taiwan).map(f => f === china ? merged : f);
+}
+
+window.addEventListener('nuke:languagechange', () => {
+  if (!globe) return;
+  countries = countriesForLanguage();
+  if (window.NukeI18n.language === 'zh') {
+    if (state.selected === 'TWN') state.selected = 'CHN';
+    if (state.hovered === 'TWN') state.hovered = 'CHN';
+  }
+  globe.polygonsData(countries);
+  refreshGlobe(); refreshMarkers();
+  layerSel.innerHTML = LAYER_ORDER.map(k => `<option value="${k}">${LAYERS[k].label}</option>`).join('');
+  layerSel.value = state.layer;
+  setLayer(state.layer); buildToggles(); buildTimeline(); applyYear();
+  if (state.selected) showDetail(state.selected, countries.find(f => isoOf(f.properties) === state.selected));
+  if (state.selectedSite) selectSite(state.selectedSite, false);
+  if (state.selectedEvent) selectEvent(state.selectedEvent);
+  if (refreshOpenChart && !chartOverlay.classList.contains('hidden')) refreshOpenChart();
+  tooltip.classList.add('hidden');
+  runSearch();
+  if (flatBuilt) {
+    const view = { ...flatView };
+    buildFlatMap();
+    Object.assign(flatView, view); applyFlatView();
+  }
+});
 
 /* ---- which markers are visible right now ---- */
 function siteActive(s, y) {
@@ -794,7 +841,7 @@ function showSiteTip(s, el) {
   let h = `<div class="tt-head"><span class="tt-flag">${flagOf(s.host)}</span><span class="tt-name">${esc(s.name)}</span></div>`;
   h += `<div class="tt-sub">${esc(SITE_CATS[catOf(s)].label)}${s.status && s.status !== 'active' ? ' · ' + esc(s.status) : ''}</div>`;
   if (s.wh) h += `<div class="tt-row"><span>Warheads</span><b>~${fmtInt(s.wh)}</b></div>`;
-  if (owner) h += `<div class="tt-row"><span>${flagOf(s.owner)} ${esc(nameOf(s.owner))}'s weapons</span><b></b></div>`;
+  if (owner) h += `<div class="tt-row"><span>${flagOf(s.owner)} ${esc(possessive(nameOf(s.owner)))} weapons</span><b></b></div>`;
   const cf = CONF[s.conf];
   if (cf) h += `<span class="tt-chip" style="background:${cf.color}22;color:${cf.color}">${cf.label}</span>`;
   tooltip.innerHTML = h;
@@ -1667,7 +1714,9 @@ function runSearch() {
   const hits = [];
   for (const iso in C) {
     const n = nameOf(iso);
-    if (n.toLowerCase().includes(q) || iso.toLowerCase() === q) hits.push({ kind: 'country', iso, label: n, sort: n.toLowerCase().indexOf(q) });
+    const names = [n, C[iso].n, ISOMAP[iso] && ISOMAP[iso].name].filter(Boolean);
+    if (names.some(v => v.toLowerCase().includes(q)) || iso.toLowerCase() === q)
+      hits.push({ kind: 'country', iso, label: n, sort: Math.max(0, n.toLowerCase().indexOf(q)) });
   }
   for (const a in ALIASES) {
     if (a.toLowerCase().startsWith(q) && C[ALIASES[a]] && !hits.some(h => h.iso === ALIASES[a]))
@@ -1796,6 +1845,7 @@ function arsenalChartSVG(isoFilter) {
   return s;
 }
 document.getElementById('miArsenal').addEventListener('click', () => {
+  refreshOpenChart = () => document.getElementById('miArsenal').click();
   closeMenu();
   const legend = AREA_ORDER.filter(i => SERIES[i]).map(i =>
     `<span class="wt-li"><span class="wt-sw" style="background:${AREA_COLOR[i]}"></span>${esc(nameOf(i))}</span>`).join('');
@@ -1810,10 +1860,17 @@ document.getElementById('miArsenal').addEventListener('click', () => {
 });
 document.getElementById('detailChart').addEventListener('click', () => {
   const iso = state.selected; if (!iso) return;
+  refreshOpenChart = () => {
+    const previous = state.selected;
+    state.selected = iso;
+    document.getElementById('detailChart').click();
+    state.selected = previous;
+  };
   openChart(nameOf(iso) + ' — arsenal over time', 'Total warhead inventory, ' + (SERIES[iso] ? SERIES[iso][0][0] : 1945) + '–' + Y1,
     arsenalChartSVG(iso), '', (C[iso] && C[iso].mt && C[iso].mt.note) || '');
 });
 document.getElementById('miTests').addEventListener('click', () => {
+  refreshOpenChart = () => document.getElementById('miTests').click();
   closeMenu();
   const rows = TESTC.slice().sort((a, b) => b.tests - a.tests).map(t =>
     `<tr><td>${flagOf(t.iso3)} ${esc(nameOf(t.iso3))}</td><td class="n">${fmtInt(t.tests)}</td><td class="n">${t.atmospheric != null ? fmtInt(t.atmospheric) : '—'}</td><td class="n">${t.totalYieldMt != null ? fmtMt(t.totalYieldMt) : '—'}</td><td>${esc((t.first || '').slice(0, 10))}</td><td>${esc((t.last || '').slice(0, 10))}</td></tr>`).join('');
@@ -1832,6 +1889,7 @@ document.getElementById('miTests').addEventListener('click', () => {
     '', 'Atmospheric testing was banned for the US, USSR and UK by the Partial Test Ban Treaty of 1963; France tested in the atmosphere until 1974 and China until 1980. Only North Korea has tested this century.');
 });
 document.getElementById('miClock').addEventListener('click', () => {
+  refreshOpenChart = () => document.getElementById('miClock').click();
   closeMenu();
   const cl = (HUMAN.doomsdayClock || []).slice().reverse();
   const body = cl.length
@@ -1842,6 +1900,7 @@ document.getElementById('miClock').addEventListener('click', () => {
     body, '', 'The clock is a judgement, not a measurement. Since 2007 it has also taken account of climate change and disruptive technologies, not only nuclear risk.');
 });
 document.getElementById('miNotes').addEventListener('click', () => {
+  refreshOpenChart = () => document.getElementById('miNotes').click();
   closeMenu();
   const byTopic = {};
   RESEARCH.gaps.forEach(g => (byTopic[g.t || 'general'] = byTopic[g.t || 'general'] || []).push(g.x));
@@ -1871,6 +1930,7 @@ document.getElementById('miNotes').addEventListener('click', () => {
     'If you can resolve any of these with a published source, please open an issue. Corrections are the whole point.');
 });
 document.getElementById('miTreaty').addEventListener('click', () => {
+  refreshOpenChart = () => document.getElementById('miTreaty').click();
   closeMenu();
   const rows = TREATIES.map(t =>
     `<tr><td><b>${esc(t.name)}</b><div style="font-size:11px;color:#8c9cab;margin-top:2px">${esc(t.blurb || '')}</div></td><td class="n">${t.opened || '—'}</td><td class="n">${t.parties != null ? fmtInt(t.parties) : '—'}</td><td style="font-size:11.5px">${esc(t.status2026 || '')}</td></tr>`).join('');

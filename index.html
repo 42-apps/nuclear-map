@@ -18,7 +18,7 @@
 <link rel="icon" type="image/svg+xml" href="icons/logo.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/icon32.png">
 <link rel="apple-touch-icon" href="icons/icon180.png">
-<link rel="stylesheet" href="nuclear.css?v=0127">
+<link rel="stylesheet" href="nuclear.css?v=0128">
 </head>
 <body>
 
@@ -40,6 +40,13 @@
       </div>
     </div>
     <div class="tools">
+      <select id="languageSel" aria-label="Language" title="Language">
+        <option value="en" lang="en" data-i18n-ignore>English</option>
+        <option value="zh" lang="zh" data-i18n-ignore>中文</option>
+        <option value="ja" lang="ja" data-i18n-ignore>日本語</option>
+        <option value="ko" lang="ko" data-i18n-ignore>한국어</option>
+        <option value="fr" lang="fr" data-i18n-ignore>Français</option>
+      </select>
       <div id="searchWrap">
         <input id="search" type="text" placeholder="Search a country, site or city…" autocomplete="off" spellcheck="false" aria-label="Search">
         <div id="searchResults" class="hidden"></div>
@@ -214,6 +221,14 @@
         </div>
 
         <div class="sim-group">
+          <label class="sim-lab">Base map</label>
+          <div class="seg" id="simBasemap">
+            <button class="seg-b on" data-basemap="dark">Dark map</button>
+            <button class="seg-b" data-basemap="osm">OpenStreetMap</button>
+          </div>
+        </div>
+
+        <div class="sim-group">
           <label class="sim-lab">Burst</label>
           <div class="seg" id="simBurst">
             <button class="seg-b on" data-burst="air">Airburst</button>
@@ -244,11 +259,24 @@
           <label class="sim-check"><input type="checkbox" id="simCompare"> <span>Compare with Hiroshima</span></label>
         </div>
 
+        <div class="sim-detonation-control" id="simDetonationControl">
+          <button class="sim-detonate" id="simDetonate" type="button" aria-describedby="simDetonateStatus">
+            <span class="sim-detonate-lamp" aria-hidden="true"></span>
+            <span class="sim-detonate-mark" aria-hidden="true">+</span>
+            <span class="sim-detonate-copy">
+              <span class="sim-detonate-label">Simulate detonation</span>
+              <span class="sim-detonate-status" id="simDetonateStatus" aria-live="polite">Ready</span>
+            </span>
+          </button>
+          <button class="sim-clear-effects" id="simClearEffects" type="button" hidden>Clear map effects</button>
+        </div>
+
         <div class="sim-results" id="simResults"></div>
         <div class="sim-cav" id="simCaveat"></div>
       </div>
 
       <div class="sim-mapwrap">
+        <div id="simOsmTiles" aria-hidden="true"></div>
         <svg id="simMap" xmlns="http://www.w3.org/2000/svg"></svg>
         <div class="sim-mapbar">
           <span id="simScaleLabel" class="sim-scale">—</span>
@@ -259,6 +287,7 @@
           </span>
         </div>
         <div id="simLegend" class="sim-legend"></div>
+        <div id="simOsmAttribution" class="sim-osm-attribution">© OpenStreetMap contributors</div>
       </div>
     </div>
   </div>
@@ -383,7 +412,8 @@
   <script src="data/history.js?v=0127"></script>
   <script src="data/cities.js?v=0127"></script>
   <script src="physics.js?v=0127"></script>
-  <script src="nuclear.js?v=0127"></script>
-  <script src="blast.js?v=0127"></script>
+  <script src="i18n.js?v=0128"></script>
+  <script src="nuclear.js?v=0128"></script>
+  <script src="blast.js?v=0128"></script>
 </body>
 </html>

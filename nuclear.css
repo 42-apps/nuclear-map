@@ -36,6 +36,11 @@ body{
 .brand-name{font-weight:700; font-size:16.5px; letter-spacing:.2px; display:block; line-height:1.1; white-space:nowrap}
 .brand-sub{font-size:11px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block}
 .tools{position:relative; display:flex; align-items:center; gap:8px}
+#languageSel{width:104px; height:38px; flex:none; padding:0 8px; border:1px solid var(--line); border-radius:8px;
+  background:var(--panel-solid); color:var(--txt); font:inherit; font-size:12px; cursor:pointer}
+#languageSel:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.brand{flex:1; overflow:hidden; margin-right:12px}
+.brand-name{overflow:hidden; text-overflow:ellipsis}
 #searchWrap{position:relative}
 #search{width:196px; height:38px; padding:0 12px; border-radius:10px; font-size:13px; background:var(--panel); color:var(--txt); border:1px solid var(--line); outline:none}
 #search::placeholder{color:var(--muted)}
@@ -221,10 +226,13 @@ body{
 .hero-l{font-size:9.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; margin-top:2px}
 .mrow{display:flex; align-items:center; gap:9px; padding:6px 4px; border-top:1px solid rgba(255,255,255,.06); font-size:12.5px}
 .mrow:first-child{border-top:none}
-.mrow .m-l{flex:1; color:#bccbd6}
-.mrow .m-v{color:#fff; font-weight:700; font-variant-numeric:tabular-nums; text-align:right}
+.mrow .m-l{flex:1 1 36%; min-width:72px; color:#bccbd6; overflow-wrap:anywhere}
+.mrow .m-v{flex:0 1 64%; min-width:0; color:#fff; font-weight:700; font-variant-numeric:tabular-nums; text-align:right; overflow-wrap:anywhere}
 .mrow.sub .m-l{padding-left:12px; color:var(--muted); font-size:11.5px}
 .mrow.sub .m-v{font-weight:600; color:#cbd8e2}
+html:not([lang="en"]) .hero-l,
+html:not([lang="en"]) .sim-lab,
+html:not([lang="en"]) .gb-note{letter-spacing:0}
 .sec-cap{font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:14px 0 6px; padding-top:11px; border-top:1px solid var(--line)}
 .detail-sites{margin-top:4px}
 .ds-row{display:flex; align-items:center; gap:8px; font-size:12px; padding:4px 6px; border-radius:6px; cursor:pointer}
@@ -383,6 +391,31 @@ a.src-tag:hover{background:rgba(255,255,255,.13); color:#fff}
 .sim-note{margin-top:7px; font-size:11px; line-height:1.5; color:var(--muted)}
 .sim-check{display:flex; align-items:center; gap:8px; font-size:12.5px; color:#c8d6e0; cursor:pointer; padding:5px 0}
 .sim-check input{width:15px; height:15px; accent-color:var(--accent); cursor:pointer}
+.sim-detonation-control{margin:5px 0 4px; padding:6px; border:1px solid rgba(255,185,46,.24); border-radius:8px;
+  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(0,0,0,.14)); box-shadow:inset 0 0 0 1px rgba(0,0,0,.32)}
+.sim-detonation-control[hidden]{display:none}
+.sim-detonate{position:relative; display:grid; grid-template-columns:10px 36px minmax(0,1fr); align-items:center; gap:10px; width:100%; min-height:58px;
+  padding:8px 12px 8px 10px; overflow:hidden; border:1px solid #9e2d25; border-radius:6px; cursor:pointer; text-align:left; color:#fff;
+  background:linear-gradient(180deg,#d84a36 0%,#ac2f28 48%,#84211e 100%); box-shadow:inset 0 1px rgba(255,255,255,.2),inset 0 -2px rgba(52,4,2,.38),0 5px 14px rgba(111,21,16,.28);
+  font:inherit; transition:transform .16s ease,filter .16s ease,border-color .16s ease}
+.sim-detonate::after{content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(105deg,transparent 32%,rgba(255,255,255,.16) 49%,transparent 65%); transform:translateX(-120%)}
+.sim-detonate:hover:not(:disabled){filter:brightness(1.1); border-color:#ef6b55; transform:translateY(-1px)}
+.sim-detonate:active:not(:disabled){transform:translateY(1px)}
+.sim-detonate:focus-visible{outline:2px solid #fff; outline-offset:2px}
+.sim-detonate:disabled{cursor:wait}
+.sim-detonate-lamp{width:8px; height:8px; border-radius:50%; background:#ffcf4d; box-shadow:0 0 0 3px rgba(53,20,5,.35),0 0 10px rgba(255,207,77,.72); animation:simLampReady 2.2s ease-in-out infinite}
+.sim-detonate-mark{display:grid; place-items:center; width:36px; height:36px; border:1px solid rgba(255,255,255,.62); border-radius:50%; font-size:24px; font-weight:300; line-height:1; text-shadow:0 1px 2px rgba(0,0,0,.45)}
+.sim-detonate-copy{display:flex; min-width:0; flex-direction:column; gap:2px}
+.sim-detonate-label{font-size:13px; line-height:1.15; font-weight:800; text-transform:uppercase; letter-spacing:.06em}
+.sim-detonate-status{font-size:10px; line-height:1.2; color:rgba(255,255,255,.72); letter-spacing:.05em}
+.sim-detonate.is-active::after{animation:simButtonSweep .82s ease-out infinite}
+.sim-detonate.is-active .sim-detonate-lamp{background:#fff; box-shadow:0 0 0 3px rgba(66,8,4,.35),0 0 15px #fff; animation:simLampActive .24s steps(2,end) infinite}
+.sim-detonate.is-settled .sim-detonate-lamp{background:#c8d6e0; box-shadow:0 0 0 3px rgba(28,36,43,.42),0 0 7px rgba(200,214,224,.38); animation:none}
+.sim-clear-effects{width:100%; margin-top:6px; padding:7px 9px; border:1px solid var(--line); border-radius:6px; cursor:pointer; color:#c8d6e0;
+  background:rgba(255,255,255,.045); font:inherit; font-size:11px; font-weight:700; letter-spacing:.03em; transition:background .16s,border-color .16s,color .16s}
+.sim-clear-effects:hover:not(:disabled){background:rgba(255,255,255,.09); border-color:#7d8e9c; color:#fff}
+.sim-clear-effects:disabled{opacity:.45; cursor:default}
+.sim-clear-effects[hidden]{display:none}
 .sim-results{margin-top:18px; padding-top:14px; border-top:1px solid var(--line)}
 .res-head{font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin-bottom:9px; font-weight:700}
 .res-big{display:flex; gap:8px; margin-bottom:12px}
@@ -397,14 +430,52 @@ a.src-tag:hover{background:rgba(255,255,255,.13); color:#fff}
 .res-km{color:#fff; font-weight:800; font-variant-numeric:tabular-nums; flex:none; text-align:right}
 .sim-cav{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); font-size:10.5px; line-height:1.55; color:#7d8e9c}
 .sim-mapwrap{flex:1; position:relative; background:#060a0f; min-width:0}
-#simMap{position:absolute; inset:0; width:100%; height:100%; cursor:crosshair; display:block}
-.sim-mapbar{position:absolute; left:12px; bottom:12px; right:12px; display:flex; align-items:center; justify-content:space-between; pointer-events:none}
+#simOsmTiles{position:absolute; inset:0; z-index:1; overflow:hidden; display:none; background:#d8e2e8}
+#simOsmTiles.on{display:block}
+#simOsmTiles img{position:absolute; width:256px; height:256px; max-width:none; user-select:none; pointer-events:none}
+#simMap{position:absolute; inset:0; z-index:2; width:100%; height:100%; cursor:grab; display:block; touch-action:none}
+#simMap.dragging{cursor:grabbing}
+#simMap.is-detonating{animation:simMapFlash 2.6s ease-out both}
+.sim-effect-ring{transform-box:view-box}
+.sim-effect-ring.detonating{animation:simRingReveal .72s cubic-bezier(.16,.78,.24,1) var(--ring-delay) both}
+.sim-detonation-layer{pointer-events:none; transform-box:view-box}
+.sim-flash-halo{fill:#fff7cc; opacity:0; filter:url(#simHotBlur); transform-origin:inherit; animation:simFlashHalo .8s ease-out both}
+.sim-flash-core{fill:#fff; opacity:0; filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 24px #ffb52e); transform-origin:inherit; animation:simFlashCore .72s ease-out both}
+.sim-fireball-bloom{fill:url(#simFireballGradient); stroke:#fff4b2; stroke-width:2; opacity:0; filter:drop-shadow(0 0 9px #ff8a1f) drop-shadow(0 0 18px #ff351a); transform-origin:inherit; animation:simFireball 1.45s cubic-bezier(.12,.72,.18,1) .06s both}
+.sim-shockwave{fill:none; stroke:#fff; stroke-width:5; vector-effect:non-scaling-stroke; opacity:0; filter:drop-shadow(0 0 4px rgba(255,255,255,.95)); transform-origin:inherit}
+.sim-shockwave-a{animation:simShockwave 1.72s cubic-bezier(.11,.62,.2,1) .12s both}
+.sim-shockwave-b{stroke:#ffd785; stroke-width:2; filter:drop-shadow(0 0 5px rgba(255,153,40,.9)); animation:simShockwave 2.05s cubic-bezier(.11,.62,.2,1) .34s both}
+.sim-dustwave{fill:none; stroke:#d0a36d; stroke-width:18; vector-effect:non-scaling-stroke; opacity:0; filter:blur(2px); transform-origin:inherit; animation:simDustwave 1.75s cubic-bezier(.14,.6,.22,1) .18s both}
+.sim-debris{fill:#38271b; stroke:#ffbb62; stroke-width:.5; opacity:0; transform-origin:inherit; animation:simDebris .95s cubic-bezier(.12,.66,.24,1) var(--debris-delay) both}
+.sim-crater{pointer-events:none; transform-box:view-box}
+.sim-crater-rim{fill:none; stroke:#d3b17b; stroke-width:3; opacity:.76; vector-effect:non-scaling-stroke; filter:drop-shadow(0 1px 2px rgba(0,0,0,.8))}
+.sim-crater-core{fill:url(#simCraterGradient); stroke:#473728; stroke-width:1.4; vector-effect:non-scaling-stroke}
+.sim-crater.detonating{animation:simCraterForm .55s cubic-bezier(.14,.68,.18,1) .72s both}
+.sim-persistent-effect{pointer-events:none}
+.sim-persistent-ring{vector-effect:non-scaling-stroke}
+.sim-persistent-fallout{pointer-events:none}
+.sim-persistent-crater .sim-crater-rim{opacity:.9}
+@keyframes simLampReady{0%,100%{opacity:.62}50%{opacity:1}}
+@keyframes simLampActive{0%{opacity:.35}100%{opacity:1}}
+@keyframes simButtonSweep{to{transform:translateX(125%)}}
+@keyframes simMapFlash{0%{filter:brightness(2.15)}12%{filter:brightness(1.22)}100%{filter:none}}
+@keyframes simFlashHalo{0%{opacity:.95;transform:scale(.05)}35%{opacity:.42}100%{opacity:0;transform:scale(1)}}
+@keyframes simFlashCore{0%{opacity:1;transform:scale(.15)}28%{opacity:1}100%{opacity:0;transform:scale(1.35)}}
+@keyframes simFireball{0%{opacity:1;transform:scale(.08)}35%{opacity:.96}100%{opacity:0;transform:scale(1.15)}}
+@keyframes simShockwave{0%{opacity:.9;transform:scale(.01)}62%{opacity:.42}100%{opacity:0;transform:scale(1)}}
+@keyframes simDustwave{0%{opacity:.8;transform:scale(.03)}42%{opacity:.5}100%{opacity:0;transform:scale(1)}}
+@keyframes simDebris{0%{opacity:0;transform:translate(0,0) scale(.2)}16%{opacity:.9}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.65)}}
+@keyframes simCraterForm{0%{opacity:0;transform:scale(.08)}65%{opacity:1;transform:scale(1.16)}100%{opacity:1;transform:scale(1)}}
+@keyframes simRingReveal{0%{opacity:0;transform:scale(.04)}55%{opacity:.9}100%{opacity:1;transform:scale(1)}}
+.sim-osm-attribution{position:absolute; right:9px; bottom:9px; z-index:3; display:none; padding:3px 6px; color:#26343d; background:rgba(255,255,255,.78); border-radius:4px; font-size:9px; line-height:1.2; pointer-events:none}
+.sim-osm-attribution.on{display:block}
+.sim-mapbar{position:absolute; left:12px; bottom:12px; right:12px; z-index:4; display:flex; align-items:center; justify-content:space-between; pointer-events:none}
 .sim-scale{font-size:11px; color:#c8d6e0; background:rgba(6,10,14,.8); border:1px solid var(--line); border-radius:8px; padding:5px 10px; font-variant-numeric:tabular-nums}
 .sim-mapzoom{display:flex; gap:5px; pointer-events:auto}
 .sim-mapzoom button{width:30px; height:30px; border-radius:8px; cursor:pointer; font-size:15px; font-weight:700; line-height:1;
   background:rgba(6,10,14,.85); color:var(--txt); border:1px solid var(--line)}
 .sim-mapzoom button:hover{background:rgba(34,46,60,.95); border-color:var(--accent)}
-.sim-legend{position:absolute; right:12px; top:54px; width:196px; padding:10px 12px; border-radius:11px; background:rgba(6,10,14,.86);
+.sim-legend{position:absolute; right:12px; top:54px; z-index:4; width:196px; padding:10px 12px; border-radius:11px; background:rgba(6,10,14,.86);
   border:1px solid var(--line); backdrop-filter:blur(6px); font-size:11px}
 .sl-row{display:flex; align-items:center; gap:8px; padding:3px 0; color:#c8d6e0}
 .sl-sw{width:11px; height:11px; border-radius:50%; flex:none; box-shadow:0 0 6px currentColor}
@@ -441,7 +512,11 @@ a.src-tag:hover{background:rgba(255,255,255,.13); color:#fff}
   #topbar{height:50px; padding:0 10px; gap:8px}
   .brand-txt{display:none}
   .logo{width:32px; height:32px}
-  #search{width:112px; height:34px; font-size:12px} #search:focus{width:150px}
+  .brand{flex:none; margin-right:0}
+  .tools{min-width:0; gap:5px; flex:1; justify-content:flex-end}
+  #languageSel{width:84px; height:34px; font-size:11px}
+  #searchWrap{min-width:0; flex:1; max-width:150px}
+  #search,#search:focus{width:100%; height:34px; font-size:12px}
   #searchResults{width:min(280px,86vw); top:40px}
   #menuBtn{width:34px; height:34px; font-size:16px}
   .cta{height:34px; padding:0 9px; font-size:0}
@@ -482,4 +557,7 @@ a.src-tag:hover{background:rgba(255,255,255,.13); color:#fff}
   .ch-table{font-size:11.5px}
   .nk-mt-lab{padding:1px 4px} .nk-mt-n{font-size:9.5px} .nk-mt-mt{font-size:8px}
   .nk-flag{font-size:10px; left:7px; top:-8px}
+}
+@media (prefers-reduced-motion:reduce){
+  .sim-detonate,.sim-detonate::after,.sim-detonate-lamp,#simMap.is-detonating,.sim-effect-ring.detonating,.sim-flash-halo,.sim-flash-core,.sim-fireball-bloom,.sim-shockwave,.sim-dustwave,.sim-debris,.sim-crater.detonating{animation-duration:.01ms!important; animation-delay:0ms!important; transition:none!important}
 }

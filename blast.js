@@ -15,6 +15,14 @@
 (function () {
   const P = window.NukePhysics;
   const A = () => window.NukeApp;
+  const KM_PER_DEG_LAT = 110.57;
+  const KM_PER_DEG_LON = 111.32;
+  const PERSISTENT_EFFECTS_KEY = 'nuke_simulator_effects_v1';
+  // The public OSM standard tile endpoint currently publishes native tiles up to z19.
+  // Below this span we keep zooming the z19 source pixels client-side instead of
+  // requesting unsupported z20+ URLs.
+  const OSM_MAX_ZOOM = 19;
+  const MIN_VIEW_SPAN_KM = 0.08;
 
   const el = id => document.getElementById(id);
   const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -41,6 +49,22 @@
   const BEARING_NAMES = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
   const bearingName = b => BEARING_NAMES[Math.round(((b % 360) + 360) % 360 / 45) % 8];
 
+  function loadPersistentDetonations() {
+    try {
+      const value = JSON.parse(localStorage.getItem(PERSISTENT_EFFECTS_KEY) || '[]');
+      return Array.isArray(value) ? value.filter(d => d && Number.isFinite(d.lat) && Number.isFinite(d.lon) && Array.isArray(d.rings)) : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function storePersistentDetonations(items) {
+    try {
+      if (items.length) localStorage.setItem(PERSISTENT_EFFECTS_KEY, JSON.stringify(items));
+      else localStorage.removeItem(PERSISTENT_EFFECTS_KEY);
+    } catch (error) { /* Persistence is optional when browser storage is unavailable. */ }
+  }
+
   /* ------------------------------------------------------------------ state */
   const S = {
     mode: 'single',
@@ -55,9 +79,15 @@
     hobM: null,          // null = the model's default optimised airburst height
     target: null,          // {n, lat, lon, pop, dens, iso3}
     arsenalIso: 'USA',
-    view: { spanKm: 60 },  // half-width of the local map, km
+    basemap: 'dark',
+    view: { spanKm: 60, centerLat: null, centerLon: null }, // half-width in km; viewport center is separate from ground zero
     open: false,
     lastEffects: null,
+    detonationPhase: 'idle',
+    detonationTimer: null,
+    detonationToken: 0,
+    persistentDetonations: loadPersistentDetonations(),
+    effectsCleared: false,
   };
 
   /* ------------------------------------------------------------- weapon list */
@@ -96,9 +126,7 @@
 
   /* ------------------------------------------------------------------- build */
   let built = false;
-  function build() {
-    if (built) return; built = true;
-
+  function buildLists() {
     PRESETS = weaponPresets();
     const wsel = el('simWeapon');
     wsel.innerHTML = PRESETS.map(g =>
@@ -118,6 +146,11 @@
       .sort((a, b) => (A().seriesAt(b, A().Y1) || 0) - (A().seriesAt(a, A().Y1) || 0));
     el('simArsenal').innerHTML = armed.map(iso =>
       `<option value="${iso}">${A().flagOf(iso)} ${esc(A().nameOf(iso))} — ${fmtInt(A().seriesAt(iso, A().Y1))} warheads</option>`).join('');
+  }
+  function build() {
+    if (built) return; built = true;
+    buildLists();
+    const wsel = el('simWeapon');
 
     // default weapon
     const w300 = presetByKey('USA:W87-0') || presetByKey('littleboy');
@@ -141,6 +174,7 @@
     });
     el('simMode').addEventListener('click', e => {
       const b = e.target.closest('.seg-b'); if (!b) return;
+      resetDetonation();
       S.mode = b.dataset.mode;
       el('simMode').querySelectorAll('.seg-b').forEach(x => x.classList.toggle('on', x === b));
       el('simWeaponGroup').style.display = S.mode === 'single' ? '' : 'none';
@@ -159,9 +193,20 @@
       const v = el('simTarget').value;
       if (!v) return;
       const c = S._cities[parseInt(v.slice(1), 10)];
-      if (c) { S.target = c; fitToEffects(); render(); }
+      if (c) {
+        S.target = c;
+        setViewCenter(c.lat, c.lon);
+        fitToEffects();
+        render();
+      }
     });
     el('simArsenal').addEventListener('change', () => { S.arsenalIso = el('simArsenal').value; render(); });
+    el('simBasemap').addEventListener('click', e => {
+      const b = e.target.closest('.seg-b'); if (!b) return;
+      S.basemap = b.dataset.basemap;
+      el('simBasemap').querySelectorAll('.seg-b').forEach(x => x.classList.toggle('on', x === b));
+      render();
+    });
     el('simFallout').addEventListener('change', () => {
       S.fallout = el('simFallout').checked;
       if (S.fallout && S.burst === 'air') {
@@ -189,29 +234,60 @@
       }
       render();
     });
-    el('simZoomIn').addEventListener('click', () => { S.view.spanKm = Math.max(0.5, S.view.spanKm / 1.6); render(); });
+    el('simZoomIn').addEventListener('click', () => { S.view.spanKm = Math.max(MIN_VIEW_SPAN_KM, S.view.spanKm / 1.6); render(); });
     el('simZoomOut').addEventListener('click', () => { S.view.spanKm = Math.min(20000, S.view.spanKm * 1.6); render(); });
     el('simFit').addEventListener('click', () => { fitToEffects(); render(); });
+    el('simDetonate').addEventListener('click', triggerDetonation);
+    el('simClearEffects').addEventListener('click', clearMapEffects);
     el('simClose').addEventListener('click', close);
     el('simOverlay').addEventListener('click', e => { if (e.target.id === 'simOverlay') close(); });
     document.addEventListener('keydown', e => {
       if (!S.open) return;
       if (e.key === 'Escape') { close(); e.preventDefault(); }
-      if (e.key === '+' || e.key === '=') { S.view.spanKm /= 1.6; render(); }
+      if (e.key === '+' || e.key === '=') { S.view.spanKm = Math.max(MIN_VIEW_SPAN_KM, S.view.spanKm / 1.6); render(); }
       if (e.key === '-') { S.view.spanKm *= 1.6; render(); }
     });
 
     const svg = el('simMap');
     svg.addEventListener('click', e => {
-      if (S.mode !== 'single') return;
+      if (S.mode !== 'single' || S._dragMoved) { S._dragMoved = false; return; }
       const p = svgToLatLon(e);
       if (!p) return;
       S.target = nearestCityOrPoint(p[0], p[1]);
+      setViewCenter(S.target.lat, S.target.lon);
       render();
     });
+    let drag = null;
+    svg.addEventListener('pointerdown', e => {
+      if (S.mode !== 'single' || e.button !== 0) return;
+      const c = viewCenter();
+      drag = { id: e.pointerId, x: e.clientX, y: e.clientY, lat: c.lat, lon: c.lon, moved: false };
+      svg.setPointerCapture(e.pointerId);
+      svg.classList.add('dragging');
+    });
+    svg.addEventListener('pointermove', e => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (Math.abs(dx) + Math.abs(dy) > 4) drag.moved = true;
+      const cosLat = Math.max(0.12, Math.cos(drag.lat * Math.PI / 180));
+      setViewCenter(
+        drag.lat + dy * VB.kmPerPx / KM_PER_DEG_LAT,
+        drag.lon - dx * VB.kmPerPx / (KM_PER_DEG_LON * cosLat),
+      );
+      S._dragMoved = drag.moved;
+      render();
+    });
+    const endDrag = e => {
+      if (!drag || e.pointerId !== drag.id) return;
+      S._dragMoved = drag.moved;
+      drag = null;
+      svg.classList.remove('dragging');
+    };
+    svg.addEventListener('pointerup', endDrag);
+    svg.addEventListener('pointercancel', endDrag);
     svg.addEventListener('wheel', e => {
       e.preventDefault();
-      S.view.spanKm = Math.max(0.5, Math.min(20000, S.view.spanKm * Math.exp(e.deltaY * 0.0014)));
+      S.view.spanKm = Math.max(MIN_VIEW_SPAN_KM, Math.min(20000, S.view.spanKm * Math.exp(e.deltaY * 0.0014)));
       render();
     }, { passive: false });
   }
@@ -238,7 +314,7 @@
   }
 
   /* --------------------------------------------------------------- projection */
-  /* Local equirectangular in kilometres, centred on the target. */
+  /* Local equirectangular kilometres, centred on the current map viewport. */
   let VB = { w: 1000, h: 700, cx: 500, cy: 350, kmPerPx: 1 };
   function measure() {
     const r = el('simMap').getBoundingClientRect();
@@ -247,30 +323,102 @@
     VB.kmPerPx = (S.view.spanKm * 2) / Math.min(VB.w, VB.h);
   }
   function project(lat, lon) {
-    const t = S.target || { lat: 0, lon: 0 };
+    const t = viewCenter();
     let dlon = lon - t.lon;
     while (dlon > 180) dlon -= 360;
     while (dlon < -180) dlon += 360;
-    const x = dlon * 111.32 * Math.cos(t.lat * Math.PI / 180);
-    const y = (lat - t.lat) * 110.57;
+    const x = dlon * KM_PER_DEG_LON * Math.cos(t.lat * Math.PI / 180);
+    const y = (lat - t.lat) * KM_PER_DEG_LAT;
     return [VB.cx + x / VB.kmPerPx, VB.cy - y / VB.kmPerPx];
   }
   function svgToLatLon(evt) {
     const svg = el('simMap'), r = svg.getBoundingClientRect();
     const px = evt.clientX - r.left, py = evt.clientY - r.top;
-    const t = S.target || { lat: 0, lon: 0 };
+    const t = viewCenter();
     const xKm = (px - VB.cx) * VB.kmPerPx, yKm = (VB.cy - py) * VB.kmPerPx;
-    const lat = t.lat + yKm / 110.57;
-    const lon = t.lon + xKm / (111.32 * Math.cos(t.lat * Math.PI / 180) || 1);
+    const lat = t.lat + yKm / KM_PER_DEG_LAT;
+    const lon = t.lon + xKm / (KM_PER_DEG_LON * Math.cos(t.lat * Math.PI / 180) || 1);
     return [Math.max(-85, Math.min(85, lat)), ((lon + 540) % 360) - 180];
   }
   const kmToPx = km => km / VB.kmPerPx;
+  function viewCenter() {
+    return {
+      lat: S.view.centerLat == null ? (S.target ? S.target.lat : 0) : S.view.centerLat,
+      lon: S.view.centerLon == null ? (S.target ? S.target.lon : 0) : S.view.centerLon,
+    };
+  }
+  function setViewCenter(lat, lon) {
+    S.view.centerLat = Math.max(-85, Math.min(85, lat));
+    S.view.centerLon = ((lon + 540) % 360) - 180;
+  }
+
+  /* OSM is a visual reference layer. Its Web Mercator tiles are positioned
+     from the viewport center and scaled from the same physical km-per-pixel value used
+     by the effect rings, so the radius labels never inherit tile units. */
+  function osmY(lat) {
+    const r = lat * Math.PI / 180;
+    return Math.log(Math.tan(Math.PI / 4 + r / 2));
+  }
+  function updateOsmTiles() {
+    const box = el('simOsmTiles'), attribution = el('simOsmAttribution');
+    if (!box || !attribution) return;
+    const on = S.basemap === 'osm';
+    box.classList.toggle('on', on); attribution.classList.toggle('on', on);
+    if (!on || !S.target) { box.replaceChildren(); return; }
+    const center = viewCenter();
+    const lat = Math.max(-85, Math.min(85, center.lat));
+    const lon = center.lon;
+    const cosLat = Math.max(0.12, Math.cos(lat * Math.PI / 180));
+    const circumferenceKm = 40075.016;
+    // One Web-Mercator world pixel is cos(latitude) times smaller on the
+    // ground than at the equator. Convert physical km-per-pixel explicitly.
+    const wantedWorldPx = circumferenceKm * cosLat / VB.kmPerPx;
+    const zoom = Math.min(OSM_MAX_ZOOM, Math.max(0, Math.round(Math.log2(wantedWorldPx / 256))));
+    const world = 256 * Math.pow(2, zoom);
+    const cx = (lon + 180) / 360 * world;
+    const cy = (1 - osmY(lat) / Math.PI) / 2 * world;
+    const scale = circumferenceKm * cosLat / (world * VB.kmPerPx);
+    const left = VB.w / 2 - cx * scale;
+    const top = VB.h / 2 - cy * scale;
+    const tileSize = 256 * scale;
+    const minX = Math.floor(-left / tileSize);
+    const maxX = Math.floor((VB.w - left) / tileSize);
+    const minY = Math.floor(-top / tileSize);
+    const maxY = Math.floor((VB.h - top) / tileSize);
+    const existing = new Map(Array.from(box.querySelectorAll('img')).map(image => [image.dataset.key, image]));
+    const frag = document.createDocumentFragment();
+    for (let tx = minX; tx <= maxX; tx++) {
+      const wrappedX = ((tx % Math.pow(2, zoom)) + Math.pow(2, zoom)) % Math.pow(2, zoom);
+      for (let ty = minY; ty <= maxY; ty++) {
+        if (ty < 0 || ty >= Math.pow(2, zoom)) continue;
+        const key = `${zoom}/${wrappedX}/${ty}`;
+        let image = existing.get(key);
+        if (image) existing.delete(key);
+        else {
+          image = document.createElement('img');
+          image.alt = '';
+          image.loading = 'eager';
+          image.decoding = 'async';
+          image.dataset.key = key;
+          image.dataset.zoom = String(zoom);
+          image.src = `https://tile.openstreetmap.org/${key}.png`;
+        }
+        image.style.left = `${left + tx * 256 * scale}px`;
+        image.style.top = `${top + ty * 256 * scale}px`;
+        // A fractional CSS pixel of overlap prevents seams at non-integer scales.
+        image.style.width = `${tileSize + 0.5}px`;
+        image.style.height = `${tileSize + 0.5}px`;
+        frag.appendChild(image);
+      }
+    }
+    box.replaceChildren(frag);
+  }
 
   function fitToEffects() {
     const e = P.effects(S.yieldKt, S.burst, { windMph: S.windMph, hobM: S.burst === 'surface' ? 0 : S.hobM });
     let span = e.maxKm * 1.35;
     if (S.fallout && e.fallout && e.fallout.length) span = Math.max(span, e.fallout[e.fallout.length - 1].downwindKm * 0.62);
-    S.view.spanKm = Math.max(0.6, span);
+    S.view.spanKm = Math.max(MIN_VIEW_SPAN_KM, span);
   }
 
   /* ----------------------------------------------------------------- land */
@@ -289,9 +437,9 @@
   function drawLand() {
     const rings = landPaths();
     if (!rings.length) return '';
-    const t = S.target || { lat: 0, lon: 0 };
-    const spanLat = (S.view.spanKm / 110.57) * 1.6;
-    const spanLon = (S.view.spanKm / (111.32 * Math.cos(t.lat * Math.PI / 180) || 1)) * 1.6;
+    const t = viewCenter();
+    const spanLat = (S.view.spanKm / KM_PER_DEG_LAT) * 1.6;
+    const spanLon = (S.view.spanKm / (KM_PER_DEG_LON * Math.cos(t.lat * Math.PI / 180) || 1)) * 1.6;
     let d = '';
     for (const ring of rings) {
       // cheap bbox reject
@@ -319,8 +467,83 @@
     renderSingle();
   }
 
+  function resetDetonation() {
+    if (S.detonationTimer) clearTimeout(S.detonationTimer);
+    S.detonationTimer = null;
+    S.detonationToken++;
+    S.detonationPhase = 'idle';
+    updateDetonationControl();
+  }
+
+  function updateDetonationControl() {
+    const wrap = el('simDetonationControl'), button = el('simDetonate');
+    if (!wrap || !button) return;
+    wrap.hidden = S.mode !== 'single';
+    const active = S.detonationPhase === 'animating';
+    const replay = S.detonationPhase === 'settled';
+    button.disabled = active;
+    button.classList.toggle('is-active', active);
+    button.classList.toggle('is-settled', replay);
+    button.querySelector('.sim-detonate-label').textContent = replay ? 'Replay detonation' : 'Simulate detonation';
+    el('simDetonateStatus').textContent = active ? 'Detonating...' : 'Ready';
+    const clear = el('simClearEffects');
+    clear.hidden = S.persistentDetonations.length === 0;
+    clear.disabled = active;
+  }
+
+  function detonationSignature(target, yieldKt, burst, fallout, windBearing) {
+    return [target.lat.toFixed(5), target.lon.toFixed(5), yieldKt, burst, fallout ? windBearing : 'none'].join('|');
+  }
+
+  function savePersistentDetonation() {
+    const eff = P.effects(S.yieldKt, S.burst, { windMph: S.windMph, hobM: S.burst === 'surface' ? 0 : S.hobM });
+    const snapshot = {
+      signature: detonationSignature(S.target, S.yieldKt, S.burst, S.fallout, S.windBearing),
+      lat: S.target.lat,
+      lon: S.target.lon,
+      yieldKt: S.yieldKt,
+      burst: S.burst,
+      windBearing: S.windBearing,
+      rings: eff.rings.filter(r => S.advanced || !r.adv).map(r => Object.assign({}, r)),
+      crater: eff.crater ? Object.assign({}, eff.crater) : null,
+      fallout: S.fallout && eff.fallout ? eff.fallout.map(f => Object.assign({}, f)) : null,
+    };
+    const i = S.persistentDetonations.findIndex(d => d.signature === snapshot.signature);
+    if (i >= 0) S.persistentDetonations[i] = snapshot;
+    else S.persistentDetonations.push(snapshot);
+    storePersistentDetonations(S.persistentDetonations);
+  }
+
+  function clearMapEffects() {
+    if (S.detonationPhase === 'animating') return;
+    S.persistentDetonations.length = 0;
+    storePersistentDetonations(S.persistentDetonations);
+    S.effectsCleared = true;
+    S.detonationPhase = 'idle';
+    render();
+  }
+
+  function triggerDetonation() {
+    if (S.mode !== 'single' || S.detonationPhase === 'animating') return;
+    if (!S.target) S.target = defaultTarget();
+    if (S.detonationTimer) clearTimeout(S.detonationTimer);
+    const token = ++S.detonationToken;
+    S.effectsCleared = false;
+    savePersistentDetonation();
+    S.detonationPhase = 'animating';
+    render();
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    S.detonationTimer = setTimeout(() => {
+      if (token !== S.detonationToken) return;
+      S.detonationTimer = null;
+      S.detonationPhase = 'settled';
+      render();
+    }, reduced ? 650 : 2800);
+  }
+
   function renderSingle() {
     if (!S.target) S.target = defaultTarget();
+    if (S.view.centerLat == null || S.view.centerLon == null) setViewCenter(S.target.lat, S.target.lon);
     syncTargetSelect();
     const eff = P.effects(S.yieldKt, S.burst, { windMph: S.windMph, hobM: S.burst === 'surface' ? 0 : S.hobM });
     S.lastEffects = eff;
@@ -329,17 +552,23 @@
     /* ---- map ---- */
     const svg = el('simMap');
     svg.setAttribute('viewBox', `0 0 ${VB.w} ${VB.h}`);
-    let s = `<rect x="0" y="0" width="${VB.w}" height="${VB.h}" fill="#060a0f"/>`;
-    s += drawLand();
+    const origin = project(S.target.lat, S.target.lon);
+    let s = S.basemap === 'osm' ? '' : `<rect x="0" y="0" width="${VB.w}" height="${VB.h}" fill="#060a0f"/>`;
+    s += S.basemap === 'osm' ? '' : drawLand();
+    s += `<defs>` +
+      `<radialGradient id="simFireballGradient"><stop offset="0" stop-color="#fff"/><stop offset=".2" stop-color="#fffbd0"/><stop offset=".52" stop-color="#ffcf43"/><stop offset=".78" stop-color="#ff641f"/><stop offset="1" stop-color="#7c1209" stop-opacity="0"/></radialGradient>` +
+      `<radialGradient id="simCraterGradient"><stop offset="0" stop-color="#080909"/><stop offset=".64" stop-color="#1a1713"/><stop offset=".82" stop-color="#5e4a35"/><stop offset="1" stop-color="#d6b379" stop-opacity=".18"/></radialGradient>` +
+      `<filter id="simHotBlur" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="5"/></filter>` +
+      `</defs>`;
 
     // distance grid
     const gridStep = niceStep(S.view.spanKm / 2.2);
     for (let k = gridStep; k <= S.view.spanKm * 1.5; k += gridStep) {
       const r = kmToPx(k);
       if (r < 16) continue;
-      s += `<circle class="sim-gridline" cx="${VB.cx}" cy="${VB.cy}" r="${r.toFixed(1)}"/>`;
-      const ly = VB.cy - r - 4;
-      if (ly > 12 && ly < VB.h - 8) s += `<text class="sim-city" x="${VB.cx}" y="${ly.toFixed(1)}" text-anchor="middle" opacity=".55">${fmtKm(k)}</text>`;
+      s += `<circle class="sim-gridline" cx="${origin[0].toFixed(1)}" cy="${origin[1].toFixed(1)}" r="${r.toFixed(1)}"/>`;
+      const ly = origin[1] - r - 4;
+      if (ly > 12 && ly < VB.h - 8) s += `<text class="sim-city" x="${origin[0].toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" opacity=".55">${fmtKm(k)}</text>`;
     }
 
     // nearby cities
@@ -352,47 +581,100 @@
       s += `<text class="sim-city" x="${(p[0] + 5).toFixed(1)}" y="${(p[1] + 3).toFixed(1)}">${esc(c.name)}</text>`;
     });
 
-    // fallout first (underneath the rings)
-    if (S.fallout && eff.fallout) {
-      eff.fallout.slice().reverse().forEach((f, i) => {
-        s += falloutPath(f, 0.09 + i * 0.06);
+    // Completed detonations stay tied to their original coordinates. The
+    // matching live preview is skipped to avoid drawing the same event twice.
+    const currentSignature = detonationSignature(S.target, S.yieldKt, S.burst, S.fallout, S.windBearing);
+    S.persistentDetonations.forEach(d => {
+      if (d.signature === currentSignature && !S.effectsCleared) return;
+      const savedOrigin = project(d.lat, d.lon);
+      s += `<g class="sim-persistent-effect">`;
+      if (d.fallout) d.fallout.slice().reverse().forEach((f, i) => {
+        s += falloutPath(f, savedOrigin, 0.07 + i * 0.045, d.windBearing, 'sim-persistent-fallout');
       });
+      d.rings.forEach(r => {
+        const px = kmToPx(r.km);
+        if (px < 0.6) return;
+        s += `<circle class="sim-persistent-ring" cx="${savedOrigin[0].toFixed(1)}" cy="${savedOrigin[1].toFixed(1)}" r="${px.toFixed(2)}" fill="${r.color}" fill-opacity="${Math.min(.08, r.fill == null ? .07 : r.fill * .62)}" stroke="${r.color}" stroke-width="1.4" stroke-opacity=".72"${r.dash ? ` stroke-dasharray="${r.dash}"` : ''}/>`;
+      });
+      if (d.burst === 'surface' && d.crater) s += craterMarkup(savedOrigin, d.crater, 'sim-persistent-crater');
+      s += `</g>`;
+    });
+
+    // fallout first (underneath the rings)
+    if (!S.effectsCleared && S.fallout && eff.fallout) {
+      eff.fallout.slice().reverse().forEach((f, i) => {
+        s += falloutPath(f, origin, 0.09 + i * 0.06);
+      });
+    }
+
+    // A crater is only physically meaningful for a surface burst. Its map size
+    // uses the same kilometre-to-pixel conversion as every other effect layer.
+    if (!S.effectsCleared && S.burst === 'surface' && eff.crater) {
+      const craterAnim = S.detonationPhase === 'animating' ? ' detonating' : '';
+      s += craterMarkup(origin, eff.crater, craterAnim.trim());
     }
 
     // effect rings, largest first
     const rings = eff.rings.filter(r => S.advanced || !r.adv);
-    rings.forEach(r => {
+    const ringOrder = rings.slice().sort((a, b) => a.km - b.km);
+    if (!S.effectsCleared) rings.forEach(r => {
       const px = kmToPx(r.km);
       if (px < 0.6) return;
       const dim = r.key === 'rem500' && eff.radiationIrrelevant;
-      s += `<circle cx="${VB.cx}" cy="${VB.cy}" r="${px.toFixed(2)}" fill="${r.color}"` +
+      const delay = 320 + ringOrder.indexOf(r) * 170;
+      const anim = S.detonationPhase === 'animating' ? ' sim-effect-ring detonating' : ' sim-effect-ring';
+      s += `<circle class="${anim.trim()}" style="--ring-delay:${delay}ms;transform-origin:${origin[0].toFixed(1)}px ${origin[1].toFixed(1)}px" cx="${origin[0].toFixed(1)}" cy="${origin[1].toFixed(1)}" r="${px.toFixed(2)}" fill="${r.color}"` +
         ` fill-opacity="${dim ? 0.04 : (r.fill == null ? 0.10 : r.fill)}" stroke="${r.color}"` +
         ` stroke-width="${r.key === 'psi20' ? 2.4 : 1.8}" stroke-opacity="${dim ? 0.35 : 0.95}"` +
         (r.dash ? ` stroke-dasharray="${r.dash}"` : '') + '/>';
     });
+    if (S.detonationPhase === 'animating') {
+      const fireball = rings.find(r => r.key === 'fireball');
+      const fireballPx = Math.max(5, fireball ? kmToPx(fireball.km) : 8);
+      const shockPx = Math.min(Math.hypot(VB.w, VB.h) * 0.72, Math.max.apply(null, rings.map(r => kmToPx(r.km))));
+      const debris = Array.from({ length: 22 }, (_, i) => {
+        const a = i * 2.39996;
+        const spread = Math.min(shockPx * (0.23 + (i % 5) * 0.045), 160);
+        const dx = Math.cos(a) * spread, dy = Math.sin(a) * spread;
+        const radius = 1.1 + (i % 4) * 0.55;
+        return `<circle class="sim-debris" style="--dx:${dx.toFixed(1)}px;--dy:${dy.toFixed(1)}px;--debris-delay:${(90 + (i % 7) * 34)}ms" cx="${origin[0].toFixed(1)}" cy="${origin[1].toFixed(1)}" r="${radius.toFixed(1)}"/>`;
+      }).join('');
+      s += `<g class="sim-detonation-layer" style="transform-origin:${origin[0].toFixed(1)}px ${origin[1].toFixed(1)}px">` +
+        `<circle class="sim-flash-halo" cx="${origin[0].toFixed(1)}" cy="${origin[1].toFixed(1)}" r="${Math.max(70, fireballPx * 5).toFixed(1)}"/>` +
+        `<circle class="sim-flash-core" cx="${origin[0].toFixed(1)}" cy="${origin[1].toFixed(1)}" r="${Math.max(12, fireballPx * 1.35).toFixed(1)}"/>` +
+        `<circle class="sim-fireball-bloom" cx="${origin[0].toFixed(1)}" cy="${origin[1].toFixed(1)}" r="${fireballPx.toFixed(2)}"/>` +
+        `<circle class="sim-dustwave" cx="${origin[0].toFixed(1)}" cy="${origin[1].toFixed(1)}" r="${Math.min(shockPx * .62, 260).toFixed(1)}"/>` +
+        `<circle class="sim-shockwave sim-shockwave-a" cx="${origin[0].toFixed(1)}" cy="${origin[1].toFixed(1)}" r="${shockPx.toFixed(1)}"/>` +
+        `<circle class="sim-shockwave sim-shockwave-b" cx="${origin[0].toFixed(1)}" cy="${origin[1].toFixed(1)}" r="${shockPx.toFixed(1)}"/>` +
+        debris +
+        `</g>`;
+    }
     // comparison: Hiroshima footprint
-    if (S.compare) {
+    if (!S.effectsCleared && S.compare) {
       const h = P.effects(15, 'air');
       const hr = h.rings.find(x => x.key === 'psi5');
       if (hr) {
         const px = kmToPx(hr.km);
-        s += `<circle cx="${VB.cx}" cy="${VB.cy}" r="${px.toFixed(2)}" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-dasharray="5 4" stroke-opacity=".85"/>`;
-        if (px > 22) s += `<text class="sim-city" x="${VB.cx + 4}" y="${(VB.cy - px - 4).toFixed(1)}" fill="#fff">Hiroshima's blast area</text>`;
+        s += `<circle cx="${origin[0].toFixed(1)}" cy="${origin[1].toFixed(1)}" r="${px.toFixed(2)}" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-dasharray="5 4" stroke-opacity=".85"/>`;
+        if (px > 22) s += `<text class="sim-city" x="${origin[0] + 4}" y="${(origin[1] - px - 4).toFixed(1)}" fill="#fff">Hiroshima's blast area</text>`;
       }
     }
     // ground zero
-    s += `<circle cx="${VB.cx}" cy="${VB.cy}" r="3" fill="#fff"/>`;
-    s += `<line x1="${VB.cx - 9}" y1="${VB.cy}" x2="${VB.cx + 9}" y2="${VB.cy}" stroke="#fff" stroke-width="1"/>`;
-    s += `<line x1="${VB.cx}" y1="${VB.cy - 9}" x2="${VB.cx}" y2="${VB.cy + 9}" stroke="#fff" stroke-width="1"/>`;
+    s += `<circle cx="${origin[0].toFixed(1)}" cy="${origin[1].toFixed(1)}" r="3" fill="#fff"/>`;
+    s += `<line x1="${origin[0] - 9}" y1="${origin[1]}" x2="${origin[0] + 9}" y2="${origin[1]}" stroke="#fff" stroke-width="1"/>`;
+    s += `<line x1="${origin[0]}" y1="${origin[1] - 9}" x2="${origin[0]}" y2="${origin[1] + 9}" stroke="#fff" stroke-width="1"/>`;
     // wind arrow
     if (S.fallout && eff.fallout) {
       const a = (90 - S.windBearing) * Math.PI / 180;
       const L = Math.min(VB.w, VB.h) * 0.36;
-      const x2 = VB.cx + Math.cos(a) * L, y2 = VB.cy - Math.sin(a) * L;
-      s += `<line x1="${VB.cx}" y1="${VB.cy}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#c07cff" stroke-width="1.2" stroke-dasharray="4 4" opacity=".7"/>`;
+      const x2 = origin[0] + Math.cos(a) * L, y2 = origin[1] - Math.sin(a) * L;
+      s += `<line x1="${origin[0]}" y1="${origin[1]}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#c07cff" stroke-width="1.2" stroke-dasharray="4 4" opacity=".7"/>`;
       s += `<text class="sim-city" x="${x2.toFixed(1)}" y="${(y2 - 6).toFixed(1)}" fill="#c07cff" text-anchor="middle">wind ${bearingName(S.windBearing)}</text>`;
     }
     svg.innerHTML = s;
+    svg.classList.toggle('is-detonating', S.detonationPhase === 'animating');
+    updateOsmTiles();
+    updateDetonationControl();
     el('simScaleLabel').textContent = 'View ' + fmtKm(S.view.spanKm * 2) + ' across · click the map to move ground zero';
     el('simWindVal').textContent = bearingName(S.windBearing);
     el('simWindSpeedVal').textContent = S.windMph + ' mph';
@@ -506,8 +788,16 @@
   }
 
   /* Teardrop fallout plume, pointing downwind. */
-  function falloutPath(f, opacity) {
-    const brg = S.windBearing;
+  function craterMarkup(origin, crater, extraClass) {
+    const craterPx = Math.max(2.2, kmToPx(crater.radius));
+    return `<g class="sim-crater${extraClass ? ' ' + extraClass : ''}" style="transform-origin:${origin[0].toFixed(1)}px ${origin[1].toFixed(1)}px">` +
+      `<circle class="sim-crater-rim" cx="${origin[0].toFixed(1)}" cy="${origin[1].toFixed(1)}" r="${(craterPx * 1.34).toFixed(2)}"/>` +
+      `<circle class="sim-crater-core" cx="${origin[0].toFixed(1)}" cy="${origin[1].toFixed(1)}" r="${craterPx.toFixed(2)}"/>` +
+      `</g>`;
+  }
+
+  function falloutPath(f, origin, opacity, bearing, className) {
+    const brg = bearing == null ? S.windBearing : bearing;
     const a = (90 - brg) * Math.PI / 180;
     const ux = Math.cos(a), uy = -Math.sin(a);          // downwind unit vector in screen space
     const vx = -uy, vy = ux;                            // perpendicular
@@ -519,19 +809,20 @@
       const t = i / N;
       // teardrop half-width: rises quickly, tapers to a point downwind
       const hw = W * Math.pow(t, 0.42) * Math.pow(1 - t, 0.55) * 2.2;
-      pts.push([VB.cx + ux * L * t + vx * hw, VB.cy + uy * L * t + vy * hw]);
+      pts.push([origin[0] + ux * L * t + vx * hw, origin[1] + uy * L * t + vy * hw]);
     }
     for (let i = N; i >= 0; i--) {
       const t = i / N;
       const hw = W * Math.pow(t, 0.42) * Math.pow(1 - t, 0.55) * 2.2;
-      pts.push([VB.cx + ux * L * t - vx * hw, VB.cy + uy * L * t - vy * hw]);
+      pts.push([origin[0] + ux * L * t - vx * hw, origin[1] + uy * L * t - vy * hw]);
     }
     const d = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join('') + 'Z';
-    return `<path d="${d}" fill="#c07cff" fill-opacity="${opacity}" stroke="#c07cff" stroke-opacity="${(opacity * 2.6).toFixed(2)}" stroke-width="1"/>`;
+    return `<path${className ? ` class="${className}"` : ''} d="${d}" fill="#c07cff" fill-opacity="${opacity}" stroke="#c07cff" stroke-opacity="${(opacity * 2.6).toFixed(2)}" stroke-width="1"/>`;
   }
 
   /* --------------------------------------------------------- arsenal mode */
   function renderArsenal() {
+    updateDetonationControl();
     const iso = S.arsenalIso;
     const n = A().seriesAt(iso, A().Y1) || 0;
     const types = (A().WTYPES || []).filter(w => w.iso3 === iso && w.kt && w.count);
@@ -578,7 +869,7 @@
     const W = VB.w, H = VB.h;
     const pw = Math.min(W / 360, H / 180);
     const px = lon => W / 2 + lon * pw, py = lat => H / 2 - lat * pw;
-    let s = `<rect x="0" y="0" width="${W}" height="${H}" fill="#060a0f"/>`;
+    let s = S.basemap === 'osm' ? '' : `<rect x="0" y="0" width="${W}" height="${H}" fill="#060a0f"/>`;
     const rings = landPaths();
     let d = '';
     for (const ring of rings) {
@@ -586,7 +877,7 @@
       for (let i = 0; i < ring.length; i += step) d += (i ? 'L' : 'M') + px(ring[i][0]).toFixed(1) + ',' + py(ring[i][1]).toFixed(1);
       d += 'Z';
     }
-    s += `<path class="sim-land" d="${d}"/>`;
+    if (S.basemap !== 'osm') s += `<path class="sim-land" d="${d}"/>`;
     strikes.forEach(st => {
       const x = px(st.city.lon), y = py(st.city.lat);
       const r = Math.max(1.6, st.psi5 * pw / 111.32);
@@ -596,6 +887,7 @@
     s += `<text class="sim-city" x="14" y="20" font-size="11">${esc(A().nameOf(iso))} · ${fmtInt(used)} warheads placed on the ${fmtInt(used)} largest cities</text>`;
     s += `<text class="sim-city" x="14" y="35" font-size="11" opacity=".75">Each circle is that city's blast-destruction radius, drawn to scale</text>`;
     svg.innerHTML = s;
+    updateOsmTiles();
 
     el('simScaleLabel').textContent = 'World view · each circle is a city inside the 5 psi blast radius';
     el('simLegend').innerHTML = '<div class="res-head" style="margin-bottom:6px">This is one arsenal</div>' +
@@ -654,6 +946,7 @@
   function open(opts) {
     build();
     opts = opts || {};
+    resetDetonation();
     S.open = true;
     if (opts.mode) {
       S.mode = opts.mode;
@@ -664,10 +957,14 @@
     if (opts.iso) { S.arsenalIso = opts.iso; el('simArsenal').value = opts.iso; }
     if (opts.lat != null) {
       S.target = nearestCityOrPoint(opts.lat, opts.lon);
+      setViewCenter(S.target.lat, S.target.lon);
       if (opts.name) S.target.name = opts.name;
       el('simTarget').value = '';
     }
-    if (!S.target) S.target = defaultTarget();
+    if (!S.target) {
+      S.target = defaultTarget();
+      setViewCenter(S.target.lat, S.target.lon);
+    }
     if (opts.kt) {
       S.yieldKt = opts.kt; el('simYield').value = ktToSlider(opts.kt);
       S.weaponKey = 'custom'; el('simWeapon').value = 'custom';
@@ -676,9 +973,22 @@
     if (S.mode === 'single' && opts.fit !== false) fitToEffects();
     requestAnimationFrame(() => { measure(); render(); });
   }
-  function close() { S.open = false; el('simOverlay').classList.add('hidden'); }
+  function close() {
+    resetDetonation();
+    S.open = false;
+    el('simOverlay').classList.add('hidden');
+  }
 
   window.addEventListener('resize', () => { if (S.open) render(); });
+  window.addEventListener('nuke:languagechange', () => {
+    if (!built) return;
+    buildLists();
+    el('simWeapon').value = S.weaponKey;
+    el('simArsenal').value = S.arsenalIso;
+    el('simBasemap').querySelectorAll('.seg-b').forEach(x => x.classList.toggle('on', x.dataset.basemap === S.basemap));
+    syncTargetSelect();
+    if (S.open) render();
+  });
 
   /* ------------------------------------------------------------------ wiring */
   function init() {
